@@ -22,7 +22,7 @@ const MILESTONES = [
   { year: "2026", title: "Land of a Thousand Hills", body: "Now serving 40+ countries with 25 local guides on payroll." },
 ];
 
-export default function _() { return null; }
+
 
 function About() {
   return (
