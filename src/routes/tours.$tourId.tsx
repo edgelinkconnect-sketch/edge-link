@@ -38,8 +38,8 @@ export const Route = createFileRoute("/tours/$tourId")({
 });
 
 function TourDetail() {
-  const data = Route.useLoaderData();
-  const tour = data!.tour;
+  const data = Route.useLoaderData() as { tour: (typeof TOURS)[number] };
+  const tour = data.tour;
   const { t } = useI18n();
   const { addToCart } = useApp();
   const [gallery, setGallery] = useState(0);
