@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { I18nProvider } from "@/lib/i18n";
 import { AppProvider } from "@/lib/app-context";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -88,6 +89,7 @@ function RootComponent() {
       <I18nProvider>
         <AppProvider>
           <Outlet />
+          <Toaster richColors position="top-right" />
         </AppProvider>
       </I18nProvider>
     </QueryClientProvider>
