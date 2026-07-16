@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import logo from "@/assets/rwiza-logo.png.asset.json";
 import { Instagram, Facebook, Twitter, Mail, MapPin, Phone } from "lucide-react";
+import logo from "@/assets/rwiza-logo.png.asset.json";
 
 export function Footer() {
   return (
     <footer className="mt-24 border-t border-border bg-forest-deep text-primary-foreground">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-4 md:px-6">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-4 md:px-6">
         <div>
           <div className="flex items-center gap-3">
             <img src={logo.url} alt="RWIZA" className="h-14 w-14 rounded-full ring-2 ring-gold" />
@@ -14,15 +14,15 @@ export function Footer() {
               <div className="text-[10px] uppercase tracking-[0.25em] text-gold">Travel & Tour</div>
             </div>
           </div>
-          <p className="mt-4 text-sm text-primary-foreground/70">Explore the Beauty of the Land of a Thousand Hills.</p>
+          <p className="mt-4 text-sm text-primary-foreground/70">Journeys crafted for a lifetime — through the Land of a Thousand Hills.</p>
         </div>
         <div>
           <h4 className="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-gold">Explore</h4>
           <ul className="space-y-2 text-sm text-primary-foreground/80">
             <li><Link to="/destinations" className="hover:text-gold">Destinations</Link></li>
-            <li><Link to="/tours" className="hover:text-gold">Tours</Link></li>
+            <li><Link to="/packages" className="hover:text-gold">Packages</Link></li>
+            <li><Link to="/gallery" className="hover:text-gold">Gallery</Link></li>
             <li><Link to="/about" className="hover:text-gold">About</Link></li>
-            <li><Link to="/support" className="hover:text-gold">Support</Link></li>
           </ul>
         </div>
         <div>
@@ -37,11 +37,12 @@ export function Footer() {
           <h4 className="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-gold">Follow</h4>
           <div className="flex gap-3">
             {[Instagram, Facebook, Twitter].map((Icon, i) => (
-              <a key={i} href="#" className="grid h-9 w-9 place-items-center rounded-full border border-gold/40 text-gold transition hover:bg-gold hover:text-gold-foreground">
+              <a key={i} href="#" aria-label="Social link" className="grid h-9 w-9 place-items-center rounded-full border border-gold/40 text-gold transition hover:bg-gold hover:text-gold-foreground">
                 <Icon className="h-4 w-4" />
               </a>
             ))}
           </div>
+          <p className="mt-4 text-xs text-primary-foreground/60">Working hours: Mon–Sat, 08:00–19:00 CAT</p>
         </div>
       </div>
       <div className="border-t border-white/10 px-4 py-4 text-center text-xs text-primary-foreground/60 md:px-6">
