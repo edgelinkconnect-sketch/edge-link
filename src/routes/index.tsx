@@ -1,185 +1,210 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { Search, MapPin, Calendar, Users, Star, ArrowRight, Mountain, Compass, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, Compass, Leaf, Sparkles, Users, Star, Award, ShieldCheck, Trees } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useI18n } from "@/lib/i18n";
-import { TOURS, TESTIMONIALS } from "@/lib/tours-data";
+import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
+import { subscribeNewsletter } from "@/lib/inquiries.functions";
+import { DESTINATIONS, TESTIMONIALS, PARTNERS } from "@/lib/site-data";
 import hero from "@/assets/hero-mountains.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "RWIZA Travel & Tour — Luxury Rwandan Safaris" },
-      { name: "description", content: "Find your Rwandan adventure with RWIZA — luxury gorilla trekking, Big Five safaris, and cultural journeys." },
+      { name: "description", content: "Journeys crafted for a lifetime — luxury gorilla trekking, Big Five safaris, and canopy walks in Rwanda." },
+      { property: "og:url", content: "https://rwiza.lovable.app/" },
+      { property: "og:title", content: "RWIZA Travel & Tour — Luxury Rwandan Safaris" },
+      { property: "og:description", content: "Journeys crafted for a lifetime — luxury gorilla trekking, Big Five safaris, and canopy walks in Rwanda." },
     ],
+    links: [{ rel: "canonical", href: "https://rwiza.lovable.app/" }],
   }),
   component: Home,
 });
 
+const WHY = [
+  { icon: Award, title: "Expert Guides", body: "Rwanda-born, RDB-certified, 20+ years in the field." },
+  { icon: Trees, title: "Luxury Lodges", body: "Singita, Wilderness Safaris, One&Only — the country's finest." },
+  { icon: Compass, title: "Custom Itineraries", body: "Every trip designed around your pace, tastes, and dreams." },
+  { icon: Leaf, title: "Sustainable Travel", body: "Carbon-neutral, community-owned, park-fee positive." },
+];
+
+function fadeUp(delay = 0) {
+  return {
+    initial: { opacity: 0, y: 24 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-80px" },
+    transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] as const },
+  };
+}
+
 function Home() {
-  const { t } = useI18n();
-  const [idx, setIdx] = useState(0);
-  useEffect(() => {
-    const id = setInterval(() => setIdx((i) => (i + 1) % TESTIMONIALS.length), 5000);
-    return () => clearInterval(id);
-  }, []);
+  const subscribe = useServerFn(subscribeNewsletter);
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  async function onSubscribe(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await subscribe({ data: { email } });
+      toast.success("You're subscribed. Watch your inbox for our next expedition.");
+      setEmail("");
+    } catch {
+      toast.error("Please enter a valid email address.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <AppShell>
       {/* HERO */}
       <section className="relative isolate overflow-hidden">
-        <div
+        <motion.div
+          initial={{ scale: 1.15 }}
+          animate={{ scale: 1.05 }}
+          transition={{ duration: 12, ease: "easeOut" }}
           className="absolute inset-0 -z-10 bg-cover bg-center"
-          style={{ backgroundImage: `url(${hero})`, transform: "scale(1.05)" }}
+          style={{ backgroundImage: `url(${hero})` }}
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-forest-deep/70 via-forest-deep/40 to-background" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-forest-deep/75 via-forest-deep/45 to-background" />
         <div className="mx-auto max-w-6xl px-4 pb-28 pt-24 text-center md:px-6 md:pb-40 md:pt-40">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-black/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-gold backdrop-blur animate-fade-up">
+          <motion.div {...fadeUp(0)} className="mb-6 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-black/25 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-gold backdrop-blur">
             <Sparkles className="h-3.5 w-3.5" /> Explore the Beauty
-          </div>
-          <h1 className="mx-auto max-w-4xl font-display text-4xl font-bold leading-tight text-white drop-shadow-lg md:text-6xl lg:text-7xl animate-fade-up">
-            {t("hero_title")}
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-base text-white/90 md:text-lg animate-fade-up">
-            {t("hero_sub")}
-          </p>
-
-          {/* Search bar */}
-          <div className="mx-auto mt-10 grid max-w-4xl gap-2 rounded-2xl bg-background/95 p-3 shadow-luxe backdrop-blur md:grid-cols-[1.3fr_1fr_1fr_auto] animate-fade-up">
-            <div className="flex items-center gap-2 rounded-lg bg-muted/60 px-3">
-              <MapPin className="h-4 w-4 text-gold" />
-              <Input placeholder={t("search_destination")} className="border-0 bg-transparent shadow-none focus-visible:ring-0" />
-            </div>
-            <div className="flex items-center gap-2 rounded-lg bg-muted/60 px-3">
-              <Calendar className="h-4 w-4 text-gold" />
-              <Input type="date" className="border-0 bg-transparent shadow-none focus-visible:ring-0" />
-            </div>
-            <div className="flex items-center gap-2 rounded-lg bg-muted/60 px-3">
-              <Users className="h-4 w-4 text-gold" />
-              <Input type="number" min={1} defaultValue={2} placeholder={t("search_group")} className="border-0 bg-transparent shadow-none focus-visible:ring-0" />
-            </div>
-            <Button asChild size="lg" className="bg-forest text-primary-foreground hover:bg-forest-deep">
-              <Link to="/tours"><Search className="mr-1.5 h-4 w-4" /> {t("search_go")}</Link>
-            </Button>
-          </div>
-
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          </motion.div>
+          <motion.h1 {...fadeUp(0.05)} className="mx-auto max-w-4xl font-display text-4xl font-bold leading-tight text-white drop-shadow-lg md:text-6xl lg:text-7xl">
+            Find Your Rwandan Adventure
+          </motion.h1>
+          <motion.p {...fadeUp(0.1)} className="mx-auto mt-5 max-w-2xl text-base text-white/90 md:text-lg">
+            Journeys crafted for a lifetime — through the Land of a Thousand Hills.
+          </motion.p>
+          <motion.div {...fadeUp(0.15)} className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <Button asChild size="lg" className="bg-gold text-gold-foreground shadow-luxe hover:brightness-95">
-              <Link to="/destinations">{t("cta_explore")} <ArrowRight className="ml-1.5 h-4 w-4" /></Link>
+              <Link to="/destinations">View Destinations <ArrowRight className="ml-1.5 h-4 w-4" /></Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="border-white/40 bg-white/10 text-white backdrop-blur hover:bg-white/20 hover:text-white">
-              <Link to="/tours">{t("cta_view")}</Link>
+              <Link to="/contact">Plan Your Safari</Link>
             </Button>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* HIGHLIGHTS */}
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-24">
-        <div className="mb-10 flex items-end justify-between">
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">{t("section_highlights")}</p>
-            <h2 className="font-display text-3xl font-bold md:text-4xl">Journeys crafted for a lifetime</h2>
-          </div>
-        </div>
+      {/* DESTINATIONS */}
+      <section className="mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-28">
+        <motion.div {...fadeUp()} className="mb-12 text-center">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">Destinations</p>
+          <h2 className="font-display text-3xl font-bold md:text-4xl">Three national parks. Three unforgettable worlds.</h2>
+        </motion.div>
         <div className="grid gap-6 md:grid-cols-3">
-          {[
-            { icon: Mountain, title: "Volcanoes", body: "Track mountain gorillas in Africa's most iconic rainforest.", tag: "Signature" },
-            { icon: Compass, title: "Akagera", body: "Big Five safari across savannah, wetlands and rolling hills.", tag: "Wild East" },
-            { icon: Sparkles, title: "Nyungwe", body: "Canopy walks and chimpanzee tracking in ancient rainforest.", tag: "Eco-luxe" },
-          ].map((h, i) => (
-            <div key={i} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 shadow-sm transition-all hover:-translate-y-1 hover:shadow-luxe">
-              <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gold/10 blur-2xl transition group-hover:bg-gold/20" />
-              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-forest text-primary-foreground">
-                <h.icon className="h-6 w-6" />
-              </div>
-              <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">{h.tag}</div>
-              <h3 className="font-display text-2xl font-bold">{h.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{h.body}</p>
-              <Link to="/tours" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-forest hover:text-gold">
-                Discover <ArrowRight className="h-3.5 w-3.5" />
+          {DESTINATIONS.map((d, i) => (
+            <motion.div key={d.slug} {...fadeUp(i * 0.08)}>
+              <Link
+                to="/destinations/$slug"
+                params={{ slug: d.slug }}
+                className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-luxe"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <img src={d.image} alt={d.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-6 text-white">
+                    <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">{d.activity}</div>
+                    <h3 className="font-display text-2xl font-bold">{d.name}</h3>
+                    <p className="mt-2 line-clamp-2 text-sm text-white/85">{d.tagline}</p>
+                    <div className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-gold">
+                      Explore <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </div>
               </Link>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
-      {/* FEATURED */}
-      <section className="bg-muted/40 py-16 md:py-24">
+      {/* WHY RWIZA */}
+      <section className="bg-forest-deep py-20 text-primary-foreground md:py-24">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <div className="mb-10 text-center">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">{t("section_featured")}</p>
-            <h2 className="mx-auto max-w-2xl font-display text-3xl font-bold md:text-4xl">{t("section_featured_sub")}</h2>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {TOURS.slice(0, 3).map((tour) => (
-              <Link
-                key={tour.id}
-                to="/tours/$tourId"
-                params={{ tourId: tour.id }}
-                className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-luxe"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img src={tour.image} alt={tour.name} loading="lazy" width={1200} height={900} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  {tour.tag && (
-                    <div className="absolute left-3 top-3 rounded-full bg-gold px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-foreground">
-                      {tour.tag}
-                    </div>
-                  )}
-                  <div className="absolute right-3 top-3 rounded-full bg-black/40 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur">
-                    {tour.duration} {t("days")}
-                  </div>
+          <motion.div {...fadeUp()} className="mb-12 text-center">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">Why RWIZA</p>
+            <h2 className="font-display text-3xl font-bold md:text-4xl">The RWIZA difference</h2>
+          </motion.div>
+          <div className="grid gap-6 md:grid-cols-4">
+            {WHY.map((w, i) => (
+              <motion.div key={w.title} {...fadeUp(i * 0.06)} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gold text-gold-foreground">
+                  <w.icon className="h-6 w-6" />
                 </div>
-                <div className="p-5">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">{tour.region}</div>
-                  <h3 className="mt-1 font-display text-xl font-bold">{tour.name}</h3>
-                  <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{tour.summary}</p>
-                  <div className="mt-4 flex items-end justify-between border-t border-border pt-4">
-                    <div>
-                      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{t("from")}</div>
-                      <div className="font-display text-2xl font-bold text-forest">${tour.price.toLocaleString()}</div>
-                    </div>
-                    <span className="inline-flex items-center gap-1 text-sm font-semibold text-gold">
-                      {t("book_now")} <ArrowRight className="h-3.5 w-3.5" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
+                <h3 className="font-display text-lg font-bold">{w.title}</h3>
+                <p className="mt-2 text-sm text-primary-foreground/75">{w.body}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="mx-auto max-w-4xl px-4 py-20 text-center md:px-6">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">{t("section_testimonials")}</p>
-        <h2 className="mb-10 font-display text-3xl font-bold md:text-4xl">Words from our travellers</h2>
-        <div key={idx} className="animate-fade-in rounded-3xl border border-border bg-card p-10 shadow-luxe">
-          <div className="mb-4 flex justify-center gap-1 text-gold">
-            {Array.from({ length: TESTIMONIALS[idx].rating }).map((_, i) => (
-              <Star key={i} className="h-5 w-5 fill-current" />
-            ))}
-          </div>
-          <p className="mx-auto max-w-2xl font-display text-xl italic leading-relaxed md:text-2xl">
-            "{TESTIMONIALS[idx].text}"
-          </p>
-          <div className="mt-6">
-            <div className="mx-auto mb-3 h-14 w-14 rounded-full bg-gradient-to-br from-gold to-forest ring-2 ring-gold" />
-            <div className="font-semibold">{TESTIMONIALS[idx].name}</div>
-            <div className="text-xs text-muted-foreground">{TESTIMONIALS[idx].country}</div>
-          </div>
-        </div>
-        <div className="mt-6 flex justify-center gap-2">
-          {TESTIMONIALS.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIdx(i)}
-              className={`h-1.5 rounded-full transition-all ${i === idx ? "w-8 bg-gold" : "w-1.5 bg-muted-foreground/30"}`}
-            />
+      <section className="mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-28">
+        <motion.div {...fadeUp()} className="mb-12 text-center">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">Testimonials</p>
+          <h2 className="font-display text-3xl font-bold md:text-4xl">Words from our travellers</h2>
+        </motion.div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {TESTIMONIALS.map((tt, i) => (
+            <motion.blockquote key={tt.name} {...fadeUp(i * 0.05)} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+              <div className="mb-3 flex gap-0.5 text-gold">
+                {Array.from({ length: 5 }).map((_, k) => <Star key={k} className="h-4 w-4 fill-current" />)}
+              </div>
+              <p className="font-display text-base italic leading-relaxed">"{tt.text}"</p>
+              <footer className="mt-4 flex items-center gap-3">
+                <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-gold to-forest text-xs font-bold text-white">
+                  {tt.name.split(" ").map((w) => w[0]).join("").slice(0, 2)}
+                </div>
+                <div>
+                  <div className="text-sm font-semibold">{tt.name}</div>
+                  <div className="text-xs text-muted-foreground">{tt.location}</div>
+                </div>
+              </footer>
+            </motion.blockquote>
           ))}
         </div>
+      </section>
+
+      {/* TRUST BADGES */}
+      <section className="border-y border-border bg-muted/40 py-10">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-4 px-4 md:px-6">
+          {PARTNERS.map((p) => (
+            <div key={p} className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <ShieldCheck className="h-4 w-4 text-gold" />
+              {p}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section className="mx-auto max-w-3xl px-4 py-20 text-center md:px-6 md:py-24">
+        <motion.div {...fadeUp()}>
+          <Users className="mx-auto mb-3 h-8 w-8 text-gold" />
+          <h2 className="font-display text-3xl font-bold md:text-4xl">Join our expedition letter</h2>
+          <p className="mt-3 text-muted-foreground">Occasional dispatches on new lodges, gorilla family news, and secret trails. Never spam.</p>
+          <form onSubmit={onSubscribe} className="mx-auto mt-8 flex max-w-md flex-col gap-2 sm:flex-row">
+            <Input
+              type="email"
+              required
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="h-12"
+            />
+            <Button type="submit" disabled={submitting} className="h-12 bg-gold text-gold-foreground hover:brightness-95">
+              {submitting ? "Subscribing…" : "Subscribe"}
+            </Button>
+          </form>
+        </motion.div>
       </section>
     </AppShell>
   );

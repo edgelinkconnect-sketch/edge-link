@@ -11,8 +11,6 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { I18nProvider } from "@/lib/i18n";
-import { AppProvider } from "@/lib/app-context";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -52,22 +50,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "RWIZA Travel & Tour — Luxury Rwandan Safaris" },
-      { name: "description", content: "Find your Rwandan adventure with RWIZA — luxury gorilla trekking, Big Five safaris, and cultural journeys." },
-      { name: "author", content: "RWIZA Travel & Tour" },
+      { name: "description", content: "Journeys crafted for a lifetime. Luxury gorilla trekking, Big Five safaris, and rainforest expeditions across Rwanda." },
+      { property: "og:site_name", content: "RWIZA Travel & Tour" },
       { property: "og:title", content: "RWIZA Travel & Tour — Luxury Rwandan Safaris" },
-      { property: "og:description", content: "Find your Rwandan adventure with RWIZA — luxury gorilla trekking, Big Five safaris, and cultural journeys." },
+      { property: "og:description", content: "Journeys crafted for a lifetime. Luxury gorilla trekking, Big Five safaris, and rainforest expeditions across Rwanda." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "RWIZA Travel & Tour — Luxury Rwandan Safaris" },
-      { name: "twitter:description", content: "Find your Rwandan adventure with RWIZA — luxury gorilla trekking, Big Five safaris, and cultural journeys." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7ee07936-b549-435d-961d-842665ad7aff/id-preview-ddbc531f--c8fa37ea-2741-4e06-b350-ed658d7eb2a4.lovable.app-1784120333946.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7ee07936-b549-435d-961d-842665ad7aff/id-preview-ddbc531f--c8fa37ea-2741-4e06-b350-ed658d7eb2a4.lovable.app-1784120333946.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
@@ -90,12 +84,8 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <I18nProvider>
-        <AppProvider>
-          <Outlet />
-          <Toaster richColors position="top-right" />
-        </AppProvider>
-      </I18nProvider>
+      <Outlet />
+      <Toaster richColors position="top-right" />
     </QueryClientProvider>
   );
 }
