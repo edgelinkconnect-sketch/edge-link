@@ -5,7 +5,7 @@ export function FloatingCTA() {
   return (
     <div className="pointer-events-none fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2 md:bottom-6 md:right-6">
       <a
-        href="https://wa.me/250788000000"
+        href="https://wa.me/250788341431"
         target="_blank"
         rel="noopener noreferrer"
         className="pointer-events-auto flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-semibold text-white shadow-luxe transition hover:brightness-95"
