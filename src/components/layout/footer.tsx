@@ -29,8 +29,8 @@ export function Footer() {
           <h4 className="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-gold">Contact</h4>
           <ul className="space-y-2 text-sm text-primary-foreground/80">
             <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />KG 7 Ave, Kigali, Rwanda</li>
-            <li className="flex items-start gap-2"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />+250 788 000 000</li>
-            <li className="flex items-start gap-2"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" />hello@rwiza.travel</li>
+            <li className="flex items-start gap-2"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />+250 788 341 431</li>
+            <li className="flex items-start gap-2"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" />info@rwiza.com</li>
           </ul>
         </div>
         <div>

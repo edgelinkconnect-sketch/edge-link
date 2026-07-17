@@ -205,13 +205,13 @@ function Contact() {
           <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
             <h3 className="mb-4 font-display text-lg font-bold text-forest">Get in touch</h3>
             <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" /><a href="tel:+250788000000" className="hover:text-forest">+250 788 000 000</a></li>
-              <li className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" /><a href="mailto:hello@rwiza.travel" className="hover:text-forest">hello@rwiza.travel</a></li>
+              <li className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" /><a href="tel:+250788341431" className="hover:text-forest">+250 788 341 431</a></li>
+              <li className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" /><a href="mailto:info@rwiza.com" className="hover:text-forest">info@rwiza.com</a></li>
               <li className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />KG 7 Ave, Kigali, Rwanda</li>
               <li className="flex items-start gap-3"><Clock className="mt-0.5 h-4 w-4 shrink-0 text-gold" />Mon–Sat · 08:00–19:00 CAT</li>
             </ul>
             <a
-              href="https://wa.me/250788000000"
+              href="https://wa.me/250788341431"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-5 flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95"
