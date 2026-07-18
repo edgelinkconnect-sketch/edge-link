@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Calendar, MessageSquare, Star, User as UserIcon, LogOut } from "lucide-react";
 import { format } from "date-fns";
 
-export const Route = createFileRoute("/_authenticated/dashboard")({
+export const Route = createFileRoute("/_authenticated/dashboard/")({
   head: () => ({
     meta: [
       { title: "My Dashboard — RWIZA" },

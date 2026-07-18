@@ -23,8 +23,8 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DestinationsIndexRouteImport } from './routes/destinations.index'
 import { Route as DestinationsSlugRouteImport } from './routes/destinations.$slug'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedDashboardProfileRouteImport } from './routes/_authenticated/dashboard.profile'
 import { Route as AuthenticatedDashboardExperiencesRouteImport } from './routes/_authenticated/dashboard.experiences'
@@ -105,16 +105,17 @@ const DestinationsSlugRoute = DestinationsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => DestinationsRoute,
 } as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexRouteImport.update({
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -122,27 +123,27 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
 } as any)
 const AuthenticatedDashboardProfileRoute =
   AuthenticatedDashboardProfileRouteImport.update({
-    id: '/profile',
-    path: '/profile',
-    getParentRoute: () => AuthenticatedDashboardRoute,
+    id: '/dashboard/profile',
+    path: '/dashboard/profile',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDashboardExperiencesRoute =
   AuthenticatedDashboardExperiencesRouteImport.update({
-    id: '/experiences',
-    path: '/experiences',
-    getParentRoute: () => AuthenticatedDashboardRoute,
+    id: '/dashboard/experiences',
+    path: '/dashboard/experiences',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDashboardChatRoute =
   AuthenticatedDashboardChatRouteImport.update({
-    id: '/chat',
-    path: '/chat',
-    getParentRoute: () => AuthenticatedDashboardRoute,
+    id: '/dashboard/chat',
+    path: '/dashboard/chat',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDashboardBookingsRoute =
   AuthenticatedDashboardBookingsRouteImport.update({
-    id: '/bookings',
-    path: '/bookings',
-    getParentRoute: () => AuthenticatedDashboardRoute,
+    id: '/dashboard/bookings',
+    path: '/dashboard/bookings',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminToursRoute = AuthenticatedAdminToursRouteImport.update({
   id: '/tours',
@@ -186,7 +187,6 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
-  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations/': typeof DestinationsIndexRoute
   '/admin/bookings': typeof AuthenticatedAdminBookingsRoute
@@ -199,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/experiences': typeof AuthenticatedDashboardExperiencesRoute
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -211,7 +212,6 @@ export interface FileRoutesByTo {
   '/packages': typeof PackagesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
-  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations': typeof DestinationsIndexRoute
   '/admin/bookings': typeof AuthenticatedAdminBookingsRoute
@@ -224,6 +224,7 @@ export interface FileRoutesByTo {
   '/dashboard/experiences': typeof AuthenticatedDashboardExperiencesRoute
   '/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -240,7 +241,6 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations/': typeof DestinationsIndexRoute
   '/_authenticated/admin/bookings': typeof AuthenticatedAdminBookingsRoute
@@ -253,6 +253,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/experiences': typeof AuthenticatedDashboardExperiencesRoute
   '/_authenticated/dashboard/profile': typeof AuthenticatedDashboardProfileRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -269,7 +270,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sustainability'
     | '/admin'
-    | '/dashboard'
     | '/destinations/$slug'
     | '/destinations/'
     | '/admin/bookings'
@@ -282,6 +282,7 @@ export interface FileRouteTypes {
     | '/dashboard/experiences'
     | '/dashboard/profile'
     | '/admin/'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -294,7 +295,6 @@ export interface FileRouteTypes {
     | '/packages'
     | '/reset-password'
     | '/sustainability'
-    | '/dashboard'
     | '/destinations/$slug'
     | '/destinations'
     | '/admin/bookings'
@@ -307,6 +307,7 @@ export interface FileRouteTypes {
     | '/dashboard/experiences'
     | '/dashboard/profile'
     | '/admin'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
@@ -322,7 +323,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sustainability'
     | '/_authenticated/admin'
-    | '/_authenticated/dashboard'
     | '/destinations/$slug'
     | '/destinations/'
     | '/_authenticated/admin/bookings'
@@ -335,6 +335,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/experiences'
     | '/_authenticated/dashboard/profile'
     | '/_authenticated/admin/'
+    | '/_authenticated/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -452,18 +453,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DestinationsSlugRouteImport
       parentRoute: typeof DestinationsRoute
     }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/': {
@@ -475,31 +476,31 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/dashboard/profile': {
       id: '/_authenticated/dashboard/profile'
-      path: '/profile'
+      path: '/dashboard/profile'
       fullPath: '/dashboard/profile'
       preLoaderRoute: typeof AuthenticatedDashboardProfileRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard/experiences': {
       id: '/_authenticated/dashboard/experiences'
-      path: '/experiences'
+      path: '/dashboard/experiences'
       fullPath: '/dashboard/experiences'
       preLoaderRoute: typeof AuthenticatedDashboardExperiencesRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard/chat': {
       id: '/_authenticated/dashboard/chat'
-      path: '/chat'
+      path: '/dashboard/chat'
       fullPath: '/dashboard/chat'
       preLoaderRoute: typeof AuthenticatedDashboardChatRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard/bookings': {
       id: '/_authenticated/dashboard/bookings'
-      path: '/bookings'
+      path: '/dashboard/bookings'
       fullPath: '/dashboard/bookings'
       preLoaderRoute: typeof AuthenticatedDashboardBookingsRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/tours': {
       id: '/_authenticated/admin/tours'
@@ -563,35 +564,23 @@ const AuthenticatedAdminRouteRouteWithChildren =
     AuthenticatedAdminRouteRouteChildren,
   )
 
-interface AuthenticatedDashboardRouteChildren {
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedDashboardBookingsRoute: typeof AuthenticatedDashboardBookingsRoute
   AuthenticatedDashboardChatRoute: typeof AuthenticatedDashboardChatRoute
   AuthenticatedDashboardExperiencesRoute: typeof AuthenticatedDashboardExperiencesRoute
   AuthenticatedDashboardProfileRoute: typeof AuthenticatedDashboardProfileRoute
-}
-
-const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
-  {
-    AuthenticatedDashboardBookingsRoute: AuthenticatedDashboardBookingsRoute,
-    AuthenticatedDashboardChatRoute: AuthenticatedDashboardChatRoute,
-    AuthenticatedDashboardExperiencesRoute:
-      AuthenticatedDashboardExperiencesRoute,
-    AuthenticatedDashboardProfileRoute: AuthenticatedDashboardProfileRoute,
-  }
-
-const AuthenticatedDashboardRouteWithChildren =
-  AuthenticatedDashboardRoute._addFileChildren(
-    AuthenticatedDashboardRouteChildren,
-  )
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
+  AuthenticatedDashboardBookingsRoute: AuthenticatedDashboardBookingsRoute,
+  AuthenticatedDashboardChatRoute: AuthenticatedDashboardChatRoute,
+  AuthenticatedDashboardExperiencesRoute:
+    AuthenticatedDashboardExperiencesRoute,
+  AuthenticatedDashboardProfileRoute: AuthenticatedDashboardProfileRoute,
+  AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
