@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User as UserIcon, LogIn } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import logo from "@/assets/rwiza-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -19,6 +20,7 @@ const NAV = [
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const { user, isAdmin } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
@@ -45,6 +47,20 @@ export function Nav() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          {user ? (
+            <Button asChild size="sm" variant="outline" className="hidden md:inline-flex">
+              <Link to={isAdmin ? "/admin" : "/dashboard"}>
+                <UserIcon className="mr-1.5 h-4 w-4" />
+                {isAdmin ? "Admin" : "Dashboard"}
+              </Link>
+            </Button>
+          ) : (
+            <Button asChild size="sm" variant="ghost" className="hidden md:inline-flex">
+              <Link to="/auth">
+                <LogIn className="mr-1.5 h-4 w-4" /> Sign in
+              </Link>
+            </Button>
+          )}
           <Button asChild size="sm" className="hidden bg-gold text-gold-foreground shadow-luxe hover:brightness-95 md:inline-flex">
             <Link to="/contact">Book Now</Link>
           </Button>
@@ -75,6 +91,15 @@ export function Nav() {
                 </Link>
               ))}
               <Link to="/contact" onClick={() => setOpen(false)} className="mt-2 rounded-md bg-gold px-3 py-2.5 text-center text-sm font-semibold text-gold-foreground">Book Now</Link>
+              {user ? (
+                <Link to={isAdmin ? "/admin" : "/dashboard"} onClick={() => setOpen(false)} className="rounded-md border border-forest px-3 py-2.5 text-center text-sm font-semibold text-forest">
+                  {isAdmin ? "Admin panel" : "My dashboard"}
+                </Link>
+              ) : (
+                <Link to="/auth" onClick={() => setOpen(false)} className="rounded-md border border-forest px-3 py-2.5 text-center text-sm font-semibold text-forest">
+                  Sign in / Create account
+                </Link>
+              )}
             </nav>
           </motion.div>
         )}
