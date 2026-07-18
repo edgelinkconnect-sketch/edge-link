@@ -20,14 +20,14 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminLayout,
 });
 
-const LINKS = [
+const LINKS: { to: string; label: string; icon: React.ElementType; exact?: boolean }[] = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/admin/tours", label: "Tours", icon: Map },
   { to: "/admin/gallery", label: "Gallery", icon: ImageIcon },
   { to: "/admin/bookings", label: "Bookings", icon: Calendar },
   { to: "/admin/experiences", label: "Experiences", icon: Star },
   { to: "/admin/chat", label: "Chat", icon: MessageSquare },
-] as const;
+];
 
 function AdminLayout() {
   const { signOut, user } = useAuth();

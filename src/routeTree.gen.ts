@@ -10,20 +10,30 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SustainabilityRouteImport } from './routes/sustainability'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as DestinationsRouteImport } from './routes/destinations'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DestinationsIndexRouteImport } from './routes/destinations.index'
 import { Route as DestinationsSlugRouteImport } from './routes/destinations.$slug'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 
 const SustainabilityRoute = SustainabilityRouteImport.update({
   id: '/sustainability',
   path: '/sustainability',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PackagesRoute = PackagesRouteImport.update({
@@ -56,9 +66,18 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -76,43 +95,66 @@ const DestinationsSlugRoute = DestinationsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => DestinationsRoute,
 } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/destinations': typeof DestinationsRouteWithChildren
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/journal': typeof JournalRoute
   '/packages': typeof PackagesRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
+  '/admin': typeof AuthenticatedAdminRouteRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations/': typeof DestinationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/journal': typeof JournalRoute
   '/packages': typeof PackagesRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
+  '/admin': typeof AuthenticatedAdminRouteRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations': typeof DestinationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/destinations': typeof DestinationsRouteWithChildren
   '/faq': typeof FaqRoute
   '/gallery': typeof GalleryRoute
   '/journal': typeof JournalRoute
   '/packages': typeof PackagesRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations/': typeof DestinationsIndexRoute
 }
@@ -121,51 +163,67 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/auth'
     | '/contact'
     | '/destinations'
     | '/faq'
     | '/gallery'
     | '/journal'
     | '/packages'
+    | '/reset-password'
     | '/sustainability'
+    | '/admin'
+    | '/dashboard'
     | '/destinations/$slug'
     | '/destinations/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/auth'
     | '/contact'
     | '/faq'
     | '/gallery'
     | '/journal'
     | '/packages'
+    | '/reset-password'
     | '/sustainability'
+    | '/admin'
+    | '/dashboard'
     | '/destinations/$slug'
     | '/destinations'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
+    | '/auth'
     | '/contact'
     | '/destinations'
     | '/faq'
     | '/gallery'
     | '/journal'
     | '/packages'
+    | '/reset-password'
     | '/sustainability'
+    | '/_authenticated/admin'
+    | '/_authenticated/dashboard'
     | '/destinations/$slug'
     | '/destinations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   DestinationsRoute: typeof DestinationsRouteWithChildren
   FaqRoute: typeof FaqRoute
   GalleryRoute: typeof GalleryRoute
   JournalRoute: typeof JournalRoute
   PackagesRoute: typeof PackagesRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SustainabilityRoute: typeof SustainabilityRoute
 }
 
@@ -176,6 +234,13 @@ declare module '@tanstack/react-router' {
       path: '/sustainability'
       fullPath: '/sustainability'
       preLoaderRoute: typeof SustainabilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/packages': {
@@ -220,11 +285,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -248,8 +327,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DestinationsSlugRouteImport
       parentRoute: typeof DestinationsRoute
     }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface DestinationsRouteChildren {
   DestinationsSlugRoute: typeof DestinationsSlugRoute
@@ -267,13 +373,16 @@ const DestinationsRouteWithChildren = DestinationsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   DestinationsRoute: DestinationsRouteWithChildren,
   FaqRoute: FaqRoute,
   GalleryRoute: GalleryRoute,
   JournalRoute: JournalRoute,
   PackagesRoute: PackagesRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SustainabilityRoute: SustainabilityRoute,
 }
 export const routeTree = rootRouteImport
