@@ -1,59 +1,54 @@
+This is a large multi-week build. I'll ship it in phases so each layer works before we stack more on it. Please confirm the phase order and a couple of decisions below before I start.
 
-# RWIZA Travel & Tour — Full Rebuild
+## Scope note
+Some spec items I'll adapt to what this stack actually supports:
+- **Backend**: TanStack Start server functions + Lovable Cloud (Supabase) — not a separate Node/Express server. Realtime chat uses Supabase Realtime (Postgres changes), not Socket.io. Same UX (live messages, read receipts, typing), simpler infra.
+- **File storage**: Supabase Storage (not Cloudinary).
+- **Admin account**: created via normal Supabase Auth signup + a `user_roles` row granting `admin`. The password you shared will be set on first run. I will NOT hardcode credentials in source — that's a critical security issue. Same login UX for you.
+- **Offline maps**: MapLibre + service worker tile cache + IndexedDB for GeoJSON. Works after first online visit.
+- **WhatsApp**: `wa.me` deep link prefilled with booking details (already in place for the current contact form). No WhatsApp Business API.
+- **Rich text**: TipTap.
 
-## Approach
+## Phases
 
-Delete the current 11-page structure (Dashboard, Admin, Guide, Media, Support, i18n, existing booking flow) and rebuild as a focused 7-page luxury marketing site with a Lovable Cloud backend for the contact and newsletter forms.
+**Phase 1 — Foundation (auth + schema + roles)**
+- Migration: `profiles`, `user_roles` (enum: admin, client), `has_role()` security-definer fn, all RLS + GRANTs
+- Migration: `tours`, `gallery`, `bookings`, `experiences`, `chats`, `messages` tables with RLS
+- Supabase Storage buckets: `gallery`, `experiences`, `chat-attachments`, `avatars`
+- Auth pages: `/auth` (login + register with full name/phone), password reset
+- Seed admin: on first load, if `hirwadieume9@gmail.com` exists, grant admin role (you sign up once with that email + your password)
+- Route gate: `_authenticated/` for client area, `_authenticated/admin/` for admin (has_role check)
 
-## Design system (src/styles.css)
+**Phase 2 — Tours + Gallery (admin CRUD + public display)**
+- Admin `/admin/tours`: list, create, edit, delete, duplicate, activate/deactivate (TipTap for description/itinerary)
+- Admin `/admin/gallery`: upload (drag-drop), edit metadata, delete, bulk ops, "Remove AI Images" (flag-based `is_ai=true` deletes)
+- Public `/tours` + `/tours/$id`: detail page auto-pulls gallery images WHERE `location = tour.location`
+- Public `/gallery` with location filters + lightbox
 
-- Palette: forest `#1a3c2a`, gold `#c9a84c`, cream `#f5f0e8`, charcoal `#2d2d2d`
-- Fonts: Playfair Display (headings) + Inter (body), loaded via `<link>` in `__root.tsx`
-- Semantic tokens for shadcn variants; retire old brand tokens
-- Framer Motion for page transitions, section fade-ins, mobile drawer
-- Global sticky header + footer + floating WhatsApp/Consultation button
+**Phase 3 — Bookings + Experiences**
+- Public booking form on tour detail → inserts row → opens WhatsApp with the formatted message you specified
+- Client `/dashboard/bookings`: list own bookings, cancel if pending
+- Admin `/admin/bookings`: list, filter, status flow, notes, CSV export
+- Client `/dashboard/share-experience`: only for completed bookings, 1-5 stars, 200-char msg, up to 5 photos
+- Admin `/admin/experiences`: approve/reject/edit; on approve → photos copied into gallery with tour location, testimonial visible on home
 
-## Pages
+**Phase 4 — Chat**
+- `chats` + `messages` with Supabase Realtime subscription
+- Client `/dashboard/chat`: start new chat with category, send text + image/PDF
+- Admin `/admin/chat`: inbox, filter by category/status, quick replies, mark resolved
+- Read receipts (single/double check), typing indicator via broadcast channel
 
-1. `/` — Home: hero (AI still with Ken Burns pan), 3 destination cards, Why RWIZA (4 icons), 6 testimonials, trust badges, newsletter, footer
-2. `/destinations` — grid of 3 with activity filter
-3. `/destinations/volcanoes`, `/destinations/akagera`, `/destinations/nyungwe` — detail pages: hero, overview, what-to-expect, best-time seasonal calendar, lodges, sample itinerary, pricing, gallery, CTA
-4. `/packages` — 5 curated itineraries + detail dialog with inclusions/exclusions
-5. `/about` — story, 6 team members, values, sustainability, partners
-6. `/gallery` — masonry grid, category filter, lightbox
-7. `/contact` — inquiry form (RHF + Zod), contact sidebar, embedded map, floating WhatsApp
+**Phase 5 — Offline Maps + Polish**
+- MapLibre map on `/map` with location markers (Nyungwe, Akagera, Volcanoes, Kigali, Lake Kivu)
+- Service worker caches map tiles + app shell; IndexedDB stores locations GeoJSON
+- Home hero slider from gallery, testimonials carousel from approved experiences, newsletter (already exists), trust badges
+- SEO: per-route head metadata, JSON-LD for Tours + Reviews + Organization, sitemap
 
-## Backend (Lovable Cloud)
+## Decisions I need from you
 
-Two tables + RLS + grants:
+1. **Ship all 5 phases in this chat?** Each phase is a substantial change. I recommend I do Phase 1 now, you verify signup + admin access work, then I proceed. Alternative: I push through all 5 in sequence without waiting.
+2. **Admin bootstrap**: OK if I set it up so the first time `hirwadieume9@gmail.com` signs up, that account is auto-promoted to admin? (Safer than hardcoding the password in code.)
+3. **Keep or delete existing pages?** Current site has `/about`, `/faq`, `/journal`, `/sustainability`, `/gallery`, `/destinations`, `/packages`, `/contact`, `/`. Keep them alongside the new system, or replace with the new tour/gallery-driven pages?
+4. **Email confirmations for signup**: on (users must click email link) or off (instant signup, easier testing)?
 
-- `inquiries` — full contact form payload; anon INSERT allowed, authenticated admin SELECT (owner-gated via `has_role`)
-- `newsletter_subscribers` — email + created_at; anon INSERT with unique email
-
-Contact form + newsletter submit through server functions that insert with the anon publishable client under narrow policies. Confirmation email via Lovable Emails will require the user to set up a sending domain — I'll scaffold the template and helper, and prompt for domain setup as a follow-up.
-
-## Assets
-
-Generate 12–15 AI stills at `fast` quality:
-- 1 hero (misty Volcanoes ridge with gorilla family silhouette)
-- 3 destination heroes (Volcanoes, Akagera, Nyungwe)
-- 6 gallery images across categories
-- 5 package thumbnails
-
-Reuse existing tour images where they fit; delete unused.
-
-## Files
-
-**Delete:** `src/routes/{admin,dashboard,guide,media,support,booking}.tsx`, `src/routes/tours.tsx`, `src/routes/tours.$tourId.tsx`, `src/lib/i18n.tsx`, `src/lib/app-context.tsx`
-
-**Create/rewrite:** `src/styles.css`, `src/routes/__root.tsx`, `src/routes/index.tsx`, `src/routes/destinations.tsx`, `src/routes/destinations.$slug.tsx`, `src/routes/packages.tsx`, `src/routes/about.tsx`, `src/routes/gallery.tsx`, `src/routes/contact.tsx`, `src/components/layout/{nav,footer,floating-cta}.tsx`, `src/lib/site-data.ts`, `src/lib/inquiries.functions.ts`
-
-**Dependencies:** add `framer-motion`, `react-hook-form`, `@hookform/resolvers`, `zod` (some may already exist).
-
-## Out of scope for this pass
-
-- Sending confirmation emails (needs domain setup — I'll wire the template + prompt setup after)
-- Admin CMS to edit content (content lives in `site-data.ts`; can move to DB later)
-- Sitemap.xml / robots.txt tuning (I'll add basic ones)
-
-Proceed?
+Reply with answers to 1-4 and I'll start Phase 1.
