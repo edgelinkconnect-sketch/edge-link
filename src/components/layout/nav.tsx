@@ -2,25 +2,29 @@ import { Link } from "@tanstack/react-router";
 import { Menu, X, User as UserIcon, LogIn } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import logo from "@/assets/rwiza-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
-
-const NAV = [
-  { to: "/", label: "Home" },
-  { to: "/destinations", label: "Destinations" },
-  { to: "/packages", label: "Itineraries" },
-  { to: "/gallery", label: "Gallery" },
-  { to: "/sustainability", label: "Sustainability" },
-  { to: "/journal", label: "Journal" },
-  { to: "/faq", label: "FAQ" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
-] as const;
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Nav() {
   const [open, setOpen] = useState(false);
   const { user, isAdmin } = useAuth();
+  const { t } = useTranslation();
+
+  const NAV = [
+    { to: "/", label: t("nav.home") },
+    { to: "/destinations", label: t("nav.destinations") },
+    { to: "/packages", label: t("nav.packages") },
+    { to: "/gallery", label: t("nav.gallery") },
+    { to: "/sustainability", label: t("nav.sustainability") },
+    { to: "/journal", label: t("nav.journal") },
+    { to: "/faq", label: t("nav.faq") },
+    { to: "/about", label: t("nav.about") },
+    { to: "/contact", label: t("nav.contact") },
+  ] as const;
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
@@ -28,12 +32,12 @@ export function Nav() {
         <Link to="/" className="flex shrink-0 items-center gap-3" onClick={() => setOpen(false)}>
           <img src={logo.url} alt="RWIZA Travel and Tour logo" className="h-11 w-11 rounded-full object-cover ring-2 ring-gold" />
           <div className="hidden flex-col leading-tight sm:flex">
-            <span className="font-display text-lg font-bold tracking-wide text-forest">RWIZA</span>
-            <span className="-mt-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Travel & Tour</span>
+            <span className="font-display text-lg font-bold tracking-wide text-forest">{t("brand.name")}</span>
+            <span className="-mt-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{t("brand.tagline")}</span>
           </div>
         </Link>
 
-        <nav className="ml-6 hidden flex-1 items-center gap-1 lg:flex" aria-label="Primary">
+        <nav className="ml-6 hidden flex-1 items-center gap-1 xl:flex" aria-label="Primary">
           {NAV.map((n) => (
             <Link
               key={n.to}
@@ -46,25 +50,27 @@ export function Nav() {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1">
+          <LanguageSwitcher />
+          <ThemeToggle />
           {user ? (
             <Button asChild size="sm" variant="outline" className="hidden md:inline-flex">
               <Link to={isAdmin ? "/admin" : "/dashboard"}>
                 <UserIcon className="mr-1.5 h-4 w-4" />
-                {isAdmin ? "Admin" : "Dashboard"}
+                {isAdmin ? t("nav.admin") : t("nav.dashboard")}
               </Link>
             </Button>
           ) : (
             <Button asChild size="sm" variant="ghost" className="hidden md:inline-flex">
               <Link to="/auth">
-                <LogIn className="mr-1.5 h-4 w-4" /> Sign in
+                <LogIn className="mr-1.5 h-4 w-4" /> {t("nav.signIn")}
               </Link>
             </Button>
           )}
           <Button asChild size="sm" className="hidden bg-gold text-gold-foreground shadow-luxe hover:brightness-95 md:inline-flex">
-            <Link to="/contact">Book Now</Link>
+            <Link to="/contact">{t("nav.bookNow")}</Link>
           </Button>
-          <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen((o) => !o)} aria-label="Toggle menu">
+          <Button variant="ghost" size="icon" className="xl:hidden" onClick={() => setOpen((o) => !o)} aria-label="Toggle menu">
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
@@ -77,7 +83,7 @@ export function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="border-t border-border bg-background lg:hidden"
+            className="border-t border-border bg-background xl:hidden"
           >
             <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3">
               {NAV.map((n) => (
@@ -90,14 +96,14 @@ export function Nav() {
                   {n.label}
                 </Link>
               ))}
-              <Link to="/contact" onClick={() => setOpen(false)} className="mt-2 rounded-md bg-gold px-3 py-2.5 text-center text-sm font-semibold text-gold-foreground">Book Now</Link>
+              <Link to="/contact" onClick={() => setOpen(false)} className="mt-2 rounded-md bg-gold px-3 py-2.5 text-center text-sm font-semibold text-gold-foreground">{t("nav.bookNow")}</Link>
               {user ? (
                 <Link to={isAdmin ? "/admin" : "/dashboard"} onClick={() => setOpen(false)} className="rounded-md border border-forest px-3 py-2.5 text-center text-sm font-semibold text-forest">
-                  {isAdmin ? "Admin panel" : "My dashboard"}
+                  {isAdmin ? t("nav.adminPanel") : t("nav.myDashboard")}
                 </Link>
               ) : (
                 <Link to="/auth" onClick={() => setOpen(false)} className="rounded-md border border-forest px-3 py-2.5 text-center text-sm font-semibold text-forest">
-                  Sign in / Create account
+                  {t("nav.signIn")} / {t("nav.createAccount")}
                 </Link>
               )}
             </nav>
