@@ -365,6 +365,7 @@ export type Database = {
       }
       tours: {
         Row: {
+          activity: string | null
           best_time: string | null
           created_at: string
           description: string
@@ -372,6 +373,7 @@ export type Database = {
           duration: string
           excluded_services: string | null
           featured_image_url: string
+          highlights: string[] | null
           id: string
           included_services: string | null
           itinerary: string
@@ -379,10 +381,13 @@ export type Database = {
           max_group_size: number | null
           name: string
           price: string
+          region: string | null
+          slug: string | null
           status: string
           updated_at: string
         }
         Insert: {
+          activity?: string | null
           best_time?: string | null
           created_at?: string
           description?: string
@@ -390,6 +395,7 @@ export type Database = {
           duration: string
           excluded_services?: string | null
           featured_image_url?: string
+          highlights?: string[] | null
           id?: string
           included_services?: string | null
           itinerary?: string
@@ -397,10 +403,13 @@ export type Database = {
           max_group_size?: number | null
           name: string
           price: string
+          region?: string | null
+          slug?: string | null
           status?: string
           updated_at?: string
         }
         Update: {
+          activity?: string | null
           best_time?: string | null
           created_at?: string
           description?: string
@@ -408,6 +417,7 @@ export type Database = {
           duration?: string
           excluded_services?: string | null
           featured_image_url?: string
+          highlights?: string[] | null
           id?: string
           included_services?: string | null
           itinerary?: string
@@ -415,6 +425,8 @@ export type Database = {
           max_group_size?: number | null
           name?: string
           price?: string
+          region?: string | null
+          slug?: string | null
           status?: string
           updated_at?: string
         }
