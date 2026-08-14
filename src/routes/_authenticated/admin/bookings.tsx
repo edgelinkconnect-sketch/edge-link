@@ -45,7 +45,7 @@ function AdminBookings() {
     });
   }, [bookings, filter, search]);
 
-  const update = async (id: string, patch: Record<string, unknown>) => {
+  const update = async (id: string, patch: { status?: string; admin_notes?: string }) => {
     const { error } = await supabase.from("bookings").update(patch).eq("id", id);
     if (error) return toast.error(error.message);
     toast.success("Booking updated");
