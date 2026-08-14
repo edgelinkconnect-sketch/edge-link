@@ -11,13 +11,13 @@ const CATEGORIES = ["All", "Gorillas", "Safari", "Canopy", "Landscapes", "Lodges
 export const Route = createFileRoute("/gallery")({
   head: () => ({
     meta: [
-      { title: "Gallery — RWIZA Travel & Tour" },
-      { name: "description", content: "Gorillas, Big Five, canopy walks, and luxury lodges — inside RWIZA's Rwandan expeditions." },
-      { property: "og:url", content: "https://rwiza.lovable.app/gallery" },
-      { property: "og:title", content: "Gallery — RWIZA Travel & Tour" },
-      { property: "og:description", content: "Gorillas, Big Five, canopy walks, and luxury lodges — inside RWIZA's Rwandan expeditions." },
+      { title: "Gallery — EDGELINK Tours" },
+      { name: "description", content: "Gorillas, Big Five, canopy walks, and luxury lodges — inside EDGELINK's Rwandan expeditions." },
+      { property: "og:url", content: "https://edgelink-tours.lovable.app/gallery" },
+      { property: "og:title", content: "Gallery — EDGELINK Tours" },
+      { property: "og:description", content: "Gorillas, Big Five, canopy walks, and luxury lodges — inside EDGELINK's Rwandan expeditions." },
     ],
-    links: [{ rel: "canonical", href: "https://rwiza.lovable.app/gallery" }],
+    links: [{ rel: "canonical", href: "https://edgelink-tours.lovable.app/gallery" }],
   }),
   component: Gallery,
 });

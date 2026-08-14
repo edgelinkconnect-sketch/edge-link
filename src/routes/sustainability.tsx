@@ -7,13 +7,13 @@ import { PARTNERS } from "@/lib/site-data";
 export const Route = createFileRoute("/sustainability")({
   head: () => ({
     meta: [
-      { title: "Sustainability — RWIZA Travel & Tour" },
-      { name: "description", content: "Carbon-neutral safaris, community-owned lodges, park-fee positive travel. How RWIZA travels with purpose." },
-      { property: "og:title", content: "Travel with Purpose — RWIZA Sustainability" },
+      { title: "Sustainability — EDGELINK Tours" },
+      { name: "description", content: "Carbon-neutral safaris, community-owned lodges, park-fee positive travel. How EDGELINK travels with purpose." },
+      { property: "og:title", content: "Travel with Purpose — EDGELINK Sustainability" },
       { property: "og:description", content: "Carbon-neutral safaris, community-owned lodges, park-fee positive travel." },
-      { property: "og:url", content: "https://rwiza.lovable.app/sustainability" },
+      { property: "og:url", content: "https://edgelink-tours.lovable.app/sustainability" },
     ],
-    links: [{ rel: "canonical", href: "https://rwiza.lovable.app/sustainability" }],
+    links: [{ rel: "canonical", href: "https://edgelink-tours.lovable.app/sustainability" }],
   }),
   component: Sustainability,
 });
@@ -41,7 +41,7 @@ function Sustainability() {
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">Our Commitment</p>
           <h1 className="font-display text-4xl font-bold md:text-5xl">Travel with Purpose</h1>
           <p className="mt-3 max-w-2xl text-primary-foreground/80">
-            Rwanda is a global model for conservation-led tourism. Every RWIZA journey directly funds the parks, people, and primates that make it possible.
+            Rwanda is a global model for conservation-led tourism. Every EDGELINK journey directly funds the parks, people, and primates that make it possible.
           </p>
         </div>
       </section>

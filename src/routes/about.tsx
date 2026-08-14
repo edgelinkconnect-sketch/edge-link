@@ -7,13 +7,13 @@ import { TEAM, VALUES, PARTNERS } from "@/lib/site-data";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About RWIZA — Rwandan-owned Luxury Safaris" },
+      { title: "About EDGELINK — Rwandan-owned Luxury Safaris" },
       { name: "description", content: "Founded by Rwandan guides. Twenty years of luxury expeditions, community ownership, and sustainable travel." },
-      { property: "og:url", content: "https://rwiza.lovable.app/about" },
-      { property: "og:title", content: "About RWIZA — Rwandan-owned Luxury Safaris" },
+      { property: "og:url", content: "https://edgelink-tours.lovable.app/about" },
+      { property: "og:title", content: "About EDGELINK — Rwandan-owned Luxury Safaris" },
       { property: "og:description", content: "Founded by Rwandan guides. Twenty years of luxury expeditions, community ownership, and sustainable travel." },
     ],
-    links: [{ rel: "canonical", href: "https://rwiza.lovable.app/about" }],
+    links: [{ rel: "canonical", href: "https://edgelink-tours.lovable.app/about" }],
   }),
   component: About,
 });
@@ -26,8 +26,8 @@ function About() {
       <section className="border-b border-border bg-forest-deep py-16 text-primary-foreground md:py-20">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">About</p>
-          <h1 className="font-display text-4xl font-bold md:text-5xl">RWIZA means beautiful</h1>
-          <p className="mt-3 max-w-2xl text-primary-foreground/80">In Kinyarwanda, "rwiza" is the word for the beauty we grew up in. RWIZA Travel & Tour is our love letter to it.</p>
+          <h1 className="font-display text-4xl font-bold md:text-5xl">EDGELINK means beautiful</h1>
+          <p className="mt-3 max-w-2xl text-primary-foreground/80">Connecting people, places and possibilities — EDGELINK Tours is our love letter to East Africa.</p>
         </div>
       </section>
 
@@ -38,7 +38,7 @@ function About() {
           <h2 className="font-display text-3xl font-bold md:text-4xl">Founded by guides who grew up on these ridges.</h2>
           <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted-foreground">
             <p>
-              RWIZA began in 2005 when a group of Volcanoes National Park guides realised the country's most iconic safaris were being sold by companies without a single Rwandan on staff. We started with one Land Cruiser, one gorilla permit at a time, and an unshakeable belief that Rwanda should be told by Rwandans.
+              EDGELINK began in 2005 when a group of Volcanoes National Park guides realised the country's most iconic safaris were being sold by companies without a single Rwandan on staff. We started with one Land Cruiser, one gorilla permit at a time, and an unshakeable belief that Rwanda should be told by Rwandans.
             </p>
             <p>
               Twenty years later, we're Rwanda's leading independent luxury operator: 100% locally owned, RDB-certified, and trusted by discerning travellers from every continent. Our head guides average 15 years in the field. Our lodge partners are the best on the continent. Our clients become friends.

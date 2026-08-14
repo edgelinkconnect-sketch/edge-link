@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-const WHATSAPP_NUMBER = "250788341431";
+const WHATSAPP_NUMBER = "250791900016";
 
 const schema = z.object({
   full_name: z.string().trim().min(2, "Full name required").max(120),
@@ -40,13 +40,13 @@ type FormData = z.infer<typeof schema>;
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Plan Your Adventure — RWIZA Travel & Tour" },
-      { name: "description", content: "Design your Rwandan safari. WhatsApp us direct at +250 788 341 431 or send us a full inquiry — we reply within 24 hours." },
-      { property: "og:url", content: "https://rwiza.lovable.app/contact" },
-      { property: "og:title", content: "Plan Your Adventure — RWIZA Travel & Tour" },
+      { title: "Plan Your Adventure — EDGELINK Tours" },
+      { name: "description", content: "Design your Rwandan safari. WhatsApp us direct at +250 791 900 016 or send us a full inquiry — we reply within 24 hours." },
+      { property: "og:url", content: "https://edgelink-tours.lovable.app/contact" },
+      { property: "og:title", content: "Plan Your Adventure — EDGELINK Tours" },
       { property: "og:description", content: "Design your Rwandan safari. WhatsApp us direct or send a full inquiry — we reply within 24 hours." },
     ],
-    links: [{ rel: "canonical", href: "https://rwiza.lovable.app/contact" }],
+    links: [{ rel: "canonical", href: "https://edgelink-tours.lovable.app/contact" }],
   }),
   component: Contact,
 });
@@ -54,7 +54,7 @@ export const Route = createFileRoute("/contact")({
 function buildWhatsAppMessage(d: FormData) {
   const line = (label: string, val?: string) => (val && val.trim() ? `• ${label}: ${val}` : "");
   const sections = [
-    `🦍 *NEW SAFARI INQUIRY - RWIZA TRAVEL*`,
+    `🦍 *NEW SAFARI INQUIRY - EDGELINK TRAVEL*`,
     `━━━━━━━━━━━━━━━━━━━━━━`,
     ``,
     `👤 *GUEST DETAILS*`,
@@ -92,8 +92,8 @@ function buildWhatsAppMessage(d: FormData) {
     `□ Prepare custom itinerary`,
     `□ Send quote within 24 hours`,
     ``,
-    `📱 Reply: +250788341431`,
-    `✉️ Email: info@rwiza.com`,
+    `📱 Reply: +250791900016`,
+    `✉️ Email: info@edgelinktours.com`,
   ];
   return sections.filter((s) => s !== "").join("\n").replace(/\n(?=•)/g, "\n");
 }
@@ -264,13 +264,13 @@ function Contact() {
           <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
             <h3 className="mb-4 font-display text-lg font-bold text-forest">Get in touch</h3>
             <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" /><a href="tel:+250788341431" className="hover:text-forest">+250 788 341 431</a></li>
-              <li className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" /><a href="mailto:info@rwiza.com" className="hover:text-forest">info@rwiza.com</a></li>
+              <li className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" /><a href="tel:+250791900016" className="hover:text-forest">+250 791 900 016</a></li>
+              <li className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" /><a href="mailto:info@edgelinktours.com" className="hover:text-forest">info@edgelinktours.com</a></li>
               <li className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />KG 7 Ave, Kigali, Rwanda</li>
               <li className="flex items-start gap-3"><Clock className="mt-0.5 h-4 w-4 shrink-0 text-gold" />Mon–Sat · 08:00–19:00 CAT</li>
             </ul>
             <a
-              href="https://wa.me/250788341431"
+              href="https://wa.me/250791900016"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-5 flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95"
@@ -281,7 +281,7 @@ function Contact() {
 
           <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             <iframe
-              title="RWIZA office location, Kigali"
+              title="EDGELINK office location, Kigali"
               src="https://www.google.com/maps?q=Kigali+Rwanda&output=embed"
               className="h-64 w-full border-0"
               loading="lazy"

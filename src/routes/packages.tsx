@@ -10,13 +10,13 @@ import { PACKAGES } from "@/lib/site-data";
 export const Route = createFileRoute("/packages")({
   head: () => ({
     meta: [
-      { title: "Packages — RWIZA Travel & Tour" },
+      { title: "Packages — EDGELINK Tours" },
       { name: "description", content: "Five curated itineraries: Gorilla Encounter, Big Five Safari, Primate Expedition, Ultimate Rwanda, and Luxury Honeymoon." },
-      { property: "og:url", content: "https://rwiza.lovable.app/packages" },
-      { property: "og:title", content: "Packages — RWIZA Travel & Tour" },
+      { property: "og:url", content: "https://edgelink-tours.lovable.app/packages" },
+      { property: "og:title", content: "Packages — EDGELINK Tours" },
       { property: "og:description", content: "Five curated itineraries: Gorilla Encounter, Big Five Safari, Primate Expedition, Ultimate Rwanda, and Luxury Honeymoon." },
     ],
-    links: [{ rel: "canonical", href: "https://rwiza.lovable.app/packages" }],
+    links: [{ rel: "canonical", href: "https://edgelink-tours.lovable.app/packages" }],
   }),
   component: Packages,
 });

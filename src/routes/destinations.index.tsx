@@ -11,13 +11,13 @@ const ACTIVITIES = ["All", "Trekking", "Safari", "Canopy Walk"] as const;
 export const Route = createFileRoute("/destinations/")({
   head: () => ({
     meta: [
-      { title: "Destinations — RWIZA Travel & Tour" },
+      { title: "Destinations — EDGELINK Tours" },
       { name: "description", content: "Volcanoes, Akagera, Nyungwe — three national parks, three unforgettable Rwandan expeditions." },
-      { property: "og:url", content: "https://rwiza.lovable.app/destinations" },
-      { property: "og:title", content: "Destinations — RWIZA Travel & Tour" },
+      { property: "og:url", content: "https://edgelink-tours.lovable.app/destinations" },
+      { property: "og:title", content: "Destinations — EDGELINK Tours" },
       { property: "og:description", content: "Volcanoes, Akagera, Nyungwe — three national parks, three unforgettable Rwandan expeditions." },
     ],
-    links: [{ rel: "canonical", href: "https://rwiza.lovable.app/destinations" }],
+    links: [{ rel: "canonical", href: "https://edgelink-tours.lovable.app/destinations" }],
   }),
   component: DestinationsList,
 });

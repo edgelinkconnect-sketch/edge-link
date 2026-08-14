@@ -14,13 +14,13 @@ import hero from "@/assets/hero-mountains.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "RWIZA Travel & Tour — Luxury Rwandan Safaris" },
+      { title: "EDGELINK Tours — Luxury Rwandan Safaris" },
       { name: "description", content: "Journeys crafted for a lifetime — luxury gorilla trekking, Big Five safaris, and canopy walks in Rwanda." },
-      { property: "og:url", content: "https://rwiza.lovable.app/" },
-      { property: "og:title", content: "RWIZA Travel & Tour — Luxury Rwandan Safaris" },
+      { property: "og:url", content: "https://edgelink-tours.lovable.app/" },
+      { property: "og:title", content: "EDGELINK Tours — Luxury Rwandan Safaris" },
       { property: "og:description", content: "Journeys crafted for a lifetime — luxury gorilla trekking, Big Five safaris, and canopy walks in Rwanda." },
     ],
-    links: [{ rel: "canonical", href: "https://rwiza.lovable.app/" }],
+    links: [{ rel: "canonical", href: "https://edgelink-tours.lovable.app/" }],
   }),
   component: Home,
 });
@@ -125,12 +125,12 @@ function Home() {
         </div>
       </section>
 
-      {/* WHY RWIZA */}
+      {/* WHY EDGELINK */}
       <section className="bg-forest-deep py-20 text-primary-foreground md:py-24">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <motion.div {...fadeUp()} className="mb-12 text-center">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">Why RWIZA</p>
-            <h2 className="font-display text-3xl font-bold md:text-4xl">The RWIZA difference</h2>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">Why EDGELINK</p>
+            <h2 className="font-display text-3xl font-bold md:text-4xl">The EDGELINK difference</h2>
           </motion.div>
           <div className="grid gap-6 md:grid-cols-4">
             {WHY.map((w, i) => (

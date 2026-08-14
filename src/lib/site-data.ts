@@ -39,7 +39,7 @@ export const DESTINATIONS: Destination[] = [
     whatToExpect: [
       { title: "Trekking difficulty", body: "Moderate to challenging. Treks range 2–6 hours through rainforest and volcanic terrain. Porters available." },
       { title: "Group sizes", body: "Maximum 8 travellers per gorilla family, per day. Small-group experience is guaranteed." },
-      { title: "Permits", body: "Rwanda Development Board permit required ($1,500 per person). Included in every RWIZA package." },
+      { title: "Permits", body: "Rwanda Development Board permit required ($1,500 per person). Included in every EDGELINK package." },
     ],
     bestTime: [
       { month: "Jan–Feb", label: "Dry season — prime trekking", rating: "Excellent" },
@@ -230,8 +230,8 @@ export const PACKAGES = [
 
 export const TESTIMONIALS = [
   { name: "Michael Chen", location: "Singapore", text: "The most seamless safari we've ever experienced. Every detail was anticipated." },
-  { name: "Sarah Johnson", location: "United Kingdom", text: "RWIZA made our gorilla trekking dream come true. The guides were phenomenal." },
-  { name: "David Kim", location: "United States", text: "Luxury, adventure, and sustainability — RWIZA delivers on all three." },
+  { name: "Sarah Johnson", location: "United Kingdom", text: "EDGELINK made our gorilla trekking dream come true. The guides were phenomenal." },
+  { name: "David Kim", location: "United States", text: "Luxury, adventure, and sustainability — EDGELINK delivers on all three." },
   { name: "Emma & Jack", location: "Australia", text: "We've traveled to 30+ countries, and this was our best experience." },
   { name: "Maria Rodriguez", location: "Spain", text: "The canopy walk in Nyungwe was breathtaking. Everything was perfectly organized." },
   { name: "James O'Brien", location: "Ireland", text: "From arrival to departure, we felt completely taken care of. 10/10." },
@@ -243,7 +243,7 @@ export const TEAM = [
   { name: "Emmanuel Habimana", role: "Senior Safari Guide", bio: "Akagera-based ranger-turned-guide, specialist in rhino tracking and birdlife.", initials: "EH" },
   { name: "Claire Mukamana", role: "Guest Relations", bio: "First-language English, French, and Kinyarwanda. Your concierge on the ground.", initials: "CM" },
   { name: "Dr. James Wilson", role: "Conservation Partner", bio: "Primatologist working with Dian Fossey Fund on gorilla family research.", initials: "JW" },
-  { name: "Aline Ishimwe", role: "Marketing & Communications", bio: "Storyteller in three languages. Documents every RWIZA journey.", initials: "AI" },
+  { name: "Aline Ishimwe", role: "Marketing & Communications", bio: "Storyteller in three languages. Documents every EDGELINK journey.", initials: "AI" },
 ];
 
 export const VALUES = [

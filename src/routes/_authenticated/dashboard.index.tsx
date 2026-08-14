@@ -11,7 +11,7 @@ import { format } from "date-fns";
 export const Route = createFileRoute("/_authenticated/dashboard/")({
   head: () => ({
     meta: [
-      { title: "My Dashboard — RWIZA" },
+      { title: "My Dashboard — EDGELINK" },
       { name: "robots", content: "noindex" },
     ],
   }),
