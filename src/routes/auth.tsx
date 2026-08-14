@@ -47,7 +47,7 @@ function AuthPage() {
           <img src={logo.url} alt="EDGELINK" className="h-14 w-14 rounded-full ring-2 ring-gold" />
           <div className="text-cream">
             <div className="font-display text-2xl font-bold">EDGELINK</div>
-            <div className="text-[10px] uppercase tracking-[0.25em] opacity-80">Travel & Tour</div>
+            <div className="text-[10px] uppercase tracking-[0.25em] opacity-80">Tours</div>
           </div>
         </Link>
 

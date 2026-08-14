@@ -27,7 +27,7 @@ function About() {
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">About</p>
           <h1 className="font-display text-4xl font-bold md:text-5xl">EDGELINK means beautiful</h1>
-          <p className="mt-3 max-w-2xl text-primary-foreground/80">In Kinyarwanda, "edgelink" is the word for the beauty we grew up in. EDGELINK Tours is our love letter to it.</p>
+          <p className="mt-3 max-w-2xl text-primary-foreground/80">Connecting people, places and possibilities — EDGELINK Tours is our love letter to East Africa.</p>
         </div>
       </section>
 
