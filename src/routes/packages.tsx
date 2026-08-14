@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { BookingDialog } from "@/components/booking-dialog";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Clock, Check, X } from "lucide-react";
@@ -23,7 +24,9 @@ export const Route = createFileRoute("/packages")({
 
 function Packages() {
   const [openId, setOpenId] = useState<string | null>(null);
+  const [bookingId, setBooking] = useState<string | null>(null);
   const active = PACKAGES.find((p) => p.id === openId);
+  const bookingPkg = PACKAGES.find((p) => p.id === bookingId);
 
   return (
     <AppShell>
@@ -68,9 +71,14 @@ function Packages() {
                     <div className="text-[10px] uppercase tracking-wider text-muted-foreground">From</div>
                     <div className="font-display text-2xl font-bold text-forest">${p.price.toLocaleString()}</div>
                   </div>
-                  <Button size="sm" onClick={() => setOpenId(p.id)} className="bg-forest text-primary-foreground hover:bg-forest-deep">
-                    View Details
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" onClick={() => setOpenId(p.id)}>
+                      Details
+                    </Button>
+                    <Button size="sm" onClick={() => setBooking(p.id)} className="bg-forest text-primary-foreground hover:bg-forest-deep">
+                      Book
+                    </Button>
+                  </div>
                 </div>
               </div>
             </motion.article>
@@ -116,14 +124,25 @@ function Packages() {
                   <div className="text-xs uppercase tracking-wider text-muted-foreground">From</div>
                   <div className="font-display text-2xl font-bold text-forest">${active.price.toLocaleString()}</div>
                 </div>
-                <Button asChild size="lg" className="bg-gold text-gold-foreground hover:brightness-95">
-                  <Link to="/contact">Book This Package <ArrowRight className="ml-1.5 h-4 w-4" /></Link>
+                <Button size="lg" onClick={() => setBooking(active.id)} className="bg-gold text-gold-foreground hover:brightness-95">
+                  Book This Package <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Button>
               </div>
             </>
           )}
         </DialogContent>
       </Dialog>
+
+      {bookingPkg && (
+        <BookingDialog
+          open={!!bookingId}
+          onOpenChange={(v) => !v && setBooking(null)}
+          tourSlug={bookingPkg.id}
+          tourName={bookingPkg.name}
+          price={bookingPkg.price}
+          duration={bookingPkg.duration}
+        />
+      )}
     </AppShell>
   );
 }

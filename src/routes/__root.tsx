@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ThemeProvider } from "@/lib/theme";
+import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
 import "@/lib/i18n";
 
 function NotFoundComponent() {
@@ -59,8 +60,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Journeys crafted for a lifetime. Luxury gorilla trekking, Big Five safaris, and rainforest expeditions across Rwanda." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: "#0A2A20" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "EDGELINK" },
+      { name: "mobile-web-app-capable", content: "yes" },
     ],
     links: [
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
@@ -90,6 +98,7 @@ function RootComponent() {
       <ThemeProvider>
         <AuthProvider>
           <Outlet />
+          <PwaInstallPrompt />
           <Toaster richColors position="top-right" />
         </AuthProvider>
       </ThemeProvider>
