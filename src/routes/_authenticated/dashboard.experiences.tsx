@@ -16,7 +16,7 @@ import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/_authenticated/dashboard/experiences")({
   head: () => ({ meta: [{ title: "Share an experience — EDGELINK Tours" }, { name: "robots", content: "noindex" }] }),
-  component: MyExperiences;
+  component: MyExperiences,
 });
 
 function MyExperiences() {
