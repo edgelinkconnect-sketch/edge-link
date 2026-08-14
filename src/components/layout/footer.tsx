@@ -11,7 +11,7 @@ export function Footer() {
             <img src={logo.url} alt="EDGELINK" className="h-14 w-14 rounded-full ring-2 ring-gold" />
             <div>
               <div className="font-display text-xl font-bold">EDGELINK</div>
-              <div className="text-[10px] uppercase tracking-[0.25em] text-gold">Travel & Tour</div>
+              <div className="text-[10px] uppercase tracking-[0.25em] text-gold">{t("brand.tagline")}</div>
             </div>
           </div>
           <p className="mt-4 text-sm text-primary-foreground/70">Journeys crafted for a lifetime — through the Land of a Thousand Hills.</p>
