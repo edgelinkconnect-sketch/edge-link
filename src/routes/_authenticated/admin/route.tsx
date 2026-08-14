@@ -35,7 +35,7 @@ function AdminLayout() {
     <div className="flex min-h-screen bg-muted/30">
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-forest text-cream md:flex">
         <div className="border-b border-cream/10 px-6 py-5">
-          <div className="font-display text-lg font-bold">RWIZA Admin</div>
+          <div className="font-display text-lg font-bold">EDGELINK Admin</div>
           <div className="mt-1 truncate text-xs text-cream/60">{user?.email}</div>
         </div>
         <nav className="flex-1 space-y-1 p-3">

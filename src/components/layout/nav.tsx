@@ -3,7 +3,7 @@ import { Menu, X, User as UserIcon, LogIn } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import logo from "@/assets/rwiza-logo.png.asset.json";
+import logo from "@/assets/edgelink-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -30,7 +30,7 @@ export function Nav() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 md:px-6">
         <Link to="/" className="flex shrink-0 items-center gap-3" onClick={() => setOpen(false)}>
-          <img src={logo.url} alt="RWIZA Travel and Tour logo" className="h-11 w-11 rounded-full object-cover ring-2 ring-gold" />
+          <img src={logo.url} alt="EDGELINK Travel and Tour logo" className="h-11 w-11 rounded-full object-cover ring-2 ring-gold" />
           <div className="hidden flex-col leading-tight sm:flex">
             <span className="font-display text-lg font-bold tracking-wide text-forest">{t("brand.name")}</span>
             <span className="-mt-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{t("brand.tagline")}</span>

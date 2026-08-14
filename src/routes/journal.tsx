@@ -8,13 +8,13 @@ import { IMAGES } from "@/lib/site-data";
 export const Route = createFileRoute("/journal")({
   head: () => ({
     meta: [
-      { title: "Journal — RWIZA Travel & Tour" },
+      { title: "Journal — EDGELINK Tours" },
       { name: "description", content: "Stories, guides, and conservation news from Rwanda's national parks — from our guides on the ground." },
-      { property: "og:title", content: "Journal — RWIZA Travel & Tour" },
+      { property: "og:title", content: "Journal — EDGELINK Tours" },
       { property: "og:description", content: "Stories, guides, and conservation news from Rwanda's national parks." },
-      { property: "og:url", content: "https://rwiza.lovable.app/journal" },
+      { property: "og:url", content: "https://edgelink-tours.lovable.app/journal" },
     ],
-    links: [{ rel: "canonical", href: "https://rwiza.lovable.app/journal" }],
+    links: [{ rel: "canonical", href: "https://edgelink-tours.lovable.app/journal" }],
   }),
   component: Journal,
 });

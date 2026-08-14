@@ -51,7 +51,7 @@ if (!i18n.isInitialized) {
       detection: {
         order: ["localStorage", "navigator"],
         caches: ["localStorage"],
-        lookupLocalStorage: "rwiza_lang",
+        lookupLocalStorage: "edgelink_lang",
       },
     });
 }

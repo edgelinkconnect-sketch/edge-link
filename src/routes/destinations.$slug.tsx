@@ -12,16 +12,16 @@ export const Route = createFileRoute("/destinations/$slug")({
     return dest;
   },
   head: ({ loaderData }) => {
-    if (!loaderData) return { meta: [{ title: "Not found — RWIZA" }, { name: "robots", content: "noindex" }] };
+    if (!loaderData) return { meta: [{ title: "Not found — EDGELINK" }, { name: "robots", content: "noindex" }] };
     const d = loaderData as Destination;
-    const url = `https://rwiza.lovable.app/destinations/${d.slug}`;
+    const url = `https://edgelink-tours.lovable.app/destinations/${d.slug}`;
     return {
       meta: [
-        { title: `${d.name} — RWIZA Travel & Tour` },
+        { title: `${d.name} — EDGELINK Tours` },
         { name: "description", content: d.tagline },
         { property: "og:type", content: "article" },
         { property: "og:url", content: url },
-        { property: "og:title", content: `${d.name} — RWIZA Travel & Tour` },
+        { property: "og:title", content: `${d.name} — EDGELINK Tours` },
         { property: "og:description", content: d.tagline },
       ],
       links: [{ rel: "canonical", href: url }],

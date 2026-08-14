@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Facebook, Twitter, Mail, MapPin, Phone } from "lucide-react";
-import logo from "@/assets/rwiza-logo.png.asset.json";
+import logo from "@/assets/edgelink-logo.png.asset.json";
 
 export function Footer() {
   return (
@@ -8,9 +8,9 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-4 md:px-6">
         <div>
           <div className="flex items-center gap-3">
-            <img src={logo.url} alt="RWIZA" className="h-14 w-14 rounded-full ring-2 ring-gold" />
+            <img src={logo.url} alt="EDGELINK" className="h-14 w-14 rounded-full ring-2 ring-gold" />
             <div>
-              <div className="font-display text-xl font-bold">RWIZA</div>
+              <div className="font-display text-xl font-bold">EDGELINK</div>
               <div className="text-[10px] uppercase tracking-[0.25em] text-gold">Travel & Tour</div>
             </div>
           </div>
@@ -29,8 +29,8 @@ export function Footer() {
           <h4 className="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-gold">Contact</h4>
           <ul className="space-y-2 text-sm text-primary-foreground/80">
             <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />KG 7 Ave, Kigali, Rwanda</li>
-            <li className="flex items-start gap-2"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />+250 788 341 431</li>
-            <li className="flex items-start gap-2"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" />info@rwiza.com</li>
+            <li className="flex items-start gap-2"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />+250 791 900 016</li>
+            <li className="flex items-start gap-2"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold" />info@edgelinktours.com</li>
           </ul>
         </div>
         <div>
@@ -46,7 +46,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-white/10 px-4 py-4 text-center text-xs text-primary-foreground/60 md:px-6">
-        © {new Date().getFullYear()} RWIZA Travel & Tour · Explore the Beauty
+        © {new Date().getFullYear()} EDGELINK Tours · Explore the Beauty
       </div>
     </footer>
   );

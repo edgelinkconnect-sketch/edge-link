@@ -52,10 +52,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "RWIZA Travel & Tour — Luxury Rwandan Safaris" },
+      { title: "EDGELINK Tours — Luxury Rwandan Safaris" },
       { name: "description", content: "Journeys crafted for a lifetime. Luxury gorilla trekking, Big Five safaris, and rainforest expeditions across Rwanda." },
-      { property: "og:site_name", content: "RWIZA Travel & Tour" },
-      { property: "og:title", content: "RWIZA Travel & Tour — Luxury Rwandan Safaris" },
+      { property: "og:site_name", content: "EDGELINK Tours" },
+      { property: "og:title", content: "EDGELINK Tours — Luxury Rwandan Safaris" },
       { property: "og:description", content: "Journeys crafted for a lifetime. Luxury gorilla trekking, Big Five safaris, and rainforest expeditions across Rwanda." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

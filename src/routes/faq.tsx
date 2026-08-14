@@ -6,13 +6,13 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "FAQ — RWIZA Travel & Tour" },
+      { title: "FAQ — EDGELINK Tours" },
       { name: "description", content: "Answers to the most common questions about safaris, permits, visas, gorilla trekking, and travel in Rwanda." },
-      { property: "og:title", content: "FAQ — RWIZA Travel & Tour" },
+      { property: "og:title", content: "FAQ — EDGELINK Tours" },
       { property: "og:description", content: "Answers to the most common questions about safaris, permits, visas, and gorilla trekking in Rwanda." },
-      { property: "og:url", content: "https://rwiza.lovable.app/faq" },
+      { property: "og:url", content: "https://edgelink-tours.lovable.app/faq" },
     ],
-    links: [{ rel: "canonical", href: "https://rwiza.lovable.app/faq" }],
+    links: [{ rel: "canonical", href: "https://edgelink-tours.lovable.app/faq" }],
     scripts: [{
       type: "application/ld+json",
       children: JSON.stringify({
@@ -36,12 +36,12 @@ const FAQS = [
   { cat: "General", q: "What vaccinations do I need?", a: "Yellow fever certificate is required for entry. We recommend routine vaccinations (Hepatitis A/B, Typhoid, Tetanus) plus anti-malarial prophylaxis. Consult a travel doctor 6–8 weeks before travel." },
   { cat: "Gorilla Trekking", q: "How fit do I need to be for gorilla trekking?", a: "Moderate fitness is sufficient. Treks last 2–6 hours through rainforest at altitudes of 2,500–3,500m. We match your group to a gorilla family based on fitness, and porters are always available." },
   { cat: "Gorilla Trekking", q: "What should I wear for gorilla trekking?", a: "Long trousers, long-sleeve shirt (tucked in), sturdy waterproof hiking boots, gaiters, gardening gloves for nettles, a rain jacket, hat, and daypack. Neutral colours preferred — no bright reds or whites." },
-  { cat: "Gorilla Trekking", q: "How much does a gorilla trekking permit cost?", a: "The Rwanda Development Board permit is $1,500 per person per trek. All RWIZA packages include permits — we secure them 6+ months in advance to guarantee your dates." },
+  { cat: "Gorilla Trekking", q: "How much does a gorilla trekking permit cost?", a: "The Rwanda Development Board permit is $1,500 per person per trek. All EDGELINK packages include permits — we secure them 6+ months in advance to guarantee your dates." },
   { cat: "Gorilla Trekking", q: "What are the rules during gorilla trekking?", a: "Maintain a 7-metre distance, wear a mask, no flash photography, one-hour maximum with the family, no visits if you're sick, and follow your guide's instructions at all times. These rules protect the gorillas from human diseases." },
-  { cat: "Logistics", q: "What's included in a safari package?", a: "Every RWIZA package includes all permits, park fees, luxury lodging, private guided transfers in a 4x4 Land Cruiser, all meals, drinking water, and airport transfers. International flights, travel insurance, and gratuities are excluded." },
+  { cat: "Logistics", q: "What's included in a safari package?", a: "Every EDGELINK package includes all permits, park fees, luxury lodging, private guided transfers in a 4x4 Land Cruiser, all meals, drinking water, and airport transfers. International flights, travel insurance, and gratuities are excluded." },
   { cat: "Logistics", q: "How do I get to Rwanda?", a: "Fly into Kigali International Airport (KGL). Direct flights from Brussels, Amsterdam, Doha, Dubai, Istanbul, Johannesburg, Addis Ababa, and Nairobi. RwandAir, Qatar Airways, KLM, Turkish Airlines, and Ethiopian Airlines all serve KGL." },
   { cat: "Accommodation", q: "Are children allowed on safaris?", a: "Yes, we love family safaris. However, gorilla trekking has a minimum age of 15. Children of all ages can enjoy Akagera game drives, Nyungwe canopy walks (with parents), and cultural experiences." },
-  { cat: "Sustainability", q: "How does RWIZA support conservation?", a: "We're a Gorilla Friendly™ certified operator. 10% of every package fee is donated to the Dian Fossey Fund and community conservation cooperatives. Our carbon emissions are 100% offset through Rwandan reforestation." },
+  { cat: "Sustainability", q: "How does EDGELINK support conservation?", a: "We're a Gorilla Friendly™ certified operator. 10% of every package fee is donated to the Dian Fossey Fund and community conservation cooperatives. Our carbon emissions are 100% offset through Rwandan reforestation." },
 ];
 
 function FAQ() {

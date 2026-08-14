@@ -10,7 +10,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [resolved, setResolved] = useState<"light" | "dark">("light");
 
   useEffect(() => {
-    const saved = (localStorage.getItem("rwiza_theme") as Theme | null) ?? "system";
+    const saved = (localStorage.getItem("edgelink_theme") as Theme | null) ?? "system";
     setThemeState(saved);
   }, []);
 
@@ -27,7 +27,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [theme]);
 
   const setTheme = (t: Theme) => {
-    localStorage.setItem("rwiza_theme", t);
+    localStorage.setItem("edgelink_theme", t);
     setThemeState(t);
   };
 

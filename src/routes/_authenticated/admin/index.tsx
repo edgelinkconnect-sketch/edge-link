@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Map, Image as ImageIcon, Calendar, Star, MessageSquare, Users } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
-  head: () => ({ meta: [{ title: "Admin overview — RWIZA" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Admin overview — EDGELINK" }, { name: "robots", content: "noindex" }] }),
   component: AdminOverview,
 });
 
@@ -38,7 +38,7 @@ function AdminOverview() {
   return (
     <div>
       <h1 className="font-display text-3xl font-bold text-forest">Overview</h1>
-      <p className="mt-1 text-sm text-muted-foreground">Real-time snapshot of the RWIZA platform.</p>
+      <p className="mt-1 text-sm text-muted-foreground">Real-time snapshot of the EDGELINK platform.</p>
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Stat icon={Map} label="Tours" value={stats.data?.tours ?? 0} />
         <Stat icon={ImageIcon} label="Gallery images" value={stats.data?.gallery ?? 0} />

@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Loader2, Mail, Lock, User as UserIcon, Phone } from "lucide-react";
-import logo from "@/assets/rwiza-logo.png.asset.json";
+import logo from "@/assets/edgelink-logo.png.asset.json";
 
 const searchSchema = z.object({
   redirect: z.string().optional(),
@@ -20,8 +20,8 @@ export const Route = createFileRoute("/auth")({
   validateSearch: (s) => searchSchema.parse(s),
   head: () => ({
     meta: [
-      { title: "Sign in — RWIZA Travel & Tour" },
-      { name: "description", content: "Sign in or create your RWIZA account to manage bookings and share experiences." },
+      { title: "Sign in — EDGELINK Tours" },
+      { name: "description", content: "Sign in or create your EDGELINK account to manage bookings and share experiences." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -44,9 +44,9 @@ function AuthPage() {
     <div className="min-h-screen bg-gradient-to-br from-forest via-forest-deep to-forest px-4 py-12">
       <div className="mx-auto max-w-md">
         <Link to="/" className="mb-8 flex items-center justify-center gap-3">
-          <img src={logo.url} alt="RWIZA" className="h-14 w-14 rounded-full ring-2 ring-gold" />
+          <img src={logo.url} alt="EDGELINK" className="h-14 w-14 rounded-full ring-2 ring-gold" />
           <div className="text-cream">
-            <div className="font-display text-2xl font-bold">RWIZA</div>
+            <div className="font-display text-2xl font-bold">EDGELINK</div>
             <div className="text-[10px] uppercase tracking-[0.25em] opacity-80">Travel & Tour</div>
           </div>
         </Link>
@@ -71,7 +71,7 @@ function AuthPage() {
         </Card>
 
         <p className="mt-6 text-center text-xs text-cream/70">
-          By continuing you agree to RWIZA's terms & privacy.
+          By continuing you agree to EDGELINK's terms & privacy.
         </p>
       </div>
     </div>

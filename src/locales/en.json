@@ -1,5 +1,5 @@
 {
-  "brand": { "name": "RWIZA", "tagline": "Travel & Tour" },
+  "brand": { "name": "EDGELINK", "tagline": "Travel & Tour" },
   "nav": {
     "home": "Home",
     "destinations": "Destinations",
@@ -80,7 +80,7 @@
     "heroSubtitle": "Luxury gorilla trekking, Big Five safaris, and rainforest expeditions across Rwanda's most breathtaking landscapes.",
     "exploreTours": "Explore tours",
     "planTrip": "Plan your trip",
-    "whyRwiza": "Why RWIZA",
+    "whyEdgelink": "Why EDGELINK",
     "featuredDestinations": "Featured destinations",
     "featuredTours": "Signature journeys",
     "testimonials": "What our guests say",
@@ -164,7 +164,7 @@
     "haveAccount": "Already have an account?",
     "noAccount": "Don't have an account?",
     "signInSubtitle": "Welcome back — sign in to continue.",
-    "signUpSubtitle": "Join RWIZA to book journeys and share experiences.",
+    "signUpSubtitle": "Join EDGELINK to book journeys and share experiences.",
     "resetTitle": "Reset your password",
     "resetSubtitle": "We'll email you a secure link.",
     "sendReset": "Send reset link",
