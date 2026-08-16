@@ -41,6 +41,7 @@ function AuthPage() {
   const navigate = useNavigate();
   const search = useSearch({ from: "/auth" });
   const [mode, setMode] = useState<"signin" | "signup">(search.mode ?? "signin");
+  const [prefill, setPrefill] = useState<Prefill>(null);
 
   useEffect(() => {
     if (!loading && user) {
