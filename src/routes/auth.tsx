@@ -41,17 +41,17 @@ function AuthPage() {
   }, [user, loading, navigate, search.redirect]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-forest via-forest-deep to-forest px-4 py-12">
-      <div className="mx-auto max-w-md">
-        <Link to="/" className="mb-8 flex items-center justify-center gap-3">
-          <img src={logo.url} alt="EDGELINK" className="h-14 w-14 rounded-full ring-2 ring-gold" />
+    <div className="min-h-[100dvh] bg-gradient-to-br from-forest via-forest-deep to-forest px-4 py-8 pb-[max(2rem,env(safe-area-inset-bottom))] sm:py-12">
+      <div className="mx-auto w-full max-w-md">
+        <Link to="/" className="mb-6 flex items-center justify-center gap-3 sm:mb-8">
+          <img src={logo.url} alt="EDGELINK" className="h-12 w-12 rounded-full ring-2 ring-gold sm:h-14 sm:w-14" />
           <div className="text-cream">
-            <div className="font-display text-2xl font-bold">EDGELINK</div>
+            <div className="font-display text-xl font-bold sm:text-2xl">EDGELINK</div>
             <div className="text-[10px] uppercase tracking-[0.25em] opacity-80">Tours</div>
           </div>
         </Link>
 
-        <Card className="border-cream/20 bg-cream p-8 shadow-2xl">
+        <Card className="border-cream/20 bg-cream p-5 shadow-2xl sm:p-8">
           <div className="mb-6 flex gap-2 rounded-lg bg-muted p-1">
             <button
               onClick={() => setMode("signin")}
