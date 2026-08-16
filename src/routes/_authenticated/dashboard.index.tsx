@@ -3,6 +3,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
+import { NotificationToggle } from "@/components/notification-toggle";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import {
