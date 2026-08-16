@@ -99,6 +99,7 @@ function RootComponent() {
       <ThemeProvider>
         <AuthProvider>
           <Outlet />
+          <LiveAlerts />
           <PwaInstallPrompt />
           <Toaster richColors position="top-right" />
         </AuthProvider>
