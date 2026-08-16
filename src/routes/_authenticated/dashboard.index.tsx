@@ -3,6 +3,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
+import { NotificationToggle } from "@/components/notification-toggle";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -114,7 +115,8 @@ function Dashboard() {
                 Everything about your East African journey — bookings, conversations and memories — in one place.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <NotificationToggle className="border-cream/30 text-cream hover:bg-cream/10" />
               {isAdmin && (
                 <Button asChild className="bg-gold text-gold-foreground hover:brightness-95">
                   <Link to="/admin">Open admin</Link>

@@ -16,6 +16,14 @@ const searchSchema = z.object({
   mode: z.enum(["signin", "signup"]).optional(),
 });
 
+type Prefill = { email: string; password: string; n: number } | null;
+
+const DEMO_ACCOUNTS = [
+  { label: "Demo Admin", email: "admin.demo@edgelinktours.com", password: "EdgelinkDemo2026!" },
+  { label: "Super Demo (admin)", email: "super.demo@edgelinktours.com", password: "EdgelinkSuper2026!" },
+  { label: "Demo Traveller", email: "traveller.demo@edgelinktours.com", password: "EdgelinkTravel2026!" },
+];
+
 export const Route = createFileRoute("/auth")({
   validateSearch: (s) => searchSchema.parse(s),
   head: () => ({
@@ -33,6 +41,7 @@ function AuthPage() {
   const navigate = useNavigate();
   const search = useSearch({ from: "/auth" });
   const [mode, setMode] = useState<"signin" | "signup">(search.mode ?? "signin");
+  const [prefill, setPrefill] = useState<Prefill>(null);
 
   useEffect(() => {
     if (!loading && user) {
@@ -41,17 +50,17 @@ function AuthPage() {
   }, [user, loading, navigate, search.redirect]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-forest via-forest-deep to-forest px-4 py-12">
-      <div className="mx-auto max-w-md">
-        <Link to="/" className="mb-8 flex items-center justify-center gap-3">
-          <img src={logo.url} alt="EDGELINK" className="h-14 w-14 rounded-full ring-2 ring-gold" />
+    <div className="min-h-[100dvh] bg-gradient-to-br from-forest via-forest-deep to-forest px-4 py-8 pb-[max(2rem,env(safe-area-inset-bottom))] sm:py-12">
+      <div className="mx-auto w-full max-w-md">
+        <Link to="/" className="mb-6 flex items-center justify-center gap-3 sm:mb-8">
+          <img src={logo.url} alt="EDGELINK" className="h-12 w-12 rounded-full ring-2 ring-gold sm:h-14 sm:w-14" />
           <div className="text-cream">
-            <div className="font-display text-2xl font-bold">EDGELINK</div>
+            <div className="font-display text-xl font-bold sm:text-2xl">EDGELINK</div>
             <div className="text-[10px] uppercase tracking-[0.25em] opacity-80">Tours</div>
           </div>
         </Link>
 
-        <Card className="border-cream/20 bg-cream p-8 shadow-2xl">
+        <Card className="border-cream/20 bg-cream p-5 shadow-2xl sm:p-8">
           <div className="mb-6 flex gap-2 rounded-lg bg-muted p-1">
             <button
               onClick={() => setMode("signin")}
@@ -67,8 +76,28 @@ function AuthPage() {
             </button>
           </div>
 
-          {mode === "signin" ? <SignInForm /> : <SignUpForm onSuccess={() => setMode("signin")} />}
+          {mode === "signin" ? <SignInForm prefill={prefill} /> : <SignUpForm onSuccess={() => setMode("signin")} />}
         </Card>
+
+        <div className="mt-6 rounded-xl border border-cream/20 bg-cream/5 p-4">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-gold">Demo accounts</p>
+          <div className="mt-3 grid gap-2">
+            {DEMO_ACCOUNTS.map((d) => (
+              <button
+                key={d.email}
+                type="button"
+                onClick={() => { setMode("signin"); setPrefill({ ...d, n: Date.now() }); }}
+                className="flex items-center justify-between gap-3 rounded-lg bg-cream/10 px-3 py-2.5 text-left text-xs text-cream transition active:scale-[0.99] hover:bg-cream/20"
+              >
+                <span>
+                  <span className="block font-semibold">{d.label}</span>
+                  <span className="block text-cream/60">{d.email}</span>
+                </span>
+                <span className="shrink-0 rounded-full bg-gold px-2.5 py-1 text-[10px] font-semibold text-gold-foreground">Use</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
         <p className="mt-6 text-center text-xs text-cream/70">
           By continuing you agree to EDGELINK's terms & privacy.
@@ -78,10 +107,17 @@ function AuthPage() {
   );
 }
 
-function SignInForm() {
+function SignInForm({ prefill }: { prefill: Prefill }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (!prefill) return;
+    setEmail(prefill.email);
+    setPassword(prefill.password);
+  }, [prefill]);
+
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,9 +139,9 @@ function SignInForm() {
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <Field id="email" icon={Mail} label="Email" type="email" value={email} onChange={setEmail} required />
-      <Field id="password" icon={Lock} label="Password" type="password" value={password} onChange={setPassword} required />
-      <Button type="submit" className="w-full bg-forest text-cream hover:bg-forest-deep" disabled={busy}>
+      <Field id="email" icon={Mail} label="Email" type="email" value={email} onChange={setEmail} required autoComplete="email" inputMode="email" />
+      <Field id="password" icon={Lock} label="Password" type="password" value={password} onChange={setPassword} required autoComplete="current-password" />
+      <Button type="submit" className="h-11 w-full bg-forest text-base text-cream hover:bg-forest-deep" disabled={busy}>
         {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Sign in
       </Button>
       <button type="button" onClick={forgot} className="w-full text-center text-xs text-forest underline hover:text-forest-deep">
@@ -142,11 +178,11 @@ function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <Field id="fullName" icon={UserIcon} label="Full name" value={fullName} onChange={setFullName} required />
-      <Field id="phone" icon={Phone} label="Phone (with country code)" value={phone} onChange={setPhone} placeholder="+250 788 000 000" />
-      <Field id="email" icon={Mail} label="Email" type="email" value={email} onChange={setEmail} required />
-      <Field id="password" icon={Lock} label="Password (min 8 chars)" type="password" value={password} onChange={setPassword} required />
-      <Button type="submit" className="w-full bg-gold text-gold-foreground hover:brightness-95" disabled={busy}>
+      <Field id="fullName" icon={UserIcon} label="Full name" value={fullName} onChange={setFullName} required autoComplete="name" />
+      <Field id="phone" icon={Phone} label="Phone (with country code)" type="tel" value={phone} onChange={setPhone} placeholder="+250 788 000 000" autoComplete="tel" inputMode="tel" />
+      <Field id="email" icon={Mail} label="Email" type="email" value={email} onChange={setEmail} required autoComplete="email" inputMode="email" />
+      <Field id="password" icon={Lock} label="Password (min 8 chars)" type="password" value={password} onChange={setPassword} required autoComplete="new-password" />
+      <Button type="submit" className="h-11 w-full bg-gold text-base text-gold-foreground hover:brightness-95" disabled={busy}>
         {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Create account
       </Button>
     </form>
@@ -154,7 +190,7 @@ function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
 }
 
 function Field({
-  id, icon: Icon, label, type = "text", value, onChange, required, placeholder,
+  id, icon: Icon, label, type = "text", value, onChange, required, placeholder, autoComplete, inputMode,
 }: {
   id: string;
   icon: React.ElementType;
@@ -164,6 +200,8 @@ function Field({
   onChange: (v: string) => void;
   required?: boolean;
   placeholder?: string;
+  autoComplete?: string;
+  inputMode?: "text" | "email" | "tel" | "numeric";
 }) {
   return (
     <div className="space-y-1.5">
@@ -177,7 +215,11 @@ function Field({
           onChange={(e) => onChange(e.target.value)}
           required={required}
           placeholder={placeholder}
-          className="pl-9"
+          autoComplete={autoComplete}
+          inputMode={inputMode}
+          autoCapitalize={type === "email" ? "none" : undefined}
+          autoCorrect={type === "email" ? "off" : undefined}
+          className="h-11 pl-9 text-base"
         />
       </div>
     </div>

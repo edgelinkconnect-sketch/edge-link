@@ -2,6 +2,7 @@ import { createFileRoute, Outlet, redirect, Link } from "@tanstack/react-router"
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard, Map, Image as ImageIcon, Calendar, MessageSquare, Star, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { NotificationToggle } from "@/components/notification-toggle";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
@@ -37,6 +38,7 @@ function AdminLayout() {
         <div className="border-b border-cream/10 px-6 py-5">
           <div className="font-display text-lg font-bold">EDGELINK Admin</div>
           <div className="mt-1 truncate text-xs text-cream/60">{user?.email}</div>
+          <NotificationToggle className="mt-3 border-cream/30 text-cream hover:bg-cream/10" />
         </div>
         <nav className="flex-1 space-y-1 p-3">
           {LINKS.map((l) => (
@@ -64,6 +66,10 @@ function AdminLayout() {
       </aside>
       <main className="flex-1 overflow-x-hidden">
         <div className="border-b border-border bg-background px-4 py-3 md:hidden">
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <span className="truncate text-xs text-muted-foreground">{user?.email}</span>
+            <NotificationToggle />
+          </div>
           <div className="flex gap-3 overflow-x-auto pb-1">
             {LINKS.map((l) => (
               <Link
