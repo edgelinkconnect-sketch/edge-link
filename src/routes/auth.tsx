@@ -67,8 +67,28 @@ function AuthPage() {
             </button>
           </div>
 
-          {mode === "signin" ? <SignInForm /> : <SignUpForm onSuccess={() => setMode("signin")} />}
+          {mode === "signin" ? <SignInForm prefill={prefill} /> : <SignUpForm onSuccess={() => setMode("signin")} />}
         </Card>
+
+        <div className="mt-6 rounded-xl border border-cream/20 bg-cream/5 p-4">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-gold">Demo accounts</p>
+          <div className="mt-3 grid gap-2">
+            {DEMO_ACCOUNTS.map((d) => (
+              <button
+                key={d.email}
+                type="button"
+                onClick={() => { setMode("signin"); setPrefill({ ...d, n: Date.now() }); }}
+                className="flex items-center justify-between gap-3 rounded-lg bg-cream/10 px-3 py-2.5 text-left text-xs text-cream transition active:scale-[0.99] hover:bg-cream/20"
+              >
+                <span>
+                  <span className="block font-semibold">{d.label}</span>
+                  <span className="block text-cream/60">{d.email}</span>
+                </span>
+                <span className="shrink-0 rounded-full bg-gold px-2.5 py-1 text-[10px] font-semibold text-gold-foreground">Use</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
         <p className="mt-6 text-center text-xs text-cream/70">
           By continuing you agree to EDGELINK's terms & privacy.
