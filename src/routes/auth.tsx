@@ -107,10 +107,17 @@ function AuthPage() {
   );
 }
 
-function SignInForm() {
+function SignInForm({ prefill }: { prefill: Prefill }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (!prefill) return;
+    setEmail(prefill.email);
+    setPassword(prefill.password);
+  }, [prefill]);
+
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
