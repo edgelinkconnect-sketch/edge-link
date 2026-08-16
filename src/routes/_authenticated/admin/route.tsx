@@ -66,6 +66,10 @@ function AdminLayout() {
       </aside>
       <main className="flex-1 overflow-x-hidden">
         <div className="border-b border-border bg-background px-4 py-3 md:hidden">
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <span className="truncate text-xs text-muted-foreground">{user?.email}</span>
+            <NotificationToggle />
+          </div>
           <div className="flex gap-3 overflow-x-auto pb-1">
             {LINKS.map((l) => (
               <Link
