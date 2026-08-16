@@ -178,11 +178,11 @@ function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <Field id="fullName" icon={UserIcon} label="Full name" value={fullName} onChange={setFullName} required />
-      <Field id="phone" icon={Phone} label="Phone (with country code)" value={phone} onChange={setPhone} placeholder="+250 788 000 000" />
-      <Field id="email" icon={Mail} label="Email" type="email" value={email} onChange={setEmail} required />
-      <Field id="password" icon={Lock} label="Password (min 8 chars)" type="password" value={password} onChange={setPassword} required />
-      <Button type="submit" className="w-full bg-gold text-gold-foreground hover:brightness-95" disabled={busy}>
+      <Field id="fullName" icon={UserIcon} label="Full name" value={fullName} onChange={setFullName} required autoComplete="name" />
+      <Field id="phone" icon={Phone} label="Phone (with country code)" type="tel" value={phone} onChange={setPhone} placeholder="+250 788 000 000" autoComplete="tel" inputMode="tel" />
+      <Field id="email" icon={Mail} label="Email" type="email" value={email} onChange={setEmail} required autoComplete="email" inputMode="email" />
+      <Field id="password" icon={Lock} label="Password (min 8 chars)" type="password" value={password} onChange={setPassword} required autoComplete="new-password" />
+      <Button type="submit" className="h-11 w-full bg-gold text-base text-gold-foreground hover:brightness-95" disabled={busy}>
         {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Create account
       </Button>
     </form>
@@ -190,7 +190,7 @@ function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
 }
 
 function Field({
-  id, icon: Icon, label, type = "text", value, onChange, required, placeholder,
+  id, icon: Icon, label, type = "text", value, onChange, required, placeholder, autoComplete, inputMode,
 }: {
   id: string;
   icon: React.ElementType;
@@ -200,6 +200,8 @@ function Field({
   onChange: (v: string) => void;
   required?: boolean;
   placeholder?: string;
+  autoComplete?: string;
+  inputMode?: "text" | "email" | "tel" | "numeric";
 }) {
   return (
     <div className="space-y-1.5">
@@ -213,7 +215,11 @@ function Field({
           onChange={(e) => onChange(e.target.value)}
           required={required}
           placeholder={placeholder}
-          className="pl-9"
+          autoComplete={autoComplete}
+          inputMode={inputMode}
+          autoCapitalize={type === "email" ? "none" : undefined}
+          autoCorrect={type === "email" ? "off" : undefined}
+          className="h-11 pl-9 text-base"
         />
       </div>
     </div>
