@@ -2,6 +2,7 @@ import { createFileRoute, Outlet, redirect, Link } from "@tanstack/react-router"
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard, Map, Image as ImageIcon, Calendar, MessageSquare, Star, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { NotificationToggle } from "@/components/notification-toggle";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
