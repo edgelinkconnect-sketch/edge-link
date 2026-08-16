@@ -141,7 +141,7 @@ function SignInForm({ prefill }: { prefill: Prefill }) {
     <form onSubmit={submit} className="space-y-4">
       <Field id="email" icon={Mail} label="Email" type="email" value={email} onChange={setEmail} required autoComplete="email" inputMode="email" />
       <Field id="password" icon={Lock} label="Password" type="password" value={password} onChange={setPassword} required autoComplete="current-password" />
-      <Button type="submit" className="w-full bg-forest text-cream hover:bg-forest-deep" disabled={busy}>
+      <Button type="submit" className="h-11 w-full bg-forest text-base text-cream hover:bg-forest-deep" disabled={busy}>
         {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Sign in
       </Button>
       <button type="button" onClick={forgot} className="w-full text-center text-xs text-forest underline hover:text-forest-deep">
