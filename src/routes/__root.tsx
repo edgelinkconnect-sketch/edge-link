@@ -15,6 +15,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ThemeProvider } from "@/lib/theme";
 import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
+import { LiveAlerts } from "@/components/live-alerts";
 import "@/lib/i18n";
 
 function NotFoundComponent() {
