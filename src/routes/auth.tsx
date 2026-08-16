@@ -16,6 +16,14 @@ const searchSchema = z.object({
   mode: z.enum(["signin", "signup"]).optional(),
 });
 
+type Prefill = { email: string; password: string; n: number } | null;
+
+const DEMO_ACCOUNTS = [
+  { label: "Demo Admin", email: "admin.demo@edgelinktours.com", password: "EdgelinkDemo2026!" },
+  { label: "Super Demo (admin)", email: "super.demo@edgelinktours.com", password: "EdgelinkSuper2026!" },
+  { label: "Demo Traveller", email: "traveller.demo@edgelinktours.com", password: "EdgelinkTravel2026!" },
+];
+
 export const Route = createFileRoute("/auth")({
   validateSearch: (s) => searchSchema.parse(s),
   head: () => ({
