@@ -22,6 +22,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ToursIndexRouteImport } from './routes/tours.index'
 import { Route as DestinationsIndexRouteImport } from './routes/destinations.index'
 import { Route as DestinationsSlugRouteImport } from './routes/destinations.$slug'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
@@ -100,6 +101,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ToursIndexRoute = ToursIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ToursRoute,
 } as any)
 const DestinationsIndexRoute = DestinationsIndexRouteImport.update({
   id: '/',
@@ -192,10 +198,11 @@ export interface FileRoutesByFullPath {
   '/packages': typeof PackagesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
-  '/tours': typeof ToursRoute
+  '/tours': typeof ToursRouteWithChildren
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations/': typeof DestinationsIndexRoute
+  '/tours/': typeof ToursIndexRoute
   '/admin/bookings': typeof AuthenticatedAdminBookingsRoute
   '/admin/chat': typeof AuthenticatedAdminChatRoute
   '/admin/experiences': typeof AuthenticatedAdminExperiencesRoute
@@ -219,9 +226,9 @@ export interface FileRoutesByTo {
   '/packages': typeof PackagesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
-  '/tours': typeof ToursRoute
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations': typeof DestinationsIndexRoute
+  '/tours': typeof ToursIndexRoute
   '/admin/bookings': typeof AuthenticatedAdminBookingsRoute
   '/admin/chat': typeof AuthenticatedAdminChatRoute
   '/admin/experiences': typeof AuthenticatedAdminExperiencesRoute
@@ -248,10 +255,11 @@ export interface FileRoutesById {
   '/packages': typeof PackagesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
-  '/tours': typeof ToursRoute
+  '/tours': typeof ToursRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations/': typeof DestinationsIndexRoute
+  '/tours/': typeof ToursIndexRoute
   '/_authenticated/admin/bookings': typeof AuthenticatedAdminBookingsRoute
   '/_authenticated/admin/chat': typeof AuthenticatedAdminChatRoute
   '/_authenticated/admin/experiences': typeof AuthenticatedAdminExperiencesRoute
@@ -282,6 +290,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/destinations/$slug'
     | '/destinations/'
+    | '/tours/'
     | '/admin/bookings'
     | '/admin/chat'
     | '/admin/experiences'
@@ -305,9 +314,9 @@ export interface FileRouteTypes {
     | '/packages'
     | '/reset-password'
     | '/sustainability'
-    | '/tours'
     | '/destinations/$slug'
     | '/destinations'
+    | '/tours'
     | '/admin/bookings'
     | '/admin/chat'
     | '/admin/experiences'
@@ -337,6 +346,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/destinations/$slug'
     | '/destinations/'
+    | '/tours/'
     | '/_authenticated/admin/bookings'
     | '/_authenticated/admin/chat'
     | '/_authenticated/admin/experiences'
@@ -363,7 +373,7 @@ export interface RootRouteChildren {
   PackagesRoute: typeof PackagesRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SustainabilityRoute: typeof SustainabilityRoute
-  ToursRoute: typeof ToursRoute
+  ToursRoute: typeof ToursRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -458,6 +468,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/tours/': {
+      id: '/tours/'
+      path: '/'
+      fullPath: '/tours/'
+      preLoaderRoute: typeof ToursIndexRouteImport
+      parentRoute: typeof ToursRoute
     }
     '/destinations/': {
       id: '/destinations/'
@@ -620,6 +637,16 @@ const DestinationsRouteWithChildren = DestinationsRoute._addFileChildren(
   DestinationsRouteChildren,
 )
 
+interface ToursRouteChildren {
+  ToursIndexRoute: typeof ToursIndexRoute
+}
+
+const ToursRouteChildren: ToursRouteChildren = {
+  ToursIndexRoute: ToursIndexRoute,
+}
+
+const ToursRouteWithChildren = ToursRoute._addFileChildren(ToursRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -633,7 +660,7 @@ const rootRouteChildren: RootRouteChildren = {
   PackagesRoute: PackagesRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SustainabilityRoute: SustainabilityRoute,
-  ToursRoute: ToursRoute,
+  ToursRoute: ToursRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
