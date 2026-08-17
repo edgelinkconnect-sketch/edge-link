@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ToursRouteImport } from './routes/tours'
 import { Route as SustainabilityRouteImport } from './routes/sustainability'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PackagesRouteImport } from './routes/packages'
@@ -36,6 +37,11 @@ import { Route as AuthenticatedAdminExperiencesRouteImport } from './routes/_aut
 import { Route as AuthenticatedAdminChatRouteImport } from './routes/_authenticated/admin/chat'
 import { Route as AuthenticatedAdminBookingsRouteImport } from './routes/_authenticated/admin/bookings'
 
+const ToursRoute = ToursRouteImport.update({
+  id: '/tours',
+  path: '/tours',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SustainabilityRoute = SustainabilityRouteImport.update({
   id: '/sustainability',
   path: '/sustainability',
@@ -186,6 +192,7 @@ export interface FileRoutesByFullPath {
   '/packages': typeof PackagesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
+  '/tours': typeof ToursRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations/': typeof DestinationsIndexRoute
@@ -212,6 +219,7 @@ export interface FileRoutesByTo {
   '/packages': typeof PackagesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
+  '/tours': typeof ToursRoute
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations': typeof DestinationsIndexRoute
   '/admin/bookings': typeof AuthenticatedAdminBookingsRoute
@@ -240,6 +248,7 @@ export interface FileRoutesById {
   '/packages': typeof PackagesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
+  '/tours': typeof ToursRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/destinations/': typeof DestinationsIndexRoute
@@ -269,6 +278,7 @@ export interface FileRouteTypes {
     | '/packages'
     | '/reset-password'
     | '/sustainability'
+    | '/tours'
     | '/admin'
     | '/destinations/$slug'
     | '/destinations/'
@@ -295,6 +305,7 @@ export interface FileRouteTypes {
     | '/packages'
     | '/reset-password'
     | '/sustainability'
+    | '/tours'
     | '/destinations/$slug'
     | '/destinations'
     | '/admin/bookings'
@@ -322,6 +333,7 @@ export interface FileRouteTypes {
     | '/packages'
     | '/reset-password'
     | '/sustainability'
+    | '/tours'
     | '/_authenticated/admin'
     | '/destinations/$slug'
     | '/destinations/'
@@ -351,10 +363,18 @@ export interface RootRouteChildren {
   PackagesRoute: typeof PackagesRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SustainabilityRoute: typeof SustainabilityRoute
+  ToursRoute: typeof ToursRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tours': {
+      id: '/tours'
+      path: '/tours'
+      fullPath: '/tours'
+      preLoaderRoute: typeof ToursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sustainability': {
       id: '/sustainability'
       path: '/sustainability'
@@ -613,6 +633,7 @@ const rootRouteChildren: RootRouteChildren = {
   PackagesRoute: PackagesRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SustainabilityRoute: SustainabilityRoute,
+  ToursRoute: ToursRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
