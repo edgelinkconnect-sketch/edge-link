@@ -13,7 +13,7 @@ const LINKS = [
   { to: "/dashboard/chat", key: "chat", icon: MessageSquare },
   { to: "/dashboard/experiences", key: "experiences", icon: Camera },
   { to: "/dashboard/profile", key: "profile", icon: Settings },
-] as const;
+] satisfies { to: string; key: string; icon: React.ElementType; exact?: boolean }[];
 
 export function DashboardShell({
   title,
