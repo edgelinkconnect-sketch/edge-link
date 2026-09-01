@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { AskSpecialistButton } from "@/components/ask-specialist";
 import { AppShell } from "@/components/layout/app-shell";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
@@ -74,9 +75,7 @@ function FAQ() {
         <div className="mt-12 rounded-2xl border border-border bg-forest-deep p-8 text-center text-primary-foreground">
           <h3 className="font-display text-2xl font-bold">Still have questions?</h3>
           <p className="mt-2 text-primary-foreground/80">Our team responds to every inquiry within 24 hours.</p>
-          <Button asChild className="mt-5 bg-gold text-gold-foreground hover:brightness-95">
-            <Link to="/contact">Ask a Specialist</Link>
-          </Button>
+          <AskSpecialistButton className="mt-5 bg-gold text-gold-foreground hover:brightness-95" />
         </div>
       </section>
     </AppShell>

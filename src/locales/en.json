@@ -1,5 +1,8 @@
 {
-  "brand": { "name": "EDGELINK", "tagline": "Tours" },
+  "brand": {
+    "name": "EDGELINK",
+    "tagline": "Tours"
+  },
   "nav": {
     "home": "Home",
     "destinations": "Destinations",
@@ -18,9 +21,15 @@
     "admin": "Admin",
     "createAccount": "Create account",
     "myDashboard": "My dashboard",
-    "adminPanel": "Admin panel"
+    "adminPanel": "Admin panel",
+    "explore": "Tours & Itineraries"
   },
-  "theme": { "toggle": "Toggle theme", "light": "Light", "dark": "Dark", "system": "System" },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
   "common": {
     "loading": "Loading…",
     "save": "Save",
@@ -284,5 +293,36 @@
     "rights": "All rights reserved.",
     "privacy": "Privacy",
     "terms": "Terms"
+  },
+  "specialist": {
+    "cta": "Ask a specialist",
+    "signInTitle": "Sign in to chat with a specialist",
+    "signInBody": "Create a free account or sign in to open a live conversation with our travel designers."
+  },
+  "hub": {
+    "eyebrow": "Explore",
+    "title": "Tours, destinations & itineraries",
+    "subtitle": "One place for every EDGELINK journey — filter by park, activity or trip length.",
+    "region": "Destination",
+    "activity": "Activity",
+    "duration": "Trip length",
+    "all": "All",
+    "empty": "No journeys match those filters yet.",
+    "view": "View journey",
+    "from": "From",
+    "results_one": "{{count}} journey",
+    "results_other": "{{count}} journeys"
+  },
+  "dashboardNav": {
+    "overview": "Overview",
+    "bookings": "Bookings",
+    "chat": "Chat",
+    "experiences": "Experiences",
+    "profile": "Profile"
+  },
+  "team": {
+    "eyebrow": "Our people",
+    "title": "Meet the team",
+    "subtitle": "Guides, planners and conservationists who make every journey personal."
   }
 }

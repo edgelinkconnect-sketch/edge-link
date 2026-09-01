@@ -16,9 +16,7 @@ export function Nav() {
 
   const NAV = [
     { to: "/", label: t("nav.home") },
-    { to: "/destinations", label: t("nav.destinations") },
-    { to: "/tours", label: t("nav.tours") },
-    { to: "/packages", label: t("nav.packages") },
+    { to: "/tours", label: t("nav.explore") },
     { to: "/gallery", label: t("nav.gallery") },
     { to: "/sustainability", label: t("nav.sustainability") },
     { to: "/journal", label: t("nav.journal") },

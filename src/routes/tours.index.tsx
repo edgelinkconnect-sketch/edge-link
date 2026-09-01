@@ -3,6 +3,8 @@ import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ArrowRight, Clock, MapPin, Mountain } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { AskSpecialistButton } from "@/components/ask-specialist";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -54,36 +56,41 @@ export function useTours() {
 }
 
 function ToursIndex() {
+  const { t } = useTranslation();
   const { data: tours, isLoading } = useTours();
   const [region, setRegion] = useState("All");
   const [activity, setActivity] = useState("All");
+  const [duration, setDuration] = useState("All");
   const media = useMediaUrls("tours", (tours ?? []).map((t) => t.featured_image_url));
 
   const regions = useMemo(() => ["All", ...new Set((tours ?? []).map((t) => t.region || t.location).filter(Boolean))], [tours]);
+  const durations = useMemo(() => ["All", ...new Set((tours ?? []).map((t) => t.duration).filter(Boolean))], [tours]);
   const activities = useMemo(() => ["All", ...new Set((tours ?? []).map((t) => t.activity).filter(Boolean) as string[])], [tours]);
 
   const items = (tours ?? []).filter(
     (t) =>
       (region === "All" || (t.region || t.location) === region) &&
-      (activity === "All" || t.activity === activity),
+      (activity === "All" || t.activity === activity) &&
+      (duration === "All" || t.duration === duration),
   );
 
   return (
     <AppShell>
       <section className="border-b border-border bg-forest-deep py-16 text-primary-foreground md:py-20">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">Tours</p>
-          <h1 className="font-display text-4xl font-bold md:text-5xl">Every EDGELINK expedition</h1>
-          <p className="mt-3 max-w-2xl text-primary-foreground/80">
-            Live from our catalogue — filter by park or by the kind of adventure you're after.
-          </p>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">{t("hub.eyebrow")}</p>
+          <h1 className="font-display text-4xl font-bold md:text-5xl">{t("hub.title")}</h1>
+          <p className="mt-3 max-w-2xl text-primary-foreground/80">{t("hub.subtitle")}</p>
+          <AskSpecialistButton className="mt-6 bg-gold text-gold-foreground hover:brightness-95" />
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 md:px-6">
         <div className="mb-8 space-y-3">
-          <FilterRow label="Region" options={regions as string[]} value={region} onChange={setRegion} />
-          <FilterRow label="Activity" options={activities} value={activity} onChange={setActivity} />
+          <FilterRow label={t("hub.region")} options={regions as string[]} value={region} onChange={setRegion} />
+          <FilterRow label={t("hub.activity")} options={activities} value={activity} onChange={setActivity} />
+          <FilterRow label={t("hub.duration")} options={durations} value={duration} onChange={setDuration} />
+          <p className="pt-1 text-xs text-muted-foreground">{t("hub.results", { count: items.length })}</p>
         </div>
 
         {isLoading ? (
@@ -92,7 +99,7 @@ function ToursIndex() {
           </div>
         ) : items.length === 0 ? (
           <p className="rounded-xl border border-dashed border-border p-10 text-center text-muted-foreground">
-            No tours match those filters yet.
+            {t("hub.empty")}
           </p>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -123,12 +130,12 @@ function ToursIndex() {
                   <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{t.description}</p>
                   <div className="mt-auto flex items-end justify-between border-t border-border pt-4">
                     <div>
-                      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">From</div>
+                      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{t("hub.from")}</div>
                       <div className="font-display text-2xl font-bold text-forest">${Number(t.price).toLocaleString()}</div>
                     </div>
                     <Button asChild size="sm" className="bg-forest text-primary-foreground hover:bg-forest-deep">
                       <Link to="/tours/$slug" params={{ slug: t.slug ?? t.id }}>
-                        View <ArrowRight className="ml-1 h-4 w-4" />
+                        {t("hub.view")} <ArrowRight className="ml-1 h-4 w-4" />
                       </Link>
                     </Button>
                   </div>
@@ -143,6 +150,8 @@ function ToursIndex() {
 }
 
 function FilterRow({ label, options, value, onChange }: { label: string; options: string[]; value: string; onChange: (v: string) => void }) {
+  const { t } = useTranslation();
+  const allLabel = t("hub.all");
   return (
     <div className="flex flex-wrap items-center gap-2">
       <span className="mr-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
@@ -154,7 +163,7 @@ function FilterRow({ label, options, value, onChange }: { label: string; options
             value === o ? "border-forest bg-forest text-primary-foreground" : "border-border hover:border-forest/50"
           }`}
         >
-          {o}
+          {o === "All" ? allLabel : o}
         </button>
       ))}
     </div>
