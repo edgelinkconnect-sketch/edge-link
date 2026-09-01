@@ -13,7 +13,7 @@ const LINKS = [
   { to: "/dashboard/chat", key: "chat", icon: MessageSquare },
   { to: "/dashboard/experiences", key: "experiences", icon: Camera },
   { to: "/dashboard/profile", key: "profile", icon: Settings },
-] satisfies { to: string; key: string; icon: React.ElementType; exact?: boolean }[];
+] as const;
 
 export function DashboardShell({
   title,
@@ -39,7 +39,7 @@ export function DashboardShell({
               <Link
                 key={l.to}
                 to={l.to}
-                activeOptions={{ exact: l.exact }}
+                activeOptions={{ exact: "exact" in l }}
                 className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/75 transition hover:bg-muted data-[status=active]:bg-forest data-[status=active]:text-cream"
               >
                 <l.icon className="h-4 w-4" /> {t(`dashboardNav.${l.key}`)}
@@ -71,7 +71,7 @@ export function DashboardShell({
               <Link
                 key={l.to}
                 to={l.to}
-                activeOptions={{ exact: l.exact }}
+                activeOptions={{ exact: "exact" in l }}
                 className="shrink-0 rounded-full border border-border px-3.5 py-1.5 text-xs font-medium data-[status=active]:border-forest data-[status=active]:bg-forest data-[status=active]:text-cream"
               >
                 {t(`dashboardNav.${l.key}`)}
