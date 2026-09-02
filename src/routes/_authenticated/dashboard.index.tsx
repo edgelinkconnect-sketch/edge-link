@@ -98,48 +98,26 @@ function Dashboard() {
   const firstName = (profile?.full_name || user?.email || "").split(/[ @]/)[0];
 
   return (
-    <AppShell>
-      <section className="relative overflow-hidden gradient-forest py-14 text-cream">
+    <DashboardShell
+      title={`Karibu, ${firstName}`}
+      description="Everything about your East African journey — bookings, conversations and memories — in one place."
+      actions={
+        <Button asChild size="sm" variant="outline">
+          <Link to="/tours">Browse journeys</Link>
+        </Button>
+      }
+    >
+      <section className="relative overflow-hidden rounded-2xl gradient-forest p-6 text-cream">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.07]"
           style={{ backgroundImage: "radial-gradient(circle at 20% 20%, white 1px, transparent 1px)", backgroundSize: "26px 26px" }}
         />
-        <div className="relative mx-auto max-w-7xl px-4 md:px-6">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-gold">Your dashboard</p>
-              <h1 className="mt-3 font-display text-4xl leading-tight md:text-5xl">
-                Karibu, <span className="text-gold">{firstName}</span>
-              </h1>
-              <p className="mt-2 max-w-md text-sm text-cream/70">
-                Everything about your East African journey — bookings, conversations and memories — in one place.
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <NotificationToggle className="border-cream/30 text-cream hover:bg-cream/10" />
-              {isAdmin && (
-                <Button asChild className="bg-gold text-gold-foreground hover:brightness-95">
-                  <Link to="/admin">Open admin</Link>
-                </Button>
-              )}
-              <Button asChild variant="outline" className="border-cream/30 bg-transparent text-cream hover:bg-cream/10">
-                <Link to="/packages">Browse itineraries</Link>
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => void signOut()}
-                className="border-cream/30 bg-transparent text-cream hover:bg-cream/10"
-              >
-                <LogOut className="mr-2 h-4 w-4" /> Sign out
-              </Button>
-            </div>
+        <div className="relative flex flex-wrap items-center gap-6">
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gold text-gold-foreground">
+            <Plane className="h-6 w-6" />
           </div>
-
-          {upcoming && (
-            <div className="mt-10 flex flex-wrap items-center gap-6 rounded-2xl border border-cream/15 bg-cream/5 p-5 backdrop-blur">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gold text-gold-foreground">
-                <Plane className="h-6 w-6" />
-              </div>
+          {upcoming ? (
+            <>
               <div className="min-w-[12rem] flex-1">
                 <div className="text-xs uppercase tracking-widest text-cream/60">Next departure</div>
                 <div className="font-display text-xl">{(upcoming as any).tours?.name ?? "Your tour"}</div>
@@ -151,12 +129,18 @@ function Dashboard() {
                 <div className="font-display text-4xl text-gold">{daysToGo}</div>
                 <div className="text-xs uppercase tracking-widest text-cream/60">days to go</div>
               </div>
+            </>
+          ) : (
+            <div className="min-w-[12rem] flex-1">
+              <div className="text-xs uppercase tracking-widest text-cream/60">Next departure</div>
+              <div className="font-display text-xl">Nothing on the calendar yet</div>
+              <div className="text-xs text-cream/70">Pick a journey and we'll count down the days with you.</div>
             </div>
           )}
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-10 md:px-6">
+      <section className="py-8">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard icon={Calendar} label="Bookings" value={bookings?.length ?? 0} to="/dashboard/bookings" />
           <StatCard icon={Star} label="Experiences shared" value={experienceCount ?? 0} to="/dashboard/experiences" />
@@ -169,7 +153,7 @@ function Dashboard() {
           />
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-3">
+        <div className="mt-8 grid gap-6 lg:grid-cols-3">
           <Card className="p-6 lg:col-span-2">
             <div className="flex items-center justify-between">
               <div>
