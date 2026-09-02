@@ -21,19 +21,26 @@ function ProfilePage() {
 
   useEffect(() => {
     if (!user) return;
-    void supabase.from("profiles").select("*").eq("id", user.id).maybeSingle().then(({ data }) => {
-      if (data) {
-        setFullName(data.full_name ?? "");
-        setPhone(data.phone ?? "");
-      }
-    });
+    void supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setFullName(data.full_name ?? "");
+          setPhone(data.phone ?? "");
+        }
+      });
   }, [user]);
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
     setBusy(true);
-    const { error } = await supabase.from("profiles").upsert({ id: user.id, full_name: fullName, phone });
+    const { error } = await supabase
+      .from("profiles")
+      .upsert({ id: user.id, full_name: fullName, phone });
     setBusy(false);
     if (error) return toast.error(error.message);
     toast.success("Profile saved");
@@ -49,7 +56,12 @@ function ProfilePage() {
           </div>
           <div>
             <Label htmlFor="fullName">Full name</Label>
-            <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+            <Input
+              id="fullName"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+            />
           </div>
           <div>
             <Label htmlFor="phone">Phone</Label>

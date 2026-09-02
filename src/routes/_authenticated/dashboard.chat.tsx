@@ -19,7 +19,11 @@ export const Route = createFileRoute("/_authenticated/dashboard/chat")({
   head: () => ({
     meta: [
       { title: "Support chat — EDGELINK Tours" },
-      { name: "description", content: "Message your EDGELINK Tours travel designer in real time about bookings, itineraries and payments." },
+      {
+        name: "description",
+        content:
+          "Message your EDGELINK Tours travel designer in real time about bookings, itineraries and payments.",
+      },
       { property: "og:title", content: "Support chat — EDGELINK Tours" },
       { property: "og:description", content: "Message your travel designer in real time." },
       { property: "og:type", content: "website" },
@@ -85,7 +89,11 @@ function ClientChat() {
       title="Support chat"
       description="Message your travel designer in real time."
       actions={
-        <Button size="sm" onClick={() => setNewOpen(true)} className="bg-gold text-gold-foreground hover:brightness-95">
+        <Button
+          size="sm"
+          onClick={() => setNewOpen(true)}
+          className="bg-gold text-gold-foreground hover:brightness-95"
+        >
           <Plus className="mr-1.5 h-4 w-4" /> New conversation
         </Button>
       }
@@ -104,7 +112,9 @@ function ClientChat() {
               />
             </div>
             <div className="flex-1 space-y-1 overflow-y-auto p-2">
-              {isLoading && <Loader2 className="mx-auto my-6 h-5 w-5 animate-spin text-muted-foreground" />}
+              {isLoading && (
+                <Loader2 className="mx-auto my-6 h-5 w-5 animate-spin text-muted-foreground" />
+              )}
               {!isLoading && filtered.length === 0 && (
                 <div className="p-6 text-center">
                   <MessageSquare className="mx-auto h-5 w-5 text-muted-foreground" />
@@ -125,14 +135,17 @@ function ClientChat() {
                     <span
                       className={cn(
                         "shrink-0 rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wide",
-                        c.status === "resolved" ? "bg-muted text-muted-foreground" : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
+                        c.status === "resolved"
+                          ? "bg-muted text-muted-foreground"
+                          : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
                       )}
                     >
                       {c.status}
                     </span>
                   </div>
                   <div className="mt-0.5 truncate text-xs text-muted-foreground">
-                    {c.category} · {formatDistanceToNow(new Date(c.last_message_at), { addSuffix: true })}
+                    {c.category} ·{" "}
+                    {formatDistanceToNow(new Date(c.last_message_at), { addSuffix: true })}
                   </div>
                 </button>
               ))}
@@ -143,7 +156,9 @@ function ClientChat() {
             {active ? (
               <>
                 <div className="border-b border-border bg-muted/40 px-4 py-3">
-                  <div className="font-display text-lg font-semibold text-forest">{active.subject}</div>
+                  <div className="font-display text-lg font-semibold text-forest">
+                    {active.subject}
+                  </div>
                   <div className="text-xs text-muted-foreground">{active.category}</div>
                 </div>
                 <ChatThread chatId={active.id} role="client" />
@@ -157,7 +172,10 @@ function ClientChat() {
                 <p className="mt-1 max-w-xs text-sm text-muted-foreground">
                   Ask about availability, permits, or a fully bespoke itinerary — we reply fast.
                 </p>
-                <Button onClick={() => setNewOpen(true)} className="mt-5 bg-gold text-gold-foreground hover:brightness-95">
+                <Button
+                  onClick={() => setNewOpen(true)}
+                  className="mt-5 bg-gold text-gold-foreground hover:brightness-95"
+                >
                   <Plus className="mr-1.5 h-4 w-4" /> New conversation
                 </Button>
               </div>
@@ -174,7 +192,11 @@ function ClientChat() {
           <div className="space-y-4">
             <div className="space-y-1.5">
               <Label>Subject</Label>
-              <Input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Question about my gorilla trek" />
+              <Input
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="Question about my gorilla trek"
+              />
             </div>
             <div className="space-y-1.5">
               <Label>Category</Label>
@@ -186,7 +208,9 @@ function ClientChat() {
                     onClick={() => setCategory(c)}
                     className={cn(
                       "rounded-full border px-3 py-1.5 text-xs transition",
-                      category === c ? "border-forest bg-forest text-cream" : "border-border hover:border-gold",
+                      category === c
+                        ? "border-forest bg-forest text-cream"
+                        : "border-border hover:border-gold",
                     )}
                   >
                     {c}
@@ -194,7 +218,11 @@ function ClientChat() {
                 ))}
               </div>
             </div>
-            <Button onClick={() => create.mutate()} disabled={create.isPending} className="w-full bg-gold text-gold-foreground">
+            <Button
+              onClick={() => create.mutate()}
+              disabled={create.isPending}
+              className="w-full bg-gold text-gold-foreground"
+            >
               {create.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Start chat
             </Button>
           </div>

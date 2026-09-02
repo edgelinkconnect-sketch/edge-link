@@ -29,10 +29,18 @@ export function Nav() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 md:px-6">
         <Link to="/" className="flex shrink-0 items-center gap-3" onClick={() => setOpen(false)}>
-          <img src={logo.url} alt="EDGELINK Travel and Tour logo" className="h-11 w-11 rounded-full object-cover ring-2 ring-gold" />
+          <img
+            src={logo.url}
+            alt="EDGELINK Travel and Tour logo"
+            className="h-11 w-11 rounded-full object-cover ring-2 ring-gold"
+          />
           <div className="hidden flex-col leading-tight sm:flex">
-            <span className="font-display text-lg font-bold tracking-wide text-forest">{t("brand.name")}</span>
-            <span className="-mt-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{t("brand.tagline")}</span>
+            <span className="font-display text-lg font-bold tracking-wide text-forest">
+              {t("brand.name")}
+            </span>
+            <span className="-mt-0.5 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              {t("brand.tagline")}
+            </span>
           </div>
         </Link>
 
@@ -66,10 +74,20 @@ export function Nav() {
               </Link>
             </Button>
           )}
-          <Button asChild size="sm" className="hidden bg-gold text-gold-foreground shadow-luxe hover:brightness-95 md:inline-flex">
+          <Button
+            asChild
+            size="sm"
+            className="hidden bg-gold text-gold-foreground shadow-luxe hover:brightness-95 md:inline-flex"
+          >
             <Link to="/contact">{t("nav.bookNow")}</Link>
           </Button>
-          <Button variant="ghost" size="icon" className="xl:hidden" onClick={() => setOpen((o) => !o)} aria-label="Toggle menu">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="xl:hidden"
+            onClick={() => setOpen((o) => !o)}
+            aria-label="Toggle menu"
+          >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
@@ -95,13 +113,27 @@ export function Nav() {
                   {n.label}
                 </Link>
               ))}
-              <Link to="/contact" onClick={() => setOpen(false)} className="mt-2 rounded-md bg-gold px-3 py-2.5 text-center text-sm font-semibold text-gold-foreground">{t("nav.bookNow")}</Link>
+              <Link
+                to="/contact"
+                onClick={() => setOpen(false)}
+                className="mt-2 rounded-md bg-gold px-3 py-2.5 text-center text-sm font-semibold text-gold-foreground"
+              >
+                {t("nav.bookNow")}
+              </Link>
               {user ? (
-                <Link to={isAdmin ? "/admin" : "/dashboard"} onClick={() => setOpen(false)} className="rounded-md border border-forest px-3 py-2.5 text-center text-sm font-semibold text-forest">
+                <Link
+                  to={isAdmin ? "/admin" : "/dashboard"}
+                  onClick={() => setOpen(false)}
+                  className="rounded-md border border-forest px-3 py-2.5 text-center text-sm font-semibold text-forest"
+                >
                   {isAdmin ? t("nav.adminPanel") : t("nav.myDashboard")}
                 </Link>
               ) : (
-                <Link to="/auth" onClick={() => setOpen(false)} className="rounded-md border border-forest px-3 py-2.5 text-center text-sm font-semibold text-forest">
+                <Link
+                  to="/auth"
+                  onClick={() => setOpen(false)}
+                  className="rounded-md border border-forest px-3 py-2.5 text-center text-sm font-semibold text-forest"
+                >
                   {t("nav.signIn")} / {t("nav.createAccount")}
                 </Link>
               )}

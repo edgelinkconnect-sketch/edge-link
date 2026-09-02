@@ -15,7 +15,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/_authenticated/dashboard/experiences")({
-  head: () => ({ meta: [{ title: "Share an experience — EDGELINK Tours" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: "Share an experience — EDGELINK Tours" },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
   component: MyExperiences,
 });
 
@@ -100,7 +105,11 @@ function MyExperiences() {
         <Card className="p-6">
           {completed?.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              You don't have a completed journey yet. <Link to="/dashboard/bookings" className="underline">View bookings</Link>.
+              You don't have a completed journey yet.{" "}
+              <Link to="/dashboard/bookings" className="underline">
+                View bookings
+              </Link>
+              .
             </p>
           ) : (
             <form
@@ -131,8 +140,15 @@ function MyExperiences() {
                 <Label>Rating</Label>
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((n) => (
-                    <button key={n} type="button" onClick={() => setRating(n)} aria-label={`${n} stars`}>
-                      <Star className={`h-6 w-6 ${n <= rating ? "fill-gold text-gold" : "text-muted-foreground"}`} />
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => setRating(n)}
+                      aria-label={`${n} stars`}
+                    >
+                      <Star
+                        className={`h-6 w-6 ${n <= rating ? "fill-gold text-gold" : "text-muted-foreground"}`}
+                      />
                     </button>
                   ))}
                 </div>
@@ -140,7 +156,13 @@ function MyExperiences() {
 
               <div className="space-y-1.5">
                 <Label>Your story ({message.length}/200)</Label>
-                <Textarea rows={4} maxLength={200} value={message} onChange={(e) => setMessage(e.target.value)} required />
+                <Textarea
+                  rows={4}
+                  maxLength={200}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  required
+                />
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
@@ -159,8 +181,13 @@ function MyExperiences() {
                 </div>
               </div>
 
-              <Button type="submit" disabled={submit.isPending} className="w-full bg-gold text-gold-foreground">
-                {submit.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Submit for review
+              <Button
+                type="submit"
+                disabled={submit.isPending}
+                className="w-full bg-gold text-gold-foreground"
+              >
+                {submit.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Submit for
+                review
               </Button>
             </form>
           )}
@@ -172,7 +199,9 @@ function MyExperiences() {
             {mine.map((x) => (
               <Card key={x.id} className="flex flex-wrap items-start justify-between gap-3 p-4">
                 <div>
-                  <div className="font-semibold text-forest">{(x as { tours?: { name?: string } }).tours?.name}</div>
+                  <div className="font-semibold text-forest">
+                    {(x as { tours?: { name?: string } }).tours?.name}
+                  </div>
                   <div className="text-xs text-muted-foreground">
                     {"★".repeat(x.rating)} · {format(new Date(x.submitted_at), "PP")}
                   </div>
