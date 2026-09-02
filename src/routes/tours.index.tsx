@@ -56,7 +56,7 @@ export function useTours() {
 }
 
 function ToursIndex() {
-  const { t } = useTranslation();
+  const { t: tr } = useTranslation();
   const { data: tours, isLoading } = useTours();
   const [region, setRegion] = useState("All");
   const [activity, setActivity] = useState("All");
@@ -78,19 +78,19 @@ function ToursIndex() {
     <AppShell>
       <section className="border-b border-border bg-forest-deep py-16 text-primary-foreground md:py-20">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">{t("hub.eyebrow")}</p>
-          <h1 className="font-display text-4xl font-bold md:text-5xl">{t("hub.title")}</h1>
-          <p className="mt-3 max-w-2xl text-primary-foreground/80">{t("hub.subtitle")}</p>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">{tr("hub.eyebrow")}</p>
+          <h1 className="font-display text-4xl font-bold md:text-5xl">{tr("hub.title")}</h1>
+          <p className="mt-3 max-w-2xl text-primary-foreground/80">{tr("hub.subtitle")}</p>
           <AskSpecialistButton className="mt-6 bg-gold text-gold-foreground hover:brightness-95" />
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 md:px-6">
         <div className="mb-8 space-y-3">
-          <FilterRow label={t("hub.region")} options={regions as string[]} value={region} onChange={setRegion} />
-          <FilterRow label={t("hub.activity")} options={activities} value={activity} onChange={setActivity} />
-          <FilterRow label={t("hub.duration")} options={durations} value={duration} onChange={setDuration} />
-          <p className="pt-1 text-xs text-muted-foreground">{t("hub.results", { count: items.length })}</p>
+          <FilterRow label={tr("hub.region")} options={regions as string[]} value={region} onChange={setRegion} />
+          <FilterRow label={tr("hub.activity")} options={activities} value={activity} onChange={setActivity} />
+          <FilterRow label={tr("hub.duration")} options={durations} value={duration} onChange={setDuration} />
+          <p className="pt-1 text-xs text-muted-foreground">{tr("hub.results", { count: items.length })}</p>
         </div>
 
         {isLoading ? (
@@ -99,7 +99,7 @@ function ToursIndex() {
           </div>
         ) : items.length === 0 ? (
           <p className="rounded-xl border border-dashed border-border p-10 text-center text-muted-foreground">
-            {t("hub.empty")}
+            {tr("hub.empty")}
           </p>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -130,12 +130,12 @@ function ToursIndex() {
                   <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{t.description}</p>
                   <div className="mt-auto flex items-end justify-between border-t border-border pt-4">
                     <div>
-                      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{t("hub.from")}</div>
+                      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{tr("hub.from")}</div>
                       <div className="font-display text-2xl font-bold text-forest">${Number(t.price).toLocaleString()}</div>
                     </div>
                     <Button asChild size="sm" className="bg-forest text-primary-foreground hover:bg-forest-deep">
                       <Link to="/tours/$slug" params={{ slug: t.slug ?? t.id }}>
-                        {t("hub.view")} <ArrowRight className="ml-1 h-4 w-4" />
+                        {tr("hub.view")} <ArrowRight className="ml-1 h-4 w-4" />
                       </Link>
                     </Button>
                   </div>
