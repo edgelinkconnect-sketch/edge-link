@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AppShell } from "@/components/layout/app-shell";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
-import { NotificationToggle } from "@/components/notification-toggle";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -11,7 +10,6 @@ import {
   MessageSquare,
   Star,
   User as UserIcon,
-  LogOut,
   MapPin,
   ArrowRight,
   Plane,
@@ -26,9 +24,17 @@ export const Route = createFileRoute("/_authenticated/dashboard/")({
   head: () => ({
     meta: [
       { title: "My Dashboard — EDGELINK Tours" },
-      { name: "description", content: "Track your safari bookings, chat with your travel designer and share your EDGELINK Tours experiences." },
+      {
+        name: "description",
+        content:
+          "Track your safari bookings, chat with your travel designer and share your EDGELINK Tours experiences.",
+      },
       { property: "og:title", content: "My Dashboard — EDGELINK Tours" },
-      { property: "og:description", content: "Track your safari bookings, chat with your travel designer and share your experiences." },
+      {
+        property: "og:description",
+        content:
+          "Track your safari bookings, chat with your travel designer and share your experiences.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
@@ -38,7 +44,7 @@ export const Route = createFileRoute("/_authenticated/dashboard/")({
 });
 
 function Dashboard() {
-  const { user, isAdmin, signOut } = useAuth();
+  const { user } = useAuth();
 
   const { data: bookings, isLoading: loadingBookings } = useQuery({
     queryKey: ["my-bookings", user?.id],
@@ -89,7 +95,9 @@ function Dashboard() {
   });
 
   const upcoming = (bookings ?? [])
-    .filter((b) => b.travel_start && b.status !== "cancelled" && new Date(b.travel_start) >= new Date())
+    .filter(
+      (b) => b.travel_start && b.status !== "cancelled" && new Date(b.travel_start) >= new Date(),
+    )
     .sort((a, b) => (a.travel_start! < b.travel_start! ? -1 : 1))[0];
   const daysToGo = upcoming?.travel_start
     ? differenceInCalendarDays(new Date(upcoming.travel_start), new Date())
@@ -98,69 +106,78 @@ function Dashboard() {
   const firstName = (profile?.full_name || user?.email || "").split(/[ @]/)[0];
 
   return (
-    <AppShell>
-      <section className="relative overflow-hidden gradient-forest py-14 text-cream">
+    <DashboardShell
+      title={`Karibu, ${firstName}`}
+      description="Everything about your East African journey — bookings, conversations and memories — in one place."
+      actions={
+        <Button asChild size="sm" variant="outline">
+          <Link to="/tours">Browse journeys</Link>
+        </Button>
+      }
+    >
+      <section className="relative overflow-hidden rounded-2xl gradient-forest p-6 text-cream">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          style={{ backgroundImage: "radial-gradient(circle at 20% 20%, white 1px, transparent 1px)", backgroundSize: "26px 26px" }}
+          style={{
+            backgroundImage: "radial-gradient(circle at 20% 20%, white 1px, transparent 1px)",
+            backgroundSize: "26px 26px",
+          }}
         />
-        <div className="relative mx-auto max-w-7xl px-4 md:px-6">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-gold">Your dashboard</p>
-              <h1 className="mt-3 font-display text-4xl leading-tight md:text-5xl">
-                Karibu, <span className="text-gold">{firstName}</span>
-              </h1>
-              <p className="mt-2 max-w-md text-sm text-cream/70">
-                Everything about your East African journey — bookings, conversations and memories — in one place.
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <NotificationToggle className="border-cream/30 text-cream hover:bg-cream/10" />
-              {isAdmin && (
-                <Button asChild className="bg-gold text-gold-foreground hover:brightness-95">
-                  <Link to="/admin">Open admin</Link>
-                </Button>
-              )}
-              <Button asChild variant="outline" className="border-cream/30 bg-transparent text-cream hover:bg-cream/10">
-                <Link to="/packages">Browse itineraries</Link>
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => void signOut()}
-                className="border-cream/30 bg-transparent text-cream hover:bg-cream/10"
-              >
-                <LogOut className="mr-2 h-4 w-4" /> Sign out
-              </Button>
-            </div>
+        <div className="relative flex flex-wrap items-center gap-6">
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gold text-gold-foreground">
+            <Plane className="h-6 w-6" />
           </div>
-
-          {upcoming && (
-            <div className="mt-10 flex flex-wrap items-center gap-6 rounded-2xl border border-cream/15 bg-cream/5 p-5 backdrop-blur">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gold text-gold-foreground">
-                <Plane className="h-6 w-6" />
-              </div>
+          {upcoming ? (
+            <>
               <div className="min-w-[12rem] flex-1">
-                <div className="text-xs uppercase tracking-widest text-cream/60">Next departure</div>
-                <div className="font-display text-xl">{(upcoming as any).tours?.name ?? "Your tour"}</div>
+                <div className="text-xs uppercase tracking-widest text-cream/60">
+                  Next departure
+                </div>
+                <div className="font-display text-xl">
+                  {(upcoming as any).tours?.name ?? "Your tour"}
+                </div>
                 <div className="text-xs text-cream/70">
-                  {(upcoming as any).tours?.location} · {format(new Date(upcoming.travel_start!), "PPP")}
+                  {(upcoming as any).tours?.location} ·{" "}
+                  {format(new Date(upcoming.travel_start!), "PPP")}
                 </div>
               </div>
               <div className="text-right">
                 <div className="font-display text-4xl text-gold">{daysToGo}</div>
                 <div className="text-xs uppercase tracking-widest text-cream/60">days to go</div>
               </div>
+            </>
+          ) : (
+            <div className="min-w-[12rem] flex-1">
+              <div className="text-xs uppercase tracking-widest text-cream/60">Next departure</div>
+              <div className="font-display text-xl">Nothing on the calendar yet</div>
+              <div className="text-xs text-cream/70">
+                Pick a journey and we'll count down the days with you.
+              </div>
             </div>
           )}
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-10 md:px-6">
+      <section className="py-8">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard icon={Calendar} label="Bookings" value={bookings?.length ?? 0} to="/dashboard/bookings" />
-          <StatCard icon={Star} label="Experiences shared" value={experienceCount ?? 0} to="/dashboard/experiences" />
-          <StatCard icon={MessageSquare} label="Open chats" value={openChats ?? 0} to="/dashboard/chat" />
+          <StatCard
+            icon={Calendar}
+            label="Bookings"
+            value={bookings?.length ?? 0}
+            to="/dashboard/bookings"
+          />
+          <StatCard
+            icon={Star}
+            label="Experiences shared"
+            value={experienceCount ?? 0}
+            to="/dashboard/experiences"
+          />
+          <StatCard
+            icon={MessageSquare}
+            label="Open chats"
+            value={openChats ?? 0}
+            to="/dashboard/chat"
+          />
           <StatCard
             icon={UserIcon}
             label="Member since"
@@ -169,7 +186,7 @@ function Dashboard() {
           />
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-3">
+        <div className="mt-8 grid gap-6 lg:grid-cols-3">
           <Card className="p-6 lg:col-span-2">
             <div className="flex items-center justify-between">
               <div>
@@ -177,13 +194,15 @@ function Dashboard() {
                 <p className="text-xs text-muted-foreground">Latest first</p>
               </div>
               <Button asChild size="sm" variant="outline">
-                <Link to="/packages">Book another</Link>
+                <Link to="/tours">Book another</Link>
               </Button>
             </div>
 
             <div className="mt-5 space-y-3">
               {loadingBookings &&
-                [0, 1].map((i) => <div key={i} className="h-20 animate-pulse rounded-xl bg-muted" />)}
+                [0, 1].map((i) => (
+                  <div key={i} className="h-20 animate-pulse rounded-xl bg-muted" />
+                ))}
 
               {!loadingBookings && (bookings?.length ?? 0) === 0 && (
                 <div className="rounded-xl border border-dashed border-border p-10 text-center">
@@ -192,8 +211,12 @@ function Dashboard() {
                   <p className="mt-1 text-xs text-muted-foreground">
                     Your next adventure starts with a single itinerary.
                   </p>
-                  <Button asChild size="sm" className="mt-4 bg-gold text-gold-foreground hover:brightness-95">
-                    <Link to="/packages">Explore itineraries</Link>
+                  <Button
+                    asChild
+                    size="sm"
+                    className="mt-4 bg-gold text-gold-foreground hover:brightness-95"
+                  >
+                    <Link to="/tours">Explore itineraries</Link>
                   </Button>
                 </div>
               )}
@@ -205,10 +228,15 @@ function Dashboard() {
                   className="group flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border p-4 transition hover:border-gold hover:shadow-sm"
                 >
                   <div className="min-w-0">
-                    <div className="font-mono text-[11px] text-muted-foreground">{b.booking_number}</div>
-                    <div className="truncate font-semibold text-forest">{(b as any).tours?.name ?? "Tour"}</div>
+                    <div className="font-mono text-[11px] text-muted-foreground">
+                      {b.booking_number}
+                    </div>
+                    <div className="truncate font-semibold text-forest">
+                      {(b as any).tours?.name ?? "Tour"}
+                    </div>
                     <div className="text-xs text-muted-foreground">
-                      {(b as any).tours?.location} · {b.adults} adults{b.children ? `, ${b.children} kids` : ""}
+                      {(b as any).tours?.location} · {b.adults} adults
+                      {b.children ? `, ${b.children} kids` : ""}
                       {b.travel_start ? ` · ${format(new Date(b.travel_start), "PP")}` : ""}
                     </div>
                   </div>
@@ -225,10 +253,30 @@ function Dashboard() {
             <Card className="p-6">
               <h2 className="font-display text-xl font-semibold text-forest">Quick actions</h2>
               <div className="mt-4 space-y-2">
-                <QuickLink to="/dashboard/bookings" icon={Calendar} title="All bookings" desc="Track and manage trips" />
-                <QuickLink to="/dashboard/chat" icon={MessageSquare} title="Support chat" desc="Talk to your designer" />
-                <QuickLink to="/dashboard/experiences" icon={Camera} title="Share an experience" desc="Photos and reviews" />
-                <QuickLink to="/dashboard/profile" icon={Settings} title="Profile settings" desc="Details and preferences" />
+                <QuickLink
+                  to="/dashboard/bookings"
+                  icon={Calendar}
+                  title="All bookings"
+                  desc="Track and manage trips"
+                />
+                <QuickLink
+                  to="/dashboard/chat"
+                  icon={MessageSquare}
+                  title="Support chat"
+                  desc="Talk to your designer"
+                />
+                <QuickLink
+                  to="/dashboard/experiences"
+                  icon={Camera}
+                  title="Share an experience"
+                  desc="Photos and reviews"
+                />
+                <QuickLink
+                  to="/dashboard/profile"
+                  icon={Settings}
+                  title="Profile settings"
+                  desc="Details and preferences"
+                />
               </div>
             </Card>
 
@@ -237,14 +285,17 @@ function Dashboard() {
               <p className="mt-1 text-sm text-cream/70">
                 Our travel designers are on WhatsApp and live chat every day.
               </p>
-              <Button asChild className="mt-4 w-full bg-gold text-gold-foreground hover:brightness-95">
+              <Button
+                asChild
+                className="mt-4 w-full bg-gold text-gold-foreground hover:brightness-95"
+              >
                 <Link to="/dashboard/chat">Start a conversation</Link>
               </Button>
             </Card>
           </div>
         </div>
       </section>
-    </AppShell>
+    </DashboardShell>
   );
 }
 

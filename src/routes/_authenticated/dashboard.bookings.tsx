@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Loader2, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
-import { AppShell } from "@/components/layout/app-shell";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/status-badge";
@@ -12,7 +12,9 @@ import { useAuth } from "@/hooks/use-auth";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 export const Route = createFileRoute("/_authenticated/dashboard/bookings")({
-  head: () => ({ meta: [{ title: "My bookings — EDGELINK Tours" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [{ title: "My bookings — EDGELINK Tours" }, { name: "robots", content: "noindex" }],
+  }),
   component: MyBookings,
 });
 
@@ -25,7 +27,9 @@ function MyBookings() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("bookings")
-        .select("id, booking_number, status, travel_start, travel_end, adults, children, special_requests, created_at, tours(name, location, duration)")
+        .select(
+          "id, booking_number, status, travel_start, travel_end, adults, children, special_requests, created_at, tours(name, location, duration)",
+        )
         .eq("client_id", user!.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -43,35 +47,44 @@ function MyBookings() {
   };
 
   return (
-    <AppShell>
-      <div className="mx-auto max-w-5xl px-4 py-10 md:px-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h1 className="font-display text-3xl font-bold text-forest">My bookings</h1>
-            <p className="text-sm text-muted-foreground">Track requests, confirmations and completed journeys.</p>
-          </div>
-          <Button asChild variant="outline">
-            <Link to="/packages">Book another</Link>
-          </Button>
-        </div>
-
-        {isLoading && <Loader2 className="mx-auto mt-10 h-6 w-6 animate-spin text-muted-foreground" />}
+    <DashboardShell
+      title="My bookings"
+      description="Track requests, confirmations and completed journeys."
+      actions={
+        <Button asChild variant="outline" size="sm">
+          <Link to="/tours">Book another</Link>
+        </Button>
+      }
+    >
+      <div>
+        {isLoading && (
+          <Loader2 className="mx-auto mt-10 h-6 w-6 animate-spin text-muted-foreground" />
+        )}
 
         {bookings?.length === 0 && (
           <Card className="mt-6 p-10 text-center text-sm text-muted-foreground">
-            No bookings yet. Explore our <Link to="/packages" className="underline">itineraries</Link>.
+            No bookings yet. Explore our{" "}
+            <Link to="/tours" className="underline">
+              itineraries
+            </Link>
+            .
           </Card>
         )}
 
         <div className="mt-6 space-y-4">
           {bookings?.map((b) => {
-            const tour = (b as { tours?: { name?: string; location?: string; duration?: string } }).tours;
+            const tour = (b as { tours?: { name?: string; location?: string; duration?: string } })
+              .tours;
             return (
               <Card key={b.id} className="p-5">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
-                    <div className="font-mono text-xs text-muted-foreground">{b.booking_number}</div>
-                    <div className="font-display text-lg font-bold text-forest">{tour?.name ?? "Tour"}</div>
+                    <div className="font-mono text-xs text-muted-foreground">
+                      {b.booking_number}
+                    </div>
+                    <div className="font-display text-lg font-bold text-forest">
+                      {tour?.name ?? "Tour"}
+                    </div>
                     <div className="mt-1 text-sm text-muted-foreground">
                       {tour?.location} · {tour?.duration} · {b.adults} adults
                       {b.children ? `, ${b.children} children` : ""}
@@ -82,14 +95,18 @@ function MyBookings() {
                         {b.travel_end ? ` → ${format(new Date(b.travel_end), "PP")}` : ""}
                       </div>
                     )}
-                    {b.special_requests && <p className="mt-2 max-w-xl text-sm">{b.special_requests}</p>}
+                    {b.special_requests && (
+                      <p className="mt-2 max-w-xl text-sm">{b.special_requests}</p>
+                    )}
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <StatusBadge status={b.status} />
                     <div className="flex gap-2">
                       <Button asChild size="sm" variant="outline">
                         <a
-                          href={whatsappUrl(`Hello EDGELINK Tours, about booking ${b.booking_number}:`)}
+                          href={whatsappUrl(
+                            `Hello EDGELINK Tours, about booking ${b.booking_number}:`,
+                          )}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -97,7 +114,11 @@ function MyBookings() {
                         </a>
                       </Button>
                       {b.status === "pending" && (
-                        <Button size="sm" variant="outline" onClick={() => void cancel(b.id, b.booking_number)}>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => void cancel(b.id, b.booking_number)}
+                        >
                           Cancel
                         </Button>
                       )}
@@ -114,6 +135,6 @@ function MyBookings() {
           })}
         </div>
       </div>
-    </AppShell>
+    </DashboardShell>
   );
 }

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { Plus, Loader2, MessageSquare, Search } from "lucide-react";
-import { AppShell } from "@/components/layout/app-shell";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +19,11 @@ export const Route = createFileRoute("/_authenticated/dashboard/chat")({
   head: () => ({
     meta: [
       { title: "Support chat — EDGELINK Tours" },
-      { name: "description", content: "Message your EDGELINK Tours travel designer in real time about bookings, itineraries and payments." },
+      {
+        name: "description",
+        content:
+          "Message your EDGELINK Tours travel designer in real time about bookings, itineraries and payments.",
+      },
       { property: "og:title", content: "Support chat — EDGELINK Tours" },
       { property: "og:description", content: "Message your travel designer in real time." },
       { property: "og:type", content: "website" },
@@ -81,20 +85,21 @@ function ClientChat() {
   const active = filtered.find((c) => c.id === activeId) ?? filtered[0];
 
   return (
-    <AppShell>
-      <div className="mx-auto max-w-6xl px-4 py-10 md:px-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-xs uppercase tracking-[0.25em] text-gold">Concierge</p>
-            <h1 className="mt-2 font-display text-3xl font-bold text-forest">Support chat</h1>
-            <p className="text-sm text-muted-foreground">Message your travel designer in real time.</p>
-          </div>
-          <Button onClick={() => setNewOpen(true)} className="bg-gold text-gold-foreground hover:brightness-95">
-            <Plus className="mr-1.5 h-4 w-4" /> New conversation
-          </Button>
-        </div>
-
-        <div className="mt-6 grid gap-4 lg:grid-cols-[19rem_1fr]">
+    <DashboardShell
+      title="Support chat"
+      description="Message your travel designer in real time."
+      actions={
+        <Button
+          size="sm"
+          onClick={() => setNewOpen(true)}
+          className="bg-gold text-gold-foreground hover:brightness-95"
+        >
+          <Plus className="mr-1.5 h-4 w-4" /> New conversation
+        </Button>
+      }
+    >
+      <div>
+        <div className="grid gap-4 lg:grid-cols-[19rem_1fr]">
           <Card className="flex max-h-[36rem] flex-col overflow-hidden p-0">
             <div className="relative border-b border-border p-3">
               <Search className="pointer-events-none absolute left-6 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
@@ -107,7 +112,9 @@ function ClientChat() {
               />
             </div>
             <div className="flex-1 space-y-1 overflow-y-auto p-2">
-              {isLoading && <Loader2 className="mx-auto my-6 h-5 w-5 animate-spin text-muted-foreground" />}
+              {isLoading && (
+                <Loader2 className="mx-auto my-6 h-5 w-5 animate-spin text-muted-foreground" />
+              )}
               {!isLoading && filtered.length === 0 && (
                 <div className="p-6 text-center">
                   <MessageSquare className="mx-auto h-5 w-5 text-muted-foreground" />
@@ -128,14 +135,17 @@ function ClientChat() {
                     <span
                       className={cn(
                         "shrink-0 rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wide",
-                        c.status === "resolved" ? "bg-muted text-muted-foreground" : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
+                        c.status === "resolved"
+                          ? "bg-muted text-muted-foreground"
+                          : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
                       )}
                     >
                       {c.status}
                     </span>
                   </div>
                   <div className="mt-0.5 truncate text-xs text-muted-foreground">
-                    {c.category} · {formatDistanceToNow(new Date(c.last_message_at), { addSuffix: true })}
+                    {c.category} ·{" "}
+                    {formatDistanceToNow(new Date(c.last_message_at), { addSuffix: true })}
                   </div>
                 </button>
               ))}
@@ -146,7 +156,9 @@ function ClientChat() {
             {active ? (
               <>
                 <div className="border-b border-border bg-muted/40 px-4 py-3">
-                  <div className="font-display text-lg font-semibold text-forest">{active.subject}</div>
+                  <div className="font-display text-lg font-semibold text-forest">
+                    {active.subject}
+                  </div>
                   <div className="text-xs text-muted-foreground">{active.category}</div>
                 </div>
                 <ChatThread chatId={active.id} role="client" />
@@ -160,7 +172,10 @@ function ClientChat() {
                 <p className="mt-1 max-w-xs text-sm text-muted-foreground">
                   Ask about availability, permits, or a fully bespoke itinerary — we reply fast.
                 </p>
-                <Button onClick={() => setNewOpen(true)} className="mt-5 bg-gold text-gold-foreground hover:brightness-95">
+                <Button
+                  onClick={() => setNewOpen(true)}
+                  className="mt-5 bg-gold text-gold-foreground hover:brightness-95"
+                >
                   <Plus className="mr-1.5 h-4 w-4" /> New conversation
                 </Button>
               </div>
@@ -177,7 +192,11 @@ function ClientChat() {
           <div className="space-y-4">
             <div className="space-y-1.5">
               <Label>Subject</Label>
-              <Input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Question about my gorilla trek" />
+              <Input
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="Question about my gorilla trek"
+              />
             </div>
             <div className="space-y-1.5">
               <Label>Category</Label>
@@ -189,7 +208,9 @@ function ClientChat() {
                     onClick={() => setCategory(c)}
                     className={cn(
                       "rounded-full border px-3 py-1.5 text-xs transition",
-                      category === c ? "border-forest bg-forest text-cream" : "border-border hover:border-gold",
+                      category === c
+                        ? "border-forest bg-forest text-cream"
+                        : "border-border hover:border-gold",
                     )}
                   >
                     {c}
@@ -197,12 +218,16 @@ function ClientChat() {
                 ))}
               </div>
             </div>
-            <Button onClick={() => create.mutate()} disabled={create.isPending} className="w-full bg-gold text-gold-foreground">
+            <Button
+              onClick={() => create.mutate()}
+              disabled={create.isPending}
+              className="w-full bg-gold text-gold-foreground"
+            >
               {create.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Start chat
             </Button>
           </div>
         </DialogContent>
       </Dialog>
-    </AppShell>
+    </DashboardShell>
   );
 }
