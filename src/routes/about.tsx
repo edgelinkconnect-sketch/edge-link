@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Leaf, Users, Award, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { AppShell } from "@/components/layout/app-shell";
 import { TEAM, VALUES, PARTNERS } from "@/lib/site-data";
 
@@ -76,26 +77,63 @@ function About() {
       </section>
 
       {/* TEAM */}
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-24">
-        <h2 className="mb-10 text-center font-display text-3xl font-bold md:text-4xl">Meet the team</h2>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {TEAM.map((m, i) => (
-            <motion.article
-              key={m.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05 }}
-              className="rounded-2xl border border-border bg-card p-6 shadow-sm"
-            >
-              <div className="mb-4 grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-gold to-forest text-lg font-bold text-white">
-                {m.initials}
-              </div>
-              <h3 className="font-display text-lg font-bold">{m.name}</h3>
-              <div className="text-xs font-semibold uppercase tracking-wider text-gold">{m.role}</div>
-              <p className="mt-3 text-sm text-muted-foreground">{m.bio}</p>
-            </motion.article>
-          ))}
+      <section className="relative overflow-hidden bg-muted/40 py-16 md:py-24">
+        <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-gold/10 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-forest/10 blur-3xl" />
+        <div className="relative mx-auto max-w-7xl px-4 md:px-6">
+          <div className="mx-auto mb-12 max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold">{t("team.eyebrow")}</p>
+            <h2 className="mt-3 font-display text-3xl font-bold md:text-4xl">{t("team.title")}</h2>
+            <div className="mx-auto mt-4 h-px w-16 bg-gold" />
+            <p className="mt-4 text-muted-foreground">{t("team.subtitle")}</p>
+          </div>
+
+          {/* Leadership */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {TEAM.slice(0, 2).map((m, i) => (
+              <motion.article
+                key={m.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="group flex flex-col gap-5 rounded-3xl border border-border bg-card p-7 shadow-sm transition hover:-translate-y-1 hover:border-gold/60 hover:shadow-luxe sm:flex-row sm:items-center"
+              >
+                <div className="relative shrink-0">
+                  <div className="grid h-24 w-24 place-items-center rounded-full bg-gradient-to-br from-forest via-forest to-gold font-display text-2xl font-bold text-cream ring-4 ring-gold/30">
+                    {m.initials}
+                  </div>
+                  <span className="absolute -bottom-1 -right-1 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gold-foreground">Lead</span>
+                </div>
+                <div>
+                  <h3 className="font-display text-xl font-bold text-forest">{m.name}</h3>
+                  <div className="mt-1 text-xs font-semibold uppercase tracking-wider text-gold">{m.role}</div>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{m.bio}</p>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+
+          {/* Wider team */}
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {TEAM.slice(2).map((m, i) => (
+              <motion.article
+                key={m.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.15 + i * 0.06 }}
+                className="group rounded-3xl border border-border bg-card p-6 text-center shadow-sm transition hover:-translate-y-1 hover:border-gold/60 hover:shadow-luxe"
+              >
+                <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-gold to-forest font-display text-lg font-bold text-cream ring-4 ring-gold/20 transition group-hover:ring-gold/50">
+                  {m.initials}
+                </div>
+                <h3 className="mt-4 font-display text-base font-bold text-forest">{m.name}</h3>
+                <div className="mt-1 text-[11px] font-semibold uppercase tracking-wider text-gold">{m.role}</div>
+                <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{m.bio}</p>
+              </motion.article>
+            ))}
+          </div>
         </div>
       </section>
 
