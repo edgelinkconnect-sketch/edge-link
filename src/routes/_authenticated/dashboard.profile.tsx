@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,9 +40,8 @@ function ProfilePage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
-      <h1 className="font-display text-3xl font-bold text-forest">Profile</h1>
-      <Card className="mt-6 p-6">
+    <DashboardShell title="Profile" description="Your contact details and preferences.">
+      <Card className="max-w-2xl p-6">
         <form onSubmit={save} className="space-y-4">
           <div>
             <Label htmlFor="email">Email</Label>
@@ -60,6 +60,6 @@ function ProfilePage() {
           </Button>
         </form>
       </Card>
-    </div>
+    </DashboardShell>
   );
 }

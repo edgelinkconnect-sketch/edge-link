@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { Plus, Loader2, MessageSquare, Search } from "lucide-react";
-import { AppShell } from "@/components/layout/app-shell";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,20 +81,17 @@ function ClientChat() {
   const active = filtered.find((c) => c.id === activeId) ?? filtered[0];
 
   return (
-    <AppShell>
-      <div className="mx-auto max-w-6xl px-4 py-10 md:px-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-xs uppercase tracking-[0.25em] text-gold">Concierge</p>
-            <h1 className="mt-2 font-display text-3xl font-bold text-forest">Support chat</h1>
-            <p className="text-sm text-muted-foreground">Message your travel designer in real time.</p>
-          </div>
-          <Button onClick={() => setNewOpen(true)} className="bg-gold text-gold-foreground hover:brightness-95">
-            <Plus className="mr-1.5 h-4 w-4" /> New conversation
-          </Button>
-        </div>
-
-        <div className="mt-6 grid gap-4 lg:grid-cols-[19rem_1fr]">
+    <DashboardShell
+      title="Support chat"
+      description="Message your travel designer in real time."
+      actions={
+        <Button size="sm" onClick={() => setNewOpen(true)} className="bg-gold text-gold-foreground hover:brightness-95">
+          <Plus className="mr-1.5 h-4 w-4" /> New conversation
+        </Button>
+      }
+    >
+      <div>
+        <div className="grid gap-4 lg:grid-cols-[19rem_1fr]">
           <Card className="flex max-h-[36rem] flex-col overflow-hidden p-0">
             <div className="relative border-b border-border p-3">
               <Search className="pointer-events-none absolute left-6 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
@@ -203,6 +200,6 @@ function ClientChat() {
           </div>
         </DialogContent>
       </Dialog>
-    </AppShell>
+    </DashboardShell>
   );
 }

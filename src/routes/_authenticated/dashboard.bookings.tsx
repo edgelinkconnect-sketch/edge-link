@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Loader2, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
-import { AppShell } from "@/components/layout/app-shell";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/status-badge";
@@ -43,17 +43,16 @@ function MyBookings() {
   };
 
   return (
-    <AppShell>
-      <div className="mx-auto max-w-5xl px-4 py-10 md:px-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h1 className="font-display text-3xl font-bold text-forest">My bookings</h1>
-            <p className="text-sm text-muted-foreground">Track requests, confirmations and completed journeys.</p>
-          </div>
-          <Button asChild variant="outline">
-            <Link to="/packages">Book another</Link>
-          </Button>
-        </div>
+    <DashboardShell
+      title="My bookings"
+      description="Track requests, confirmations and completed journeys."
+      actions={
+        <Button asChild variant="outline" size="sm">
+          <Link to="/tours">Book another</Link>
+        </Button>
+      }
+    >
+      <div>
 
         {isLoading && <Loader2 className="mx-auto mt-10 h-6 w-6 animate-spin text-muted-foreground" />}
 
@@ -114,6 +113,6 @@ function MyBookings() {
           })}
         </div>
       </div>
-    </AppShell>
+    </DashboardShell>
   );
 }

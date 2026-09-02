@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Loader2, Star } from "lucide-react";
 import { toast } from "sonner";
-import { AppShell } from "@/components/layout/app-shell";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -92,14 +92,12 @@ function MyExperiences() {
   });
 
   return (
-    <AppShell>
-      <div className="mx-auto max-w-3xl px-4 py-10 md:px-6">
-        <h1 className="font-display text-3xl font-bold text-forest">Share an experience</h1>
-        <p className="text-sm text-muted-foreground">
-          Available once a journey is marked completed. Approved stories appear on our site.
-        </p>
-
-        <Card className="mt-6 p-6">
+    <DashboardShell
+      title="Share an experience"
+      description="Available once a journey is marked completed. Approved stories appear on our site."
+    >
+      <div className="max-w-3xl">
+        <Card className="p-6">
           {completed?.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               You don't have a completed journey yet. <Link to="/dashboard/bookings" className="underline">View bookings</Link>.
@@ -186,6 +184,6 @@ function MyExperiences() {
           </div>
         )}
       </div>
-    </AppShell>
+    </DashboardShell>
   );
 }
