@@ -35,10 +35,12 @@ export const LANGUAGES = [
 export type LanguageCode = (typeof LANGUAGES)[number]["code"];
 
 if (!i18n.isInitialized) {
-  void i18n
+  i18n
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
+      // Deterministic language on the server so SSR markup matches hydration.
+      lng: typeof window === "undefined" ? "en" : undefined,
       resources: {
         en: { translation: en }, fr: { translation: fr }, rw: { translation: rw },
         sw: { translation: sw }, es: { translation: es }, it: { translation: it },
