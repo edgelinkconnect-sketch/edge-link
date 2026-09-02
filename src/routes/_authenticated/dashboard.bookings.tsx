@@ -58,7 +58,7 @@ function MyBookings() {
 
         {bookings?.length === 0 && (
           <Card className="mt-6 p-10 text-center text-sm text-muted-foreground">
-            No bookings yet. Explore our <Link to="/packages" className="underline">itineraries</Link>.
+            No bookings yet. Explore our <Link to="/tours" className="underline">itineraries</Link>.
           </Card>
         )}
 

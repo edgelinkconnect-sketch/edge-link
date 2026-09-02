@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AppShell } from "@/components/layout/app-shell";
+import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
-import { NotificationToggle } from "@/components/notification-toggle";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -11,7 +10,6 @@ import {
   MessageSquare,
   Star,
   User as UserIcon,
-  LogOut,
   MapPin,
   ArrowRight,
   Plane,
@@ -38,7 +36,7 @@ export const Route = createFileRoute("/_authenticated/dashboard/")({
 });
 
 function Dashboard() {
-  const { user, isAdmin, signOut } = useAuth();
+  const { user } = useAuth();
 
   const { data: bookings, isLoading: loadingBookings } = useQuery({
     queryKey: ["my-bookings", user?.id],
@@ -161,7 +159,7 @@ function Dashboard() {
                 <p className="text-xs text-muted-foreground">Latest first</p>
               </div>
               <Button asChild size="sm" variant="outline">
-                <Link to="/packages">Book another</Link>
+                <Link to="/tours">Book another</Link>
               </Button>
             </div>
 
@@ -177,7 +175,7 @@ function Dashboard() {
                     Your next adventure starts with a single itinerary.
                   </p>
                   <Button asChild size="sm" className="mt-4 bg-gold text-gold-foreground hover:brightness-95">
-                    <Link to="/packages">Explore itineraries</Link>
+                    <Link to="/tours">Explore itineraries</Link>
                   </Button>
                 </div>
               )}
@@ -228,7 +226,7 @@ function Dashboard() {
           </div>
         </div>
       </section>
-    </AppShell>
+    </DashboardShell>
   );
 }
 
