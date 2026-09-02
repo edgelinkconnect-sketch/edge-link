@@ -22,6 +22,7 @@ export const Route = createFileRoute("/about")({
 const VALUE_ICONS = { Sustainability: Leaf, Community: Users, Excellence: Award, Authenticity: Sparkles } as const;
 
 function About() {
+  const { t } = useTranslation();
   return (
     <AppShell>
       <section className="border-b border-border bg-forest-deep py-16 text-primary-foreground md:py-20">
