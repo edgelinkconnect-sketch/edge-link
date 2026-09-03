@@ -18,7 +18,7 @@
     { "src": "/pwa-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "Packages", "short_name": "Packages", "url": "/packages", "icons": [{ "src": "/pwa-icon-192.png", "sizes": "192x192" }] },
+    { "name": "Tours", "short_name": "Tours", "url": "/tours", "icons": [{ "src": "/pwa-icon-192.png", "sizes": "192x192" }] },
     { "name": "My bookings", "short_name": "Bookings", "url": "/dashboard/bookings", "icons": [{ "src": "/pwa-icon-192.png", "sizes": "192x192" }] },
     { "name": "Support chat", "short_name": "Chat", "url": "/dashboard/chat", "icons": [{ "src": "/pwa-icon-192.png", "sizes": "192x192" }] }
   ]
