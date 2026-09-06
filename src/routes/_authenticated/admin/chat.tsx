@@ -70,31 +70,32 @@ function AdminChat() {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="font-display text-3xl font-bold text-forest">Support chat</h1>
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
+        <div className="min-w-0">
+          <div className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Communication desk</div>
+          <h1 className="truncate font-display text-4xl font-normal text-forest">Support inbox</h1>
           <p className="text-sm text-muted-foreground">
             {totalUnread > 0 ? `${totalUnread} unread traveller message${totalUnread > 1 ? "s" : ""}` : "All caught up"}
           </p>
         </div>
         <div className="flex gap-2">
           {FILTERS.map((f) => (
-            <button
+            <Button
               key={f}
               onClick={() => setFilter(f)}
               className={cn(
-                "rounded-full border px-3 py-1.5 text-xs capitalize transition",
+                "rounded-md border px-3 py-1.5 text-xs capitalize transition",
                 filter === f ? "border-forest bg-forest text-cream" : "border-border bg-background hover:border-gold",
               )}
             >
               {f}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-[21rem_1fr]">
-        <Card className="flex max-h-[38rem] flex-col overflow-hidden p-0">
+      <div className="mt-5 grid gap-3 lg:grid-cols-[21rem_minmax(0,1fr)]">
+        <Card className="dashboard-surface flex h-[min(68vh,44rem)] min-h-[32rem] flex-col overflow-hidden p-0">
           <div className="relative border-b border-border p-3">
             <Search className="pointer-events-none absolute left-6 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -113,14 +114,15 @@ function AdminChat() {
             {filtered.map((c) => {
               const count = unread?.[c.id] ?? 0;
               return (
-                <button
+                <Button
                   key={c.id}
                   onClick={() => setActiveId(c.id)}
                   className={cn(
-                    "w-full rounded-xl border border-transparent p-3 text-left transition hover:bg-muted",
+                    "h-auto w-full justify-start rounded-md border border-transparent p-3 text-left transition hover:bg-muted",
                     active?.id === c.id && "border-gold/40 bg-muted",
                   )}
                 >
+                  <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
                     <div className="truncate font-semibold text-forest">{c.subject ?? "Conversation"}</div>
                     {count > 0 && (
@@ -132,13 +134,14 @@ function AdminChat() {
                   <div className="mt-0.5 truncate text-xs text-muted-foreground">
                     {c.category} · {formatDistanceToNow(new Date(c.last_message_at), { addSuffix: true })}
                   </div>
-                </button>
+                  </div>
+                </Button>
               );
             })}
           </div>
         </Card>
 
-        <Card className="overflow-hidden p-0">
+        <Card className="dashboard-surface overflow-hidden p-0">
           {active ? (
             <>
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-muted/40 p-3">

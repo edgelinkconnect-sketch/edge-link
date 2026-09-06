@@ -87,7 +87,7 @@ function ClientChat() {
   return (
     <DashboardShell
       title="Support chat"
-      description="Message your travel designer in real time."
+      description="A direct line to your dedicated EDGELINK travel team."
       actions={
         <Button
           size="sm"
@@ -99,8 +99,8 @@ function ClientChat() {
       }
     >
       <div>
-        <div className="grid gap-4 lg:grid-cols-[19rem_1fr]">
-          <Card className="flex max-h-[36rem] flex-col overflow-hidden p-0">
+        <div className="grid gap-3 lg:grid-cols-[19rem_minmax(0,1fr)]">
+          <Card className="dashboard-surface flex h-[min(68vh,44rem)] min-h-[32rem] flex-col overflow-hidden p-0">
             <div className="relative border-b border-border p-3">
               <Search className="pointer-events-none absolute left-6 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
               <Input
@@ -122,14 +122,15 @@ function ClientChat() {
                 </div>
               )}
               {filtered.map((c) => (
-                <button
+                <Button
                   key={c.id}
                   onClick={() => setActiveId(c.id)}
                   className={cn(
-                    "w-full rounded-xl border border-transparent p-3 text-left transition hover:bg-muted",
+                    "h-auto w-full justify-start rounded-md border border-transparent p-3 text-left transition hover:bg-muted",
                     active?.id === c.id && "border-gold/40 bg-muted",
                   )}
                 >
+                  <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
                     <div className="truncate font-semibold text-forest">{c.subject}</div>
                     <span
@@ -147,12 +148,13 @@ function ClientChat() {
                     {c.category} ·{" "}
                     {formatDistanceToNow(new Date(c.last_message_at), { addSuffix: true })}
                   </div>
-                </button>
+                  </div>
+                </Button>
               ))}
             </div>
           </Card>
 
-          <Card className="overflow-hidden p-0">
+          <Card className="dashboard-surface overflow-hidden p-0">
             {active ? (
               <>
                 <div className="border-b border-border bg-muted/40 px-4 py-3">
@@ -202,19 +204,19 @@ function ClientChat() {
               <Label>Category</Label>
               <div className="flex flex-wrap gap-2">
                 {CATEGORIES.map((c) => (
-                  <button
+                  <Button
                     key={c}
                     type="button"
                     onClick={() => setCategory(c)}
                     className={cn(
-                      "rounded-full border px-3 py-1.5 text-xs transition",
+                      "rounded-md border px-3 py-1.5 text-xs transition",
                       category === c
                         ? "border-forest bg-forest text-cream"
                         : "border-border hover:border-gold",
                     )}
                   >
                     {c}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
