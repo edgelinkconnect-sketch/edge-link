@@ -72,10 +72,14 @@ function AdminChat() {
     <div>
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
         <div className="min-w-0">
-          <div className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Communication desk</div>
+          <div className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            Communication desk
+          </div>
           <h1 className="truncate font-display text-4xl font-normal text-forest">Support inbox</h1>
           <p className="text-sm text-muted-foreground">
-            {totalUnread > 0 ? `${totalUnread} unread traveller message${totalUnread > 1 ? "s" : ""}` : "All caught up"}
+            {totalUnread > 0
+              ? `${totalUnread} unread traveller message${totalUnread > 1 ? "s" : ""}`
+              : "All caught up"}
           </p>
         </div>
         <div className="flex gap-2">
@@ -85,7 +89,9 @@ function AdminChat() {
               onClick={() => setFilter(f)}
               className={cn(
                 "rounded-md border px-3 py-1.5 text-xs capitalize transition",
-                filter === f ? "border-forest bg-forest text-cream" : "border-border bg-background hover:border-gold",
+                filter === f
+                  ? "border-forest bg-forest text-cream"
+                  : "border-border bg-background hover:border-gold",
               )}
             >
               {f}
@@ -107,7 +113,9 @@ function AdminChat() {
             />
           </div>
           <div className="flex-1 space-y-1 overflow-y-auto p-2">
-            {isLoading && <Loader2 className="mx-auto my-6 h-5 w-5 animate-spin text-muted-foreground" />}
+            {isLoading && (
+              <Loader2 className="mx-auto my-6 h-5 w-5 animate-spin text-muted-foreground" />
+            )}
             {!isLoading && filtered.length === 0 && (
               <p className="p-6 text-center text-sm text-muted-foreground">No conversations.</p>
             )}
@@ -123,17 +131,20 @@ function AdminChat() {
                   )}
                 >
                   <div className="min-w-0 flex-1">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="truncate font-semibold text-forest">{c.subject ?? "Conversation"}</div>
-                    {count > 0 && (
-                      <span className="shrink-0 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-gold-foreground">
-                        {count}
-                      </span>
-                    )}
-                  </div>
-                  <div className="mt-0.5 truncate text-xs text-muted-foreground">
-                    {c.category} · {formatDistanceToNow(new Date(c.last_message_at), { addSuffix: true })}
-                  </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="truncate font-semibold text-forest">
+                        {c.subject ?? "Conversation"}
+                      </div>
+                      {count > 0 && (
+                        <span className="shrink-0 rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-gold-foreground">
+                          {count}
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-0.5 truncate text-xs text-muted-foreground">
+                      {c.category} ·{" "}
+                      {formatDistanceToNow(new Date(c.last_message_at), { addSuffix: true })}
+                    </div>
                   </div>
                 </Button>
               );
@@ -146,17 +157,27 @@ function AdminChat() {
             <>
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-muted/40 p-3">
                 <div>
-                  <div className="font-display text-lg font-semibold text-forest">{active.subject ?? "Conversation"}</div>
+                  <div className="font-display text-lg font-semibold text-forest">
+                    {active.subject ?? "Conversation"}
+                  </div>
                   <div className="text-xs text-muted-foreground">
                     {active.category} · status {active.status}
                   </div>
                 </div>
                 {active.status === "resolved" ? (
-                  <Button size="sm" variant="outline" onClick={() => void setStatus(active.id, "active")}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => void setStatus(active.id, "active")}
+                  >
                     <RotateCcw className="mr-1.5 h-4 w-4" /> Reopen
                   </Button>
                 ) : (
-                  <Button size="sm" variant="outline" onClick={() => void setStatus(active.id, "resolved")}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => void setStatus(active.id, "resolved")}
+                  >
                     <CheckCircle2 className="mr-1.5 h-4 w-4" /> Mark resolved
                   </Button>
                 )}

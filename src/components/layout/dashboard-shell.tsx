@@ -55,12 +55,13 @@ export function DashboardShell({
               </Link>
             )}
             <NotificationToggle className="w-full justify-start" />
-            <button
+            <Button
               onClick={() => void signOut()}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-muted"
+              variant="ghost"
+              className="w-full justify-start gap-3 text-muted-foreground"
             >
               <LogOut className="h-4 w-4" /> {t("nav.signOut")}
-            </button>
+            </Button>
           </div>
         </aside>
 

@@ -131,23 +131,23 @@ function ClientChat() {
                   )}
                 >
                   <div className="min-w-0 flex-1">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="truncate font-semibold text-forest">{c.subject}</div>
-                    <span
-                      className={cn(
-                        "shrink-0 rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wide",
-                        c.status === "resolved"
-                          ? "bg-muted text-muted-foreground"
-                          : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
-                      )}
-                    >
-                      {c.status}
-                    </span>
-                  </div>
-                  <div className="mt-0.5 truncate text-xs text-muted-foreground">
-                    {c.category} ·{" "}
-                    {formatDistanceToNow(new Date(c.last_message_at), { addSuffix: true })}
-                  </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="truncate font-semibold text-forest">{c.subject}</div>
+                      <span
+                        className={cn(
+                          "shrink-0 rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wide",
+                          c.status === "resolved"
+                            ? "bg-muted text-muted-foreground"
+                            : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
+                        )}
+                      >
+                        {c.status}
+                      </span>
+                    </div>
+                    <div className="mt-0.5 truncate text-xs text-muted-foreground">
+                      {c.category} ·{" "}
+                      {formatDistanceToNow(new Date(c.last_message_at), { addSuffix: true })}
+                    </div>
                   </div>
                 </Button>
               ))}

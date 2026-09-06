@@ -5,6 +5,7 @@ import { format, isToday, isYesterday } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Conversation,
   ConversationContent,
@@ -255,14 +256,16 @@ export function ChatThread({ chatId, role }: { chatId: string; role: "client" | 
       {isEmpty && (
         <div className="flex flex-wrap gap-2 border-t border-border px-3 pt-3">
           {QUICK_REPLIES.map((q) => (
-             <button
+             <Button
               key={q}
               type="button"
               onClick={() => void send(q)}
-               className="rounded-md border border-border px-3 py-1.5 text-xs text-muted-foreground transition hover:border-gold hover:text-forest"
+               variant="outline"
+               size="sm"
+               className="rounded-md text-xs text-muted-foreground transition hover:border-gold hover:text-forest"
             >
               {q}
-            </button>
+             </Button>
           ))}
         </div>
       )}
