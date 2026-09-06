@@ -31,16 +31,16 @@ export function DashboardShell({
 
   return (
     <AppShell>
-      <div className="mx-auto max-w-7xl gap-8 px-4 py-6 md:px-6 lg:flex lg:py-10">
+      <div className="mx-auto max-w-[90rem] gap-6 px-3 py-4 sm:px-5 lg:flex lg:py-6">
         {/* Sidebar */}
         <aside className="hidden w-60 shrink-0 lg:block">
-          <div className="sticky top-24 space-y-1 rounded-2xl border border-border bg-card p-3 shadow-sm">
+          <div className="dashboard-surface sticky top-24 space-y-1 rounded-lg p-3">
             {LINKS.map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
                 activeOptions={{ exact: "exact" in l }}
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/75 transition hover:bg-muted data-[status=active]:bg-forest data-[status=active]:text-cream"
+                className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-foreground/75 transition hover:bg-muted data-[status=active]:bg-forest data-[status=active]:text-cream"
               >
                 <l.icon className="h-4 w-4" /> {t(`dashboardNav.${l.key}`)}
               </Link>
@@ -84,9 +84,9 @@ export function DashboardShell({
             )}
           </div>
 
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h1 className="font-display text-3xl font-bold text-forest">{title}</h1>
+          <div className="mb-5 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
+            <div className="min-w-0">
+              <h1 className="truncate font-display text-3xl font-normal text-forest sm:text-4xl">{title}</h1>
               {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
             </div>
             <div className="flex flex-wrap items-center gap-2">
