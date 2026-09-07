@@ -1,6 +1,14 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { LayoutDashboard, Calendar, MessageSquare, Camera, Settings, LogOut, Shield } from "lucide-react";
+import {
+  LayoutDashboard,
+  Calendar,
+  MessageSquare,
+  Camera,
+  Settings,
+  LogOut,
+  Shield,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
@@ -79,7 +87,10 @@ export function DashboardShell({
               </Link>
             ))}
             {isAdmin && (
-              <Link to="/admin" className="shrink-0 rounded-full border border-gold px-3.5 py-1.5 text-xs font-medium text-gold">
+              <Link
+                to="/admin"
+                className="shrink-0 rounded-full border border-gold px-3.5 py-1.5 text-xs font-medium text-gold"
+              >
                 {t("nav.adminPanel")}
               </Link>
             )}
@@ -87,12 +98,19 @@ export function DashboardShell({
 
           <div className="mb-5 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
             <div className="min-w-0">
-              <h1 className="truncate font-display text-3xl font-normal text-forest sm:text-4xl">{title}</h1>
+              <h1 className="truncate font-display text-3xl font-normal text-forest sm:text-4xl">
+                {title}
+              </h1>
               {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
             </div>
             <div className="flex flex-wrap items-center gap-2">
               {actions}
-              <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => void signOut()}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="lg:hidden"
+                onClick={() => void signOut()}
+              >
                 <LogOut className="mr-1.5 h-4 w-4" /> {t("nav.signOut")}
               </Button>
             </div>
