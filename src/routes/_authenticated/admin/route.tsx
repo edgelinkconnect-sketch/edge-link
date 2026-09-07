@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { NotificationToggle } from "@/components/notification-toggle";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
@@ -82,12 +83,13 @@ function AdminLayout() {
           >
             ← Back to site
           </Link>
-          <button
+          <Button
             onClick={() => void signOut()}
-            className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-cream/70 hover:bg-cream/10"
+            variant="ghost"
+            className="w-full justify-start gap-3 text-cream/70 hover:bg-cream/10 hover:text-cream"
           >
             <LogOut className="h-4 w-4" /> Sign out
-          </button>
+          </Button>
         </div>
       </aside>
       <main className="flex-1 overflow-x-hidden bg-background text-foreground md:rounded-l-lg">

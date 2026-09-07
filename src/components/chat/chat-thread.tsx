@@ -67,10 +67,14 @@ export function ChatThread({ chatId, role }: { chatId: string; role: "client" | 
     if (!user) return;
     const channel = supabase
       .channel(`chat-${chatId}`, { config: { presence: { key: `${role}:${user.id}` } } })
-      .on("postgres_changes", { event: "*", schema: "public", table: "messages", filter: `chat_id=eq.${chatId}` }, () => {
-        void qc.invalidateQueries({ queryKey: ["messages", chatId] });
-        void qc.invalidateQueries({ queryKey: ["chats"] });
-      })
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "messages", filter: `chat_id=eq.${chatId}` },
+        () => {
+          void qc.invalidateQueries({ queryKey: ["messages", chatId] });
+          void qc.invalidateQueries({ queryKey: ["chats"] });
+        },
+      )
       .on("broadcast", { event: "typing" }, (payload) => {
         if ((payload.payload as { role?: string })?.role !== role) {
           setPeerTyping(true);
@@ -94,7 +98,9 @@ export function ChatThread({ chatId, role }: { chatId: string; role: "client" | 
   // mark incoming messages as read
   useEffect(() => {
     if (!messages || !user) return;
-    const unread = messages.filter((m) => m.sender_id !== user.id && !m.read_status).map((m) => m.id);
+    const unread = messages
+      .filter((m) => m.sender_id !== user.id && !m.read_status)
+      .map((m) => m.id);
     if (unread.length === 0) return;
     void supabase.from("messages").update({ read_status: true }).in("id", unread);
   }, [messages, user]);
@@ -102,7 +108,9 @@ export function ChatThread({ chatId, role }: { chatId: string; role: "client" | 
   // clear optimistic bubbles once the real rows arrive
   useEffect(() => {
     if (!messages || pending.length === 0) return;
-    setPending((p) => p.filter((x) => !messages.some((m) => m.message === x.message && m.sender_id === user?.id)));
+    setPending((p) =>
+      p.filter((x) => !messages.some((m) => m.message === x.message && m.sender_id === user?.id)),
+    );
   }, [messages, pending.length, user?.id]);
 
   const groups = useMemo(() => {
@@ -156,99 +164,125 @@ export function ChatThread({ chatId, role }: { chatId: string; role: "client" | 
       <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-b border-border bg-card px-4 py-3">
         <div className="relative grid h-10 w-10 shrink-0 place-items-center rounded-md bg-forest text-cream">
           <Headphones className="h-5 w-5" />
-          <span className={cn("absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-card", peerOnline ? "bg-gold" : "bg-muted-foreground/40")} />
+          <span
+            className={cn(
+              "absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-card",
+              peerOnline ? "bg-gold" : "bg-muted-foreground/40",
+            )}
+          />
         </div>
         <div className="min-w-0">
-          <div className="truncate text-sm font-semibold text-forest">{role === "client" ? "EDGELINK Travel Desk" : "Traveller conversation"}</div>
+          <div className="truncate text-sm font-semibold text-forest">
+            {role === "client" ? "EDGELINK Travel Desk" : "Traveller conversation"}
+          </div>
           <div className="truncate text-xs text-muted-foreground">
-            {peerOnline ? "Online now" : role === "client" ? "Usually replies within a few minutes" : "Currently offline"}
+            {peerOnline
+              ? "Online now"
+              : role === "client"
+                ? "Usually replies within a few minutes"
+                : "Currently offline"}
           </div>
         </div>
-        <div className="rounded-md bg-gold/15 px-2 py-1 text-[10px] font-semibold uppercase text-forest">Live support</div>
+        <div className="rounded-md bg-gold/15 px-2 py-1 text-[10px] font-semibold uppercase text-forest">
+          Live support
+        </div>
       </div>
 
       <Conversation className="chat-scrollbar min-h-0 flex-1 bg-muted/30">
         <ConversationContent className="space-y-4 p-4 sm:p-5">
-        {isLoading && (
-          <div className="flex min-h-40 items-center justify-center"><Shimmer className="text-sm">Loading conversation…</Shimmer></div>
-        )}
-
-        {isEmpty && (
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="rounded-full bg-forest/10 p-4 text-forest">
-              <MessageCircle className="h-6 w-6" />
+          {isLoading && (
+            <div className="flex min-h-40 items-center justify-center">
+              <Shimmer className="text-sm">Loading conversation…</Shimmer>
             </div>
-            <p className="mt-4 text-sm font-semibold text-forest">No messages yet</p>
-            <p className="mt-1 max-w-xs text-xs text-muted-foreground">
-              Say hello — our team replies quickly and can tailor any itinerary to you.
-            </p>
-          </div>
-        )}
+          )}
 
-        {groups.map((g) => (
-          <div key={g.day} className="space-y-1.5">
-            <div className="my-3 flex items-center gap-3">
-              <div className="h-px flex-1 bg-border" />
-              <span className="rounded-md border border-border bg-card px-3 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
-                {g.day}
-              </span>
-              <div className="h-px flex-1 bg-border" />
+          {isEmpty && (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="rounded-full bg-forest/10 p-4 text-forest">
+                <MessageCircle className="h-6 w-6" />
+              </div>
+              <p className="mt-4 text-sm font-semibold text-forest">No messages yet</p>
+              <p className="mt-1 max-w-xs text-xs text-muted-foreground">
+                Say hello — our team replies quickly and can tailor any itinerary to you.
+              </p>
             </div>
-            {g.items.map((item, idx) => {
-              const isPending = item.kind === "pending";
-              const m = item.m as Message & Partial<Pending>;
-              const mine = isPending || m.sender_id === user?.id;
-              const prev = g.items[idx - 1];
-              const prevMine = prev ? prev.kind === "pending" || (prev.m as Message).sender_id === user?.id : null;
-              const grouped = prevMine === mine;
-              return (
-                <div key={m.id} className={cn("flex", mine ? "justify-end" : "justify-start", grouped ? "mt-0.5" : "mt-3")}>
+          )}
+
+          {groups.map((g) => (
+            <div key={g.day} className="space-y-1.5">
+              <div className="my-3 flex items-center gap-3">
+                <div className="h-px flex-1 bg-border" />
+                <span className="rounded-md border border-border bg-card px-3 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
+                  {g.day}
+                </span>
+                <div className="h-px flex-1 bg-border" />
+              </div>
+              {g.items.map((item, idx) => {
+                const isPending = item.kind === "pending";
+                const m = item.m as Message & Partial<Pending>;
+                const mine = isPending || m.sender_id === user?.id;
+                const prev = g.items[idx - 1];
+                const prevMine = prev
+                  ? prev.kind === "pending" || (prev.m as Message).sender_id === user?.id
+                  : null;
+                const grouped = prevMine === mine;
+                return (
                   <div
+                    key={m.id}
                     className={cn(
-                       "max-w-[84%] px-3.5 py-2 text-sm shadow-sm transition sm:max-w-[72%]",
-                      mine
-                         ? "rounded-lg rounded-br-sm bg-forest text-cream"
-                         : "rounded-lg rounded-bl-sm border border-border bg-card text-card-foreground",
-                      isPending && "opacity-70",
+                      "flex",
+                      mine ? "justify-end" : "justify-start",
+                      grouped ? "mt-0.5" : "mt-3",
                     )}
                   >
-                    <div className="whitespace-pre-wrap break-words leading-relaxed">{m.message}</div>
                     <div
                       className={cn(
-                        "mt-1 flex items-center justify-end gap-1 text-[10px]",
-                        mine ? "text-cream/60" : "text-muted-foreground",
+                        "max-w-[84%] px-3.5 py-2 text-sm shadow-sm transition sm:max-w-[72%]",
+                        mine
+                          ? "rounded-lg rounded-br-sm bg-forest text-cream"
+                          : "rounded-lg rounded-bl-sm border border-border bg-card text-card-foreground",
+                        isPending && "opacity-70",
                       )}
                     >
-                      {format(new Date(m.created_at), "HH:mm")}
-                      {mine &&
-                        (isPending ? (
-                          <Loader2 className="h-3 w-3 animate-spin" />
-                        ) : (m as Message).read_status ? (
-                          <CheckCheck className="h-3 w-3" />
-                        ) : (
-                          <Check className="h-3 w-3" />
-                        ))}
+                      <div className="whitespace-pre-wrap break-words leading-relaxed">
+                        {m.message}
+                      </div>
+                      <div
+                        className={cn(
+                          "mt-1 flex items-center justify-end gap-1 text-[10px]",
+                          mine ? "text-cream/60" : "text-muted-foreground",
+                        )}
+                      >
+                        {format(new Date(m.created_at), "HH:mm")}
+                        {mine &&
+                          (isPending ? (
+                            <Loader2 className="h-3 w-3 animate-spin" />
+                          ) : (m as Message).read_status ? (
+                            <CheckCheck className="h-3 w-3" />
+                          ) : (
+                            <Check className="h-3 w-3" />
+                          ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        ))}
-
-        {peerTyping && (
-          <div className="flex justify-start">
-             <div className="flex gap-1 rounded-lg rounded-bl-sm border border-border bg-card px-4 py-3">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground"
-                  style={{ animationDelay: `${i * 120}ms` }}
-                />
-              ))}
+                );
+              })}
             </div>
-          </div>
-        )}
+          ))}
+
+          {peerTyping && (
+            <div className="flex justify-start">
+              <div className="flex gap-1 rounded-lg rounded-bl-sm border border-border bg-card px-4 py-3">
+                {[0, 1, 2].map((i) => (
+                  <span
+                    key={i}
+                    className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground"
+                    style={{ animationDelay: `${i * 120}ms` }}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </ConversationContent>
         <ConversationScrollButton className="bottom-3" />
       </Conversation>
@@ -256,16 +290,16 @@ export function ChatThread({ chatId, role }: { chatId: string; role: "client" | 
       {isEmpty && (
         <div className="flex flex-wrap gap-2 border-t border-border px-3 pt-3">
           {QUICK_REPLIES.map((q) => (
-             <Button
+            <Button
               key={q}
               type="button"
               onClick={() => void send(q)}
-               variant="outline"
-               size="sm"
-               className="rounded-md text-xs text-muted-foreground transition hover:border-gold hover:text-forest"
+              variant="outline"
+              size="sm"
+              className="rounded-md text-xs text-muted-foreground transition hover:border-gold hover:text-forest"
             >
               {q}
-             </Button>
+            </Button>
           ))}
         </div>
       )}
