@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, Compass, Leaf, Sparkles, Users, Star, Award, ShieldCheck, Trees } from "lucide-react";
+import { ArrowRight, Clock, Compass, Leaf, MapPin, Mountain, Sparkles, Users, Star, Award, ShieldCheck, Trees } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { BrandLogo } from "@/components/brand-logo";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,10 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useServerFn } from "@tanstack/react-start";
 import { subscribeNewsletter } from "@/lib/inquiries.functions";
-import { DESTINATIONS, TESTIMONIALS, PARTNERS } from "@/lib/site-data";
+import { TESTIMONIALS, PARTNERS } from "@/lib/site-data";
+import { TOURS } from "@/lib/tours-data";
+import { supabase } from "@/integrations/supabase/client";
+import { useMediaUrls } from "@/lib/media";
 import hero from "@/assets/hero-mountains.jpg";
 
 export const Route = createFileRoute("/")({
@@ -48,6 +52,30 @@ function Home() {
   const subscribe = useServerFn(subscribeNewsletter);
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const { data: tours } = useQuery({
+    queryKey: ["homepage-tours"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("tours")
+        .select("id, slug, name, location, region, activity, duration, featured_image_url, description")
+        .eq("status", "active")
+        .order("created_at")
+        .limit(6);
+      if (data?.length) return data;
+      return TOURS.map((tour) => ({
+        id: tour.id,
+        slug: tour.id,
+        name: tour.name,
+        location: tour.region,
+        region: tour.region,
+        activity: tour.activity,
+        duration: `${tour.duration} days`,
+        featured_image_url: tour.image,
+        description: tour.summary,
+      }));
+    },
+  });
+  const tourMedia = useMediaUrls("tours", (tours ?? []).map((tour) => tour.featured_image_url));
 
   async function onSubscribe(e: React.FormEvent) {
     e.preventDefault();
@@ -103,31 +131,29 @@ function Home() {
         </div>
       </section>
 
-      {/* DESTINATIONS */}
+      {/* TOURS & ITINERARIES */}
       <section className="mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-28">
         <motion.div {...fadeUp()} className="mb-12 text-center">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">{t("destinations.title")}</p>
-          <h2 className="font-display text-3xl font-bold md:text-4xl">{t("destinations.subtitle")}</h2>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold">Tours & itineraries</p>
+          <h2 className="font-display text-3xl font-bold md:text-4xl">Journeys shaped around Rwanda</h2>
         </motion.div>
         <div className="grid gap-6 md:grid-cols-3">
-          {DESTINATIONS.map((d, i) => (
-            <motion.div key={d.slug} {...fadeUp(i * 0.08)}>
+          {(tours ?? []).slice(0, 6).map((tour, i) => (
+            <motion.div key={tour.id} {...fadeUp(i * 0.08)}>
               <Link
-                to="/destinations/$slug"
-                params={{ slug: d.slug }}
+                to="/tours/$slug"
+                params={{ slug: tour.slug ?? tour.id }}
                 className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-luxe"
               >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <img src={d.image} alt={d.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/20 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-                    <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">{d.activity}</div>
-                    <h3 className="font-display text-2xl font-bold">{d.name}</h3>
-                    <p className="mt-2 line-clamp-2 text-sm text-white/85">{d.tagline}</p>
-                    <div className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-gold">
-                      {t("destinations.viewDestination")} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </div>
+                <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+                  {tourMedia(tour.featured_image_url) ? <img src={tourMedia(tour.featured_image_url)} alt={tour.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" /> : <div className="grid h-full w-full place-items-center text-muted-foreground"><Mountain className="h-8 w-8" /></div>}
+                  <div className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-black/45 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur"><Clock className="h-3 w-3" /> {tour.duration}</div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold"><MapPin className="h-3 w-3" /> {tour.region || tour.location}</div>
+                  <h3 className="mt-1 font-display text-xl font-bold">{tour.name}</h3>
+                  <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{tour.description}</p>
+                  <div className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-forest">Ask for quote <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" /></div>
                 </div>
               </Link>
             </motion.div>
