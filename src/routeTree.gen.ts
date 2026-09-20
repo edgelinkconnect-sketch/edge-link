@@ -34,6 +34,7 @@ import { Route as AuthenticatedAdminBookingsRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminChatRouteImport } from './routes/_authenticated/admin/chat'
 import { Route as AuthenticatedAdminExperiencesRouteImport } from './routes/_authenticated/admin/experiences'
 import { Route as AuthenticatedAdminGalleryRouteImport } from './routes/_authenticated/admin/gallery'
+import { Route as AuthenticatedAdminJournalRouteImport } from './routes/_authenticated/admin/journal'
 import { Route as AuthenticatedAdminQuotationsRouteImport } from './routes/_authenticated/admin/quotations'
 import { Route as AuthenticatedAdminToursRouteImport } from './routes/_authenticated/admin/tours'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
@@ -169,6 +170,12 @@ const AuthenticatedAdminGalleryRoute =
     path: '/gallery',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminJournalRoute =
+  AuthenticatedAdminJournalRouteImport.update({
+    id: '/journal',
+    path: '/journal',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminQuotationsRoute =
   AuthenticatedAdminQuotationsRouteImport.update({
     id: '/quotations',
@@ -235,6 +242,7 @@ export interface FileRoutesByFullPath {
   '/admin/chat': typeof AuthenticatedAdminChatRoute
   '/admin/experiences': typeof AuthenticatedAdminExperiencesRoute
   '/admin/gallery': typeof AuthenticatedAdminGalleryRoute
+  '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/admin/quotations': typeof AuthenticatedAdminQuotationsRoute
   '/admin/tours': typeof AuthenticatedAdminToursRoute
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
@@ -265,6 +273,7 @@ export interface FileRoutesByTo {
   '/admin/chat': typeof AuthenticatedAdminChatRoute
   '/admin/experiences': typeof AuthenticatedAdminExperiencesRoute
   '/admin/gallery': typeof AuthenticatedAdminGalleryRoute
+  '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/admin/quotations': typeof AuthenticatedAdminQuotationsRoute
   '/admin/tours': typeof AuthenticatedAdminToursRoute
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
@@ -300,6 +309,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/chat': typeof AuthenticatedAdminChatRoute
   '/_authenticated/admin/experiences': typeof AuthenticatedAdminExperiencesRoute
   '/_authenticated/admin/gallery': typeof AuthenticatedAdminGalleryRoute
+  '/_authenticated/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/_authenticated/admin/quotations': typeof AuthenticatedAdminQuotationsRoute
   '/_authenticated/admin/tours': typeof AuthenticatedAdminToursRoute
   '/_authenticated/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
@@ -335,6 +345,7 @@ export interface FileRouteTypes {
     | '/admin/chat'
     | '/admin/experiences'
     | '/admin/gallery'
+    | '/admin/journal'
     | '/admin/quotations'
     | '/admin/tours'
     | '/dashboard/bookings'
@@ -365,6 +376,7 @@ export interface FileRouteTypes {
     | '/admin/chat'
     | '/admin/experiences'
     | '/admin/gallery'
+    | '/admin/journal'
     | '/admin/quotations'
     | '/admin/tours'
     | '/dashboard/bookings'
@@ -399,6 +411,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/chat'
     | '/_authenticated/admin/experiences'
     | '/_authenticated/admin/gallery'
+    | '/_authenticated/admin/journal'
     | '/_authenticated/admin/quotations'
     | '/_authenticated/admin/tours'
     | '/_authenticated/dashboard/bookings'
@@ -604,6 +617,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminGalleryRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/journal': {
+      id: '/_authenticated/admin/journal'
+      path: '/journal'
+      fullPath: '/admin/journal'
+      preLoaderRoute: typeof AuthenticatedAdminJournalRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/quotations': {
       id: '/_authenticated/admin/quotations'
       path: '/quotations'
@@ -661,6 +681,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminChatRoute: typeof AuthenticatedAdminChatRoute
   AuthenticatedAdminExperiencesRoute: typeof AuthenticatedAdminExperiencesRoute
   AuthenticatedAdminGalleryRoute: typeof AuthenticatedAdminGalleryRoute
+  AuthenticatedAdminJournalRoute: typeof AuthenticatedAdminJournalRoute
   AuthenticatedAdminQuotationsRoute: typeof AuthenticatedAdminQuotationsRoute
   AuthenticatedAdminToursRoute: typeof AuthenticatedAdminToursRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -672,6 +693,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminChatRoute: AuthenticatedAdminChatRoute,
     AuthenticatedAdminExperiencesRoute: AuthenticatedAdminExperiencesRoute,
     AuthenticatedAdminGalleryRoute: AuthenticatedAdminGalleryRoute,
+    AuthenticatedAdminJournalRoute: AuthenticatedAdminJournalRoute,
     AuthenticatedAdminQuotationsRoute: AuthenticatedAdminQuotationsRoute,
     AuthenticatedAdminToursRoute: AuthenticatedAdminToursRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
