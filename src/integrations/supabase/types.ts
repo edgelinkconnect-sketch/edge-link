@@ -505,6 +505,18 @@ export type Database = {
         }
         Relationships: []
       }
+      journal_likes: {
+        Row: { id: string; post_id: string; user_id: string; created_at: string }
+        Insert: { id?: string; post_id: string; user_id: string; created_at?: string }
+        Update: { id?: string; post_id?: string; user_id?: string; created_at?: string }
+        Relationships: []
+      }
+      journal_comments: {
+        Row: { id: string; post_id: string; user_id: string; body: string; created_at: string }
+        Insert: { id?: string; post_id: string; user_id: string; body: string; created_at?: string }
+        Update: { id?: string; post_id?: string; user_id?: string; body?: string; created_at?: string }
+        Relationships: []
+      }
     Views: {
       [_ in never]: never
     }

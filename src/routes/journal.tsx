@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Calendar, Clock, User, Facebook, Twitter, Link2 } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Calendar, Clock, User, Facebook, Twitter, Link2, Heart, Send } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { IMAGES } from "@/lib/site-data";
 import { supabase } from "@/integrations/supabase/client";
 import { useMediaUrls } from "@/lib/media";
+import { useAuth } from "@/hooks/use-auth";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/journal")({
   head: () => ({
@@ -83,13 +85,17 @@ const POSTS = [
 ];
 
 function Journal() {
+  const { user } = useAuth();
+  const qc = useQueryClient();
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
   const [openSlug, setOpenSlug] = useState<string | null>(null);
+  const [commentDraft, setCommentDraft] = useState("");
   const { data: managedPosts, isLoading } = useQuery({
     queryKey: ["public-journal"],
     queryFn: async () => {
       const { data } = await supabase.from("journal_posts").select("*").eq("published", true).order("created_at", { ascending: false });
       return (data ?? []).map((post) => ({
+        id: post.id,
         slug: post.slug,
         title: post.title,
         excerpt: post.excerpt,
@@ -107,6 +113,48 @@ function Journal() {
   const displayPosts = sourcePosts.map((post) => ({ ...post, image: media(post.image) || post.image }));
   const posts = category === "All" ? displayPosts : displayPosts.filter((p) => p.category === category);
   const open = displayPosts.find((p) => p.slug === openSlug);
+  const managedPostId = open && "id" in open ? open.id : null;
+  const { data: likes } = useQuery({
+    queryKey: ["journal-likes", managedPostId],
+    enabled: !!managedPostId,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("journal_likes").select("id, user_id").eq("post_id", managedPostId!);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+  const { data: comments } = useQuery({
+    queryKey: ["journal-comments", managedPostId],
+    enabled: !!managedPostId,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("journal_comments").select("id, user_id, body, created_at").eq("post_id", managedPostId!).order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  const toggleLike = async () => {
+    if (!managedPostId) return;
+    if (!user) return toast.error("Sign in to like this story.");
+    const existing = likes?.find((like) => like.user_id === user.id);
+    const result = existing
+      ? await supabase.from("journal_likes").delete().eq("id", existing.id)
+      : await supabase.from("journal_likes").insert({ post_id: managedPostId, user_id: user.id });
+    if (result.error) return toast.error(result.error.message);
+    void qc.invalidateQueries({ queryKey: ["journal-likes", managedPostId] });
+  };
+
+  const submitComment = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!managedPostId) return;
+    if (!user) return toast.error("Sign in to leave a comment.");
+    const body = commentDraft.trim();
+    if (!body) return;
+    const { error } = await supabase.from("journal_comments").insert({ post_id: managedPostId, user_id: user.id, body });
+    if (error) return toast.error(error.message);
+    setCommentDraft("");
+    void qc.invalidateQueries({ queryKey: ["journal-comments", managedPostId] });
+  };
 
   return (
     <AppShell>
@@ -150,6 +198,23 @@ function Journal() {
             <img src={open.image} alt={open.title} className="mt-6 aspect-[16/9] w-full rounded-2xl object-cover" />
             <p className="mt-6 text-lg font-medium leading-relaxed text-foreground/90">{open.excerpt}</p>
             <div className="mt-4 whitespace-pre-line text-base leading-relaxed text-muted-foreground">{open.body}</div>
+            {managedPostId && (
+              <div className="mt-8 border-t border-border pt-6">
+                <div className="flex items-center gap-3">
+                  <Button type="button" variant="outline" onClick={() => void toggleLike()} className={likes?.some((like) => like.user_id === user?.id) ? "border-gold bg-gold/10 text-forest" : ""}>
+                    <Heart className={`mr-1.5 h-4 w-4 ${likes?.some((like) => like.user_id === user?.id) ? "fill-current" : ""}`} /> {likes?.length ?? 0} likes
+                  </Button>
+                  <span className="text-sm text-muted-foreground">{comments?.length ?? 0} comments</span>
+                </div>
+                <form onSubmit={submitComment} className="mt-4 flex gap-2">
+                  <Input value={commentDraft} onChange={(event) => setCommentDraft(event.target.value)} placeholder={user ? "Share your thoughts..." : "Sign in to comment"} disabled={!user} />
+                  <Button type="submit" size="icon" disabled={!user || !commentDraft.trim()} aria-label="Send comment"><Send className="h-4 w-4" /></Button>
+                </form>
+                <div className="mt-5 space-y-3">
+                  {(comments ?? []).map((comment) => <div key={comment.id} className="rounded-lg border border-border bg-muted/30 p-3"><div className="text-xs font-semibold text-forest">Traveller <span className="font-normal text-muted-foreground">· {new Date(comment.created_at).toLocaleDateString()}</span></div><p className="mt-1 text-sm text-foreground/80">{comment.body}</p></div>)}
+                </div>
+              </div>
+            )}
             <div className="mt-8 flex items-center gap-3 border-t border-border pt-6">
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Share:</span>
               <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(open.title)}`} target="_blank" rel="noreferrer" className="grid h-9 w-9 place-items-center rounded-full border border-border hover:border-gold hover:text-gold"><Twitter className="h-4 w-4" /></a>
