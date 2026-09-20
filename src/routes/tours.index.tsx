@@ -45,6 +45,7 @@ export type TourRow = {
   featured_image_url: string;
   description: string;
   highlights: string[] | null;
+  translations: Record<string, { name?: string; description?: string; location?: string; region?: string; activity?: string; duration?: string }> | null;
 };
 
 export function useTours() {
@@ -54,7 +55,7 @@ export function useTours() {
       const { data, error } = await supabase
         .from("tours")
         .select(
-          "id, slug, name, location, region, activity, duration, difficulty, price, featured_image_url, description, highlights",
+          "id, slug, name, location, region, activity, duration, difficulty, price, featured_image_url, description, highlights, translations",
         )
         .eq("status", "active")
         .order("created_at");
@@ -65,7 +66,7 @@ export function useTours() {
 }
 
 function ToursIndex() {
-  const { t: tr } = useTranslation();
+  const { t: tr, i18n } = useTranslation();
   const { data: tours, isLoading } = useTours();
   const [region, setRegion] = useState("All");
   const [activity, setActivity] = useState("All");
@@ -94,6 +95,7 @@ function ToursIndex() {
       (activity === "All" || t.activity === activity) &&
       (duration === "All" || t.duration === duration),
   );
+  const languageCode = i18n.language.split("-")[0];
 
   return (
     <AppShell>
@@ -146,6 +148,9 @@ function ToursIndex() {
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {items.map((t, i) => (
+              (() => {
+                const localized = { ...t, ...(t.translations?.[languageCode] ?? {}) };
+                return (
               <motion.article
                 key={t.id}
                 initial={{ opacity: 0, y: 18 }}
@@ -158,7 +163,7 @@ function ToursIndex() {
                   {media(t.featured_image_url) ? (
                     <img
                       src={media(t.featured_image_url)}
-                      alt={t.name}
+                      alt={localized.name}
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
@@ -175,15 +180,15 @@ function ToursIndex() {
                   <div className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
                     <MapPin className="h-3 w-3" /> {t.region || t.location}
                   </div>
-                  <h2 className="mt-1 font-display text-xl font-bold">{t.name}</h2>
-                  <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{t.description}</p>
+                  <h2 className="mt-1 font-display text-xl font-bold">{localized.name}</h2>
+                  <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{localized.description}</p>
                   <div className="mt-auto flex items-end justify-between border-t border-border pt-4">
                     <div>
                       <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                        {tr("hub.from")}
+                        Enquire
                       </div>
-                      <div className="font-display text-2xl font-bold text-forest">
-                        ${Number(t.price).toLocaleString()}
+                      <div className="font-display text-lg font-bold text-forest">
+                        Ask for quote
                       </div>
                     </div>
                     <Button
@@ -198,6 +203,8 @@ function ToursIndex() {
                   </div>
                 </div>
               </motion.article>
+                );
+              })()
             ))}
           </div>
         )}

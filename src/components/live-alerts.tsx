@@ -74,6 +74,35 @@ export function LiveAlerts() {
           });
         },
       );
+
+      channel.on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "tour_quote_requests" },
+        (payload) => {
+          const row = payload.new as {
+            id: string;
+            full_name: string;
+            phone: string;
+            adults: number;
+            children: number;
+            status?: string;
+          };
+          if (!row?.id || seen.current.has(row.id)) return;
+          seen.current.add(row.id);
+
+          const body = `${row.full_name} · ${row.phone} · ${row.adults} adult${row.adults === 1 ? "" : "s"}${
+            row.children ? ` + ${row.children} children` : ""
+          }`;
+
+          toast.success("New quotation request received", { description: body });
+          void showNotification({
+            title: "New quotation request",
+            body,
+            tag: `quote-request-${row.id}`,
+            url: "/admin/quotations",
+          });
+        },
+      );
     }
 
     channel.subscribe();

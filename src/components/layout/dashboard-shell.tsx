@@ -34,7 +34,7 @@ export function DashboardShell({
   actions?: ReactNode;
   children: ReactNode;
 }) {
-  const { isAdmin, signOut } = useAuth();
+  const { isAdmin, role, signOut } = useAuth();
   const { t } = useTranslation();
 
   return (
@@ -43,6 +43,14 @@ export function DashboardShell({
         {/* Sidebar */}
         <aside className="hidden w-60 shrink-0 lg:block">
           <div className="dashboard-surface sticky top-24 space-y-1 rounded-lg p-3">
+            <div className="mb-3 rounded-md border border-border bg-muted/50 px-3 py-2">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                Signed in as
+              </div>
+              <div className="mt-1 flex items-center gap-2 text-sm font-semibold text-forest">
+                <Shield className="h-4 w-4" /> {role === "admin" ? "Admin account" : "Client account"}
+              </div>
+            </div>
             {LINKS.map((l) => (
               <Link
                 key={l.to}

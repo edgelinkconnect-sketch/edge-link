@@ -373,6 +373,8 @@ export type Database = {
           duration: string
           excluded_services: string | null
           featured_image_url: string
+          gallery_image_urls: string[]
+          translations: Json
           highlights: string[] | null
           id: string
           included_services: string | null
@@ -395,6 +397,8 @@ export type Database = {
           duration: string
           excluded_services?: string | null
           featured_image_url?: string
+          gallery_image_urls?: string[]
+          translations?: Json
           highlights?: string[] | null
           id?: string
           included_services?: string | null
@@ -417,6 +421,8 @@ export type Database = {
           duration?: string
           excluded_services?: string | null
           featured_image_url?: string
+          gallery_image_urls?: string[]
+          translations?: Json
           highlights?: string[] | null
           id?: string
           included_services?: string | null

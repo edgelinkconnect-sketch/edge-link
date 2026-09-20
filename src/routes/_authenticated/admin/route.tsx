@@ -11,8 +11,12 @@ import {
   Circle,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { useTranslation } from "react-i18next";
 import { NotificationToggle } from "@/components/notification-toggle";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/brand-logo";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
@@ -31,28 +35,34 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminLayout,
 });
 
-const LINKS: { to: string; label: string; icon: React.ElementType; exact?: boolean }[] = [
-  { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
-  { to: "/admin/tours", label: "Tours", icon: Map },
-  { to: "/admin/gallery", label: "Gallery", icon: ImageIcon },
-  { to: "/admin/bookings", label: "Bookings", icon: Calendar },
-  { to: "/admin/experiences", label: "Experiences", icon: Star },
-  { to: "/admin/chat", label: "Chat", icon: MessageSquare },
+const LINKS: { to: string; key: string; icon: React.ElementType; exact?: boolean }[] = [
+  { to: "/admin", key: "overview", icon: LayoutDashboard, exact: true },
+  { to: "/admin/tours", key: "tours", icon: Map },
+  { to: "/admin/gallery", key: "gallery", icon: ImageIcon },
+  { to: "/admin/quotations", key: "bookings", icon: Calendar },
+  { to: "/admin/experiences", key: "experiences", icon: Star },
+  { to: "/admin/chat", key: "chat", icon: MessageSquare },
 ];
 
 function AdminLayout() {
   const { signOut, user } = useAuth();
+  const { t } = useTranslation();
   return (
     <div className="flex min-h-screen bg-forest-deep text-cream">
       <aside className="hidden w-64 shrink-0 flex-col border-r border-cream/10 bg-forest-deep md:flex">
         <div className="border-b border-cream/10 px-5 py-5">
-          <div className="font-display text-2xl">
-            EDGELINK <span className="font-sans text-sm font-semibold text-gold">TOURS</span>
-          </div>
+          <BrandLogo
+            imageClassName="h-14 w-14"
+            className="text-cream"
+          />
           <div className="mt-1 text-[10px] font-semibold uppercase tracking-widest text-cream/45">
-            Operator console
+            Admin account · operator console
           </div>
           <NotificationToggle className="mt-3 border-cream/30 text-cream hover:bg-cream/10" />
+          <div className="mt-2 flex items-center gap-1">
+            <LanguageSwitcher />
+            <ThemeToggle />
+          </div>
         </div>
         <nav className="flex-1 space-y-1 p-3">
           {LINKS.map((l) => (
@@ -62,7 +72,7 @@ function AdminLayout() {
               activeOptions={{ exact: l.exact }}
               className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-cream/65 transition hover:bg-cream/5 hover:text-cream data-[status=active]:border-r-2 data-[status=active]:border-gold data-[status=active]:bg-gold/10 data-[status=active]:font-semibold data-[status=active]:text-gold"
             >
-              <l.icon className="h-4 w-4" /> {l.label}
+              <l.icon className="h-4 w-4" /> {t(`admin.${l.key}`)}
             </Link>
           ))}
         </nav>
@@ -73,22 +83,22 @@ function AdminLayout() {
               <Circle className="absolute -bottom-0.5 -right-0.5 h-3 w-3 fill-gold text-forest-deep" />
             </div>
             <div className="min-w-0">
-              <div className="truncate text-xs font-semibold">Staff operator</div>
-              <div className="text-[10px] text-gold">Online</div>
+              <div className="truncate text-xs font-semibold">Admin account</div>
+              <div className="truncate text-[10px] text-cream/55">{user?.email}</div>
             </div>
           </div>
           <Link
             to="/"
             className="mb-1 flex items-center gap-3 rounded-md px-3 py-2 text-sm text-cream/70 hover:bg-cream/10"
           >
-            ← Back to site
+            ← {t("common.back")}
           </Link>
           <Button
             onClick={() => void signOut()}
             variant="ghost"
             className="w-full justify-start gap-3 text-cream/70 hover:bg-cream/10 hover:text-cream"
           >
-            <LogOut className="h-4 w-4" /> Sign out
+            <LogOut className="h-4 w-4" /> {t("nav.signOut")}
           </Button>
         </div>
       </aside>
@@ -96,7 +106,11 @@ function AdminLayout() {
         <div className="border-b border-border bg-background px-4 py-3 md:hidden">
           <div className="mb-2 flex items-center justify-between gap-2">
             <span className="truncate text-xs text-muted-foreground">{user?.email}</span>
-            <NotificationToggle />
+            <div className="flex items-center gap-1">
+              <LanguageSwitcher />
+              <ThemeToggle />
+              <NotificationToggle />
+            </div>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-1">
             {LINKS.map((l) => (
@@ -106,7 +120,7 @@ function AdminLayout() {
                 activeOptions={{ exact: l.exact }}
                 className="shrink-0 rounded-full border border-border px-3 py-1.5 text-xs data-[status=active]:bg-forest data-[status=active]:text-cream data-[status=active]:border-forest"
               >
-                {l.label}
+                {t(`admin.${l.key}`)}
               </Link>
             ))}
           </div>

@@ -6,6 +6,7 @@ import {
   requestNotificationPermission,
   showNotification,
 } from "@/lib/notifications";
+import { registerPushNotifications } from "@/lib/push";
 import { cn } from "@/lib/utils";
 
 export function NotificationToggle({ className }: { className?: string }) {
@@ -21,12 +22,18 @@ export function NotificationToggle({ className }: { className?: string }) {
     const result = await requestNotificationPermission();
     setState(result);
     if (result === "granted") {
-      await showNotification({
-        title: "Alerts are on",
-        body: "You'll be notified here about new messages and bookings.",
-        tag: "alerts-on",
-      });
-      toast.success("Notifications enabled on this device");
+      try {
+        await registerPushNotifications();
+        await showNotification({
+          title: "Alerts are on",
+          body: "You'll be notified here about new messages, bookings, and quote requests.",
+          tag: "alerts-on",
+        });
+        toast.success("Notifications enabled on this device");
+      } catch (error) {
+        console.error(error);
+        toast.error("Could not enable push alerts on this device. Try again in a moment.");
+      }
     } else if (result === "denied") {
       toast.error("Notifications blocked — enable them in your browser settings");
     }

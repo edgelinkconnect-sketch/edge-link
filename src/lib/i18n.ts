@@ -58,14 +58,4 @@ if (!i18n.isInitialized) {
     });
 }
 
-if (typeof document !== "undefined") {
-  const applyDir = (lng: string) => {
-    const meta = LANGUAGES.find((l) => l.code === lng);
-    document.documentElement.dir = meta?.dir ?? "ltr";
-    document.documentElement.lang = lng;
-  };
-  applyDir(i18n.language || "en");
-  i18n.on("languageChanged", applyDir);
-}
-
 export default i18n;

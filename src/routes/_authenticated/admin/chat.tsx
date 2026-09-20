@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { Loader2, CheckCircle2, Search, MessageSquare, RotateCcw } from "lucide-react";
@@ -23,8 +23,26 @@ function AdminChat() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
-  const { data: chats, isLoading } = useQuery({
+  useEffect(() => {
+    const channel = supabase
+      .channel("admin-chat-inbox")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "messages" },
+        () => {
+          void qc.invalidateQueries({ queryKey: ["chats", "admin"] });
+        },
+      )
+      .subscribe();
+
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }, [qc]);
+
+  const { data: chats, isLoading, error: chatsError, refetch: refetchChats } = useQuery({
     queryKey: ["chats", "admin", filter],
+    refetchOnWindowFocus: true,
     queryFn: async () => {
       let q = supabase
         .from("chats")
@@ -37,6 +55,10 @@ function AdminChat() {
     },
     refetchInterval: 15000,
   });
+
+  useEffect(() => {
+    if (chatsError instanceof Error) toast.error(`Could not load inbox: ${chatsError.message}`);
+  }, [chatsError]);
 
   const { data: unread } = useQuery({
     queryKey: ["chats", "admin", "unread"],
@@ -101,7 +123,7 @@ function AdminChat() {
       </div>
 
       <div className="mt-5 grid gap-3 lg:grid-cols-[21rem_minmax(0,1fr)]">
-        <Card className="dashboard-surface flex h-[min(68vh,44rem)] min-h-[32rem] flex-col overflow-hidden p-0">
+        <Card className="dashboard-surface flex h-[min(72vh,48rem)] min-h-[34rem] flex-col overflow-hidden p-0">
           <div className="relative border-b border-border p-3">
             <Search className="pointer-events-none absolute left-6 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -116,7 +138,15 @@ function AdminChat() {
             {isLoading && (
               <Loader2 className="mx-auto my-6 h-5 w-5 animate-spin text-muted-foreground" />
             )}
-            {!isLoading && filtered.length === 0 && (
+            {!isLoading && chatsError && (
+              <div className="m-3 rounded-lg border border-destructive/20 bg-destructive/5 p-4 text-center">
+                <MessageSquare className="mx-auto h-5 w-5 text-destructive" />
+                <p className="mt-2 text-sm font-semibold text-destructive">Chat inbox could not be loaded</p>
+                <p className="mt-1 break-words text-xs text-muted-foreground">{chatsError.message}</p>
+                <Button size="sm" variant="outline" className="mt-3" onClick={() => void refetchChats()}>Try again</Button>
+              </div>
+            )}
+            {!isLoading && !chatsError && filtered.length === 0 && (
               <p className="p-6 text-center text-sm text-muted-foreground">No conversations.</p>
             )}
             {filtered.map((c) => {
@@ -152,7 +182,7 @@ function AdminChat() {
           </div>
         </Card>
 
-        <Card className="dashboard-surface overflow-hidden p-0">
+        <Card className="dashboard-surface min-h-[34rem] overflow-hidden p-0">
           {active ? (
             <>
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-muted/40 p-3">

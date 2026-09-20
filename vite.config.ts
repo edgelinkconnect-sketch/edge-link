@@ -16,12 +16,13 @@ export default defineConfig({
   vite: {
     plugins: [
       VitePWA({
-        strategies: "generateSW",
-        registerType: "autoUpdate",
-        injectRegister: null,
+        strategies: "injectManifest",
+        srcDir: "src",
         filename: "sw.js",
-        devOptions: { enabled: false },
+        injectRegister: null,
         manifest: false,
+        devOptions: { enabled: false },
+        includeAssets: ["favicon.png", "apple-touch-icon.png", "pwa-icon-192.png", "pwa-icon-512.png"],
         workbox: {
           globPatterns: ["**/*.{js,css,woff2,png,jpg,jpeg,svg,webp,ico}"],
           navigateFallback: "/",

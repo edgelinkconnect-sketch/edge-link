@@ -1,19 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Facebook, Twitter, Mail, MapPin, Phone } from "lucide-react";
-import logo from "@/assets/edgelink-logo.png.asset.json";
+import { BrandLogo } from "@/components/brand-logo";
 
 export function Footer() {
   return (
     <footer className="mt-24 border-t border-border bg-forest-deep text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-4 md:px-6">
         <div>
-          <div className="flex items-center gap-3">
-            <img src={logo.url} alt="EDGELINK" className="h-14 w-14 rounded-full ring-2 ring-gold" />
-            <div>
-              <div className="font-display text-xl font-bold">EDGELINK</div>
-              <div className="text-[10px] uppercase tracking-[0.25em] text-gold">Tours</div>
-            </div>
-          </div>
+          <BrandLogo imageClassName="h-16 w-16" className="text-primary-foreground" />
           <p className="mt-4 text-sm text-primary-foreground/70">Journeys crafted for a lifetime — through the Land of a Thousand Hills.</p>
         </div>
         <div>

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Map, Image as ImageIcon, Calendar, Star, MessageSquare, Users } from "lucide-react";
 
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/_authenticated/admin/")({
 });
 
 function AdminOverview() {
+  const { t } = useTranslation();
   const stats = useQuery({
     queryKey: ["admin-stats"],
     queryFn: async () => {
@@ -37,15 +39,15 @@ function AdminOverview() {
 
   return (
     <div>
-      <h1 className="font-display text-3xl font-bold text-forest">Overview</h1>
-      <p className="mt-1 text-sm text-muted-foreground">Real-time snapshot of the EDGELINK platform.</p>
+      <h1 className="font-display text-3xl font-bold text-forest">{t("admin.overview")}</h1>
+      <p className="mt-1 text-sm text-muted-foreground">{t("admin.overview")}</p>
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Stat icon={Map} label="Tours" value={stats.data?.tours ?? 0} />
-        <Stat icon={ImageIcon} label="Gallery images" value={stats.data?.gallery ?? 0} />
-        <Stat icon={Users} label="Registered users" value={stats.data?.users ?? 0} />
-        <Stat icon={Calendar} label="Bookings" value={stats.data?.bookings ?? 0} sub={`${stats.data?.pendingBookings ?? 0} pending`} />
-        <Stat icon={Star} label="Experiences" value={stats.data?.experiences ?? 0} sub={`${stats.data?.pendingExperiences ?? 0} to review`} />
-        <Stat icon={MessageSquare} label="Chats" value={stats.data?.chats ?? 0} sub={`${stats.data?.activeChats ?? 0} active`} />
+        <Stat icon={Map} label={t("admin.stats.totalTours")} value={stats.data?.tours ?? 0} />
+        <Stat icon={ImageIcon} label={t("admin.stats.galleryImages")} value={stats.data?.gallery ?? 0} />
+        <Stat icon={Users} label={t("common.people")} value={stats.data?.users ?? 0} />
+        <Stat icon={Calendar} label={t("admin.stats.totalBookings")} value={stats.data?.bookings ?? 0} sub={`${stats.data?.pendingBookings ?? 0} ${t("status.pending").toLowerCase()}`} />
+        <Stat icon={Star} label={t("admin.stats.pendingExperiences")} value={stats.data?.experiences ?? 0} sub={`${stats.data?.pendingExperiences ?? 0} ${t("status.pending").toLowerCase()}`} />
+        <Stat icon={MessageSquare} label={t("admin.stats.openChats")} value={stats.data?.chats ?? 0} sub={`${stats.data?.activeChats ?? 0} ${t("status.active").toLowerCase()}`} />
       </div>
       <Card className="mt-8 p-6">
         <h2 className="font-display text-lg font-semibold text-forest">Welcome to Phase 1</h2>

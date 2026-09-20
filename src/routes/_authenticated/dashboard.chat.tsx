@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { Plus, Loader2, MessageSquare, Search } from "lucide-react";
@@ -34,7 +34,20 @@ export const Route = createFileRoute("/_authenticated/dashboard/chat")({
   component: ClientChat,
 });
 
-const CATEGORIES = ["Booking", "Itinerary", "Payment", "General"];
+const CATEGORIES = [
+  { label: "Booking", value: "booking" },
+  { label: "Itinerary", value: "itinerary" },
+  { label: "Payment", value: "payment" },
+  { label: "General", value: "general" },
+] as const;
+
+type ChatCategory = (typeof CATEGORIES)[number]["value"];
+
+function normalizeChatCategory(value: string): ChatCategory {
+  return CATEGORIES.some((category) => category.value === value)
+    ? (value as ChatCategory)
+    : "general";
+}
 
 function ClientChat() {
   const { user } = useAuth();
@@ -42,11 +55,12 @@ function ClientChat() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [newOpen, setNewOpen] = useState(false);
   const [subject, setSubject] = useState("");
-  const [category, setCategory] = useState("General");
+  const [category, setCategory] = useState<ChatCategory>("general");
   const [search, setSearch] = useState("");
 
-  const { data: chats, isLoading } = useQuery({
+  const { data: chats, isLoading, error: chatsError, refetch: refetchChats } = useQuery({
     queryKey: ["chats", user?.id],
+    refetchOnWindowFocus: true,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("chats")
@@ -59,11 +73,19 @@ function ClientChat() {
     enabled: !!user,
   });
 
+  useEffect(() => {
+    if (chatsError instanceof Error) toast.error(`Could not load conversations: ${chatsError.message}`);
+  }, [chatsError]);
+
   const create = useMutation({
     mutationFn: async () => {
       const { data, error } = await supabase
         .from("chats")
-        .insert({ client_id: user!.id, subject: subject.trim() || "New conversation", category })
+        .insert({
+          client_id: user!.id,
+          subject: subject.trim() || "New conversation",
+          category: normalizeChatCategory(category),
+        })
         .select("id")
         .single();
       if (error) throw error;
@@ -100,7 +122,7 @@ function ClientChat() {
     >
       <div>
         <div className="grid gap-3 lg:grid-cols-[19rem_minmax(0,1fr)]">
-          <Card className="dashboard-surface flex h-[min(68vh,44rem)] min-h-[32rem] flex-col overflow-hidden p-0">
+          <Card className="dashboard-surface flex h-[min(72vh,48rem)] min-h-[34rem] flex-col overflow-hidden p-0">
             <div className="relative border-b border-border p-3">
               <Search className="pointer-events-none absolute left-6 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
               <Input
@@ -115,7 +137,15 @@ function ClientChat() {
               {isLoading && (
                 <Loader2 className="mx-auto my-6 h-5 w-5 animate-spin text-muted-foreground" />
               )}
-              {!isLoading && filtered.length === 0 && (
+              {!isLoading && chatsError && (
+                <div className="m-3 rounded-lg border border-destructive/20 bg-destructive/5 p-4 text-center">
+                  <MessageSquare className="mx-auto h-5 w-5 text-destructive" />
+                  <p className="mt-2 text-sm font-semibold text-destructive">Chat could not be loaded</p>
+                  <p className="mt-1 break-words text-xs text-muted-foreground">{chatsError.message}</p>
+                  <Button size="sm" variant="outline" className="mt-3" onClick={() => void refetchChats()}>Try again</Button>
+                </div>
+              )}
+              {!isLoading && !chatsError && filtered.length === 0 && (
                 <div className="p-6 text-center">
                   <MessageSquare className="mx-auto h-5 w-5 text-muted-foreground" />
                   <p className="mt-2 text-sm text-muted-foreground">No conversations yet.</p>
@@ -154,7 +184,7 @@ function ClientChat() {
             </div>
           </Card>
 
-          <Card className="dashboard-surface overflow-hidden p-0">
+          <Card className="dashboard-surface min-h-[34rem] overflow-hidden p-0">
             {active ? (
               <>
                 <div className="border-b border-border bg-muted/40 px-4 py-3">
@@ -205,17 +235,17 @@ function ClientChat() {
               <div className="flex flex-wrap gap-2">
                 {CATEGORIES.map((c) => (
                   <Button
-                    key={c}
+                    key={c.value}
                     type="button"
-                    onClick={() => setCategory(c)}
+                    onClick={() => setCategory(c.value)}
                     className={cn(
                       "rounded-md border px-3 py-1.5 text-xs transition",
-                      category === c
+                      category === c.value
                         ? "border-forest bg-forest text-cream"
                         : "border-border hover:border-gold",
                     )}
                   >
-                    {c}
+                    {c.label}
                   </Button>
                 ))}
               </div>

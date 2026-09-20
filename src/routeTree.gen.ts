@@ -9,84 +9,46 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ToursRouteImport } from './routes/tours'
-import { Route as SustainabilityRouteImport } from './routes/sustainability'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as PackagesRouteImport } from './routes/packages'
-import { Route as JournalRouteImport } from './routes/journal'
-import { Route as GalleryRouteImport } from './routes/gallery'
-import { Route as FaqRouteImport } from './routes/faq'
-import { Route as DestinationsRouteImport } from './routes/destinations'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ToursIndexRouteImport } from './routes/tours.index'
-import { Route as DestinationsIndexRouteImport } from './routes/destinations.index'
-import { Route as ToursSlugRouteImport } from './routes/tours.$slug'
-import { Route as DestinationsSlugRouteImport } from './routes/destinations.$slug'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DestinationsRouteImport } from './routes/destinations'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as JournalRouteImport } from './routes/journal'
+import { Route as PackagesRouteImport } from './routes/packages'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SustainabilityRouteImport } from './routes/sustainability'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ToursRouteImport } from './routes/tours'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
-import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as DestinationsIndexRouteImport } from './routes/destinations.index'
+import { Route as DestinationsSlugRouteImport } from './routes/destinations.$slug'
+import { Route as ToursIndexRouteImport } from './routes/tours.index'
+import { Route as ToursSlugRouteImport } from './routes/tours.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
-import { Route as AuthenticatedDashboardProfileRouteImport } from './routes/_authenticated/dashboard.profile'
-import { Route as AuthenticatedDashboardExperiencesRouteImport } from './routes/_authenticated/dashboard.experiences'
-import { Route as AuthenticatedDashboardChatRouteImport } from './routes/_authenticated/dashboard.chat'
-import { Route as AuthenticatedDashboardBookingsRouteImport } from './routes/_authenticated/dashboard.bookings'
-import { Route as AuthenticatedAdminToursRouteImport } from './routes/_authenticated/admin/tours'
-import { Route as AuthenticatedAdminGalleryRouteImport } from './routes/_authenticated/admin/gallery'
-import { Route as AuthenticatedAdminExperiencesRouteImport } from './routes/_authenticated/admin/experiences'
-import { Route as AuthenticatedAdminChatRouteImport } from './routes/_authenticated/admin/chat'
 import { Route as AuthenticatedAdminBookingsRouteImport } from './routes/_authenticated/admin/bookings'
+import { Route as AuthenticatedAdminChatRouteImport } from './routes/_authenticated/admin/chat'
+import { Route as AuthenticatedAdminExperiencesRouteImport } from './routes/_authenticated/admin/experiences'
+import { Route as AuthenticatedAdminGalleryRouteImport } from './routes/_authenticated/admin/gallery'
+import { Route as AuthenticatedAdminQuotationsRouteImport } from './routes/_authenticated/admin/quotations'
+import { Route as AuthenticatedAdminToursRouteImport } from './routes/_authenticated/admin/tours'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedDashboardBookingsRouteImport } from './routes/_authenticated/dashboard.bookings'
+import { Route as AuthenticatedDashboardChatRouteImport } from './routes/_authenticated/dashboard.chat'
+import { Route as AuthenticatedDashboardExperiencesRouteImport } from './routes/_authenticated/dashboard.experiences'
+import { Route as AuthenticatedDashboardProfileRouteImport } from './routes/_authenticated/dashboard.profile'
 
-const ToursRoute = ToursRouteImport.update({
-  id: '/tours',
-  path: '/tours',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SustainabilityRoute = SustainabilityRouteImport.update({
-  id: '/sustainability',
-  path: '/sustainability',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PackagesRoute = PackagesRouteImport.update({
-  id: '/packages',
-  path: '/packages',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JournalRoute = JournalRouteImport.update({
-  id: '/journal',
-  path: '/journal',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GalleryRoute = GalleryRouteImport.update({
-  id: '/gallery',
-  path: '/gallery',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaqRoute = FaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DestinationsRoute = DestinationsRouteImport.update({
-  id: '/destinations',
-  path: '/destinations',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -94,67 +56,134 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ToursIndexRoute = ToursIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ToursRoute,
+const DestinationsRoute = DestinationsRouteImport.update({
+  id: '/destinations',
+  path: '/destinations',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const DestinationsIndexRoute = DestinationsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DestinationsRoute,
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const ToursSlugRoute = ToursSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ToursRoute,
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const DestinationsSlugRoute = DestinationsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => DestinationsRoute,
+const JournalRoute = JournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PackagesRoute = PackagesRouteImport.update({
+  id: '/packages',
+  path: '/packages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SustainabilityRoute = SustainabilityRouteImport.update({
+  id: '/sustainability',
+  path: '/sustainability',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToursRoute = ToursRouteImport.update({
+  id: '/tours',
+  path: '/tours',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedDashboardIndexRoute =
-  AuthenticatedDashboardIndexRouteImport.update({
-    id: '/dashboard/',
-    path: '/dashboard/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
+const DestinationsIndexRoute = DestinationsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DestinationsRoute,
+} as any)
+const DestinationsSlugRoute = DestinationsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => DestinationsRoute,
+} as any)
+const ToursIndexRoute = ToursIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ToursRoute,
+} as any)
+const ToursSlugRoute = ToursSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ToursRoute,
+} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
-const AuthenticatedDashboardProfileRoute =
-  AuthenticatedDashboardProfileRouteImport.update({
-    id: '/dashboard/profile',
-    path: '/dashboard/profile',
-    getParentRoute: () => AuthenticatedRouteRoute,
+const AuthenticatedAdminBookingsRoute =
+  AuthenticatedAdminBookingsRouteImport.update({
+    id: '/bookings',
+    path: '/bookings',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
-const AuthenticatedDashboardExperiencesRoute =
-  AuthenticatedDashboardExperiencesRouteImport.update({
-    id: '/dashboard/experiences',
-    path: '/dashboard/experiences',
-    getParentRoute: () => AuthenticatedRouteRoute,
+const AuthenticatedAdminChatRoute = AuthenticatedAdminChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminExperiencesRoute =
+  AuthenticatedAdminExperiencesRouteImport.update({
+    id: '/experiences',
+    path: '/experiences',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
-const AuthenticatedDashboardChatRoute =
-  AuthenticatedDashboardChatRouteImport.update({
-    id: '/dashboard/chat',
-    path: '/dashboard/chat',
+const AuthenticatedAdminGalleryRoute =
+  AuthenticatedAdminGalleryRouteImport.update({
+    id: '/gallery',
+    path: '/gallery',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminQuotationsRoute =
+  AuthenticatedAdminQuotationsRouteImport.update({
+    id: '/quotations',
+    path: '/quotations',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminToursRoute = AuthenticatedAdminToursRouteImport.update({
+  id: '/tours',
+  path: '/tours',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexRouteImport.update({
+    id: '/dashboard/',
+    path: '/dashboard/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDashboardBookingsRoute =
@@ -163,33 +192,23 @@ const AuthenticatedDashboardBookingsRoute =
     path: '/dashboard/bookings',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedAdminToursRoute = AuthenticatedAdminToursRouteImport.update({
-  id: '/tours',
-  path: '/tours',
-  getParentRoute: () => AuthenticatedAdminRouteRoute,
-} as any)
-const AuthenticatedAdminGalleryRoute =
-  AuthenticatedAdminGalleryRouteImport.update({
-    id: '/gallery',
-    path: '/gallery',
-    getParentRoute: () => AuthenticatedAdminRouteRoute,
+const AuthenticatedDashboardChatRoute =
+  AuthenticatedDashboardChatRouteImport.update({
+    id: '/dashboard/chat',
+    path: '/dashboard/chat',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedAdminExperiencesRoute =
-  AuthenticatedAdminExperiencesRouteImport.update({
-    id: '/experiences',
-    path: '/experiences',
-    getParentRoute: () => AuthenticatedAdminRouteRoute,
+const AuthenticatedDashboardExperiencesRoute =
+  AuthenticatedDashboardExperiencesRouteImport.update({
+    id: '/dashboard/experiences',
+    path: '/dashboard/experiences',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedAdminChatRoute = AuthenticatedAdminChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
-  getParentRoute: () => AuthenticatedAdminRouteRoute,
-} as any)
-const AuthenticatedAdminBookingsRoute =
-  AuthenticatedAdminBookingsRouteImport.update({
-    id: '/bookings',
-    path: '/bookings',
-    getParentRoute: () => AuthenticatedAdminRouteRoute,
+const AuthenticatedDashboardProfileRoute =
+  AuthenticatedDashboardProfileRouteImport.update({
+    id: '/dashboard/profile',
+    path: '/dashboard/profile',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -202,8 +221,10 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/journal': typeof JournalRoute
   '/packages': typeof PackagesRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
+  '/terms': typeof TermsRoute
   '/tours': typeof ToursRouteWithChildren
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/destinations/$slug': typeof DestinationsSlugRoute
@@ -214,6 +235,7 @@ export interface FileRoutesByFullPath {
   '/admin/chat': typeof AuthenticatedAdminChatRoute
   '/admin/experiences': typeof AuthenticatedAdminExperiencesRoute
   '/admin/gallery': typeof AuthenticatedAdminGalleryRoute
+  '/admin/quotations': typeof AuthenticatedAdminQuotationsRoute
   '/admin/tours': typeof AuthenticatedAdminToursRoute
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/dashboard/chat': typeof AuthenticatedDashboardChatRoute
@@ -231,8 +253,10 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/journal': typeof JournalRoute
   '/packages': typeof PackagesRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
+  '/terms': typeof TermsRoute
   '/destinations/$slug': typeof DestinationsSlugRoute
   '/tours/$slug': typeof ToursSlugRoute
   '/destinations': typeof DestinationsIndexRoute
@@ -241,6 +265,7 @@ export interface FileRoutesByTo {
   '/admin/chat': typeof AuthenticatedAdminChatRoute
   '/admin/experiences': typeof AuthenticatedAdminExperiencesRoute
   '/admin/gallery': typeof AuthenticatedAdminGalleryRoute
+  '/admin/quotations': typeof AuthenticatedAdminQuotationsRoute
   '/admin/tours': typeof AuthenticatedAdminToursRoute
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/dashboard/chat': typeof AuthenticatedDashboardChatRoute
@@ -261,8 +286,10 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/journal': typeof JournalRoute
   '/packages': typeof PackagesRoute
+  '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sustainability': typeof SustainabilityRoute
+  '/terms': typeof TermsRoute
   '/tours': typeof ToursRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/destinations/$slug': typeof DestinationsSlugRoute
@@ -273,6 +300,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/chat': typeof AuthenticatedAdminChatRoute
   '/_authenticated/admin/experiences': typeof AuthenticatedAdminExperiencesRoute
   '/_authenticated/admin/gallery': typeof AuthenticatedAdminGalleryRoute
+  '/_authenticated/admin/quotations': typeof AuthenticatedAdminQuotationsRoute
   '/_authenticated/admin/tours': typeof AuthenticatedAdminToursRoute
   '/_authenticated/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/_authenticated/dashboard/chat': typeof AuthenticatedDashboardChatRoute
@@ -293,8 +321,10 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/journal'
     | '/packages'
+    | '/privacy'
     | '/reset-password'
     | '/sustainability'
+    | '/terms'
     | '/tours'
     | '/admin'
     | '/destinations/$slug'
@@ -305,6 +335,7 @@ export interface FileRouteTypes {
     | '/admin/chat'
     | '/admin/experiences'
     | '/admin/gallery'
+    | '/admin/quotations'
     | '/admin/tours'
     | '/dashboard/bookings'
     | '/dashboard/chat'
@@ -322,8 +353,10 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/journal'
     | '/packages'
+    | '/privacy'
     | '/reset-password'
     | '/sustainability'
+    | '/terms'
     | '/destinations/$slug'
     | '/tours/$slug'
     | '/destinations'
@@ -332,6 +365,7 @@ export interface FileRouteTypes {
     | '/admin/chat'
     | '/admin/experiences'
     | '/admin/gallery'
+    | '/admin/quotations'
     | '/admin/tours'
     | '/dashboard/bookings'
     | '/dashboard/chat'
@@ -351,8 +385,10 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/journal'
     | '/packages'
+    | '/privacy'
     | '/reset-password'
     | '/sustainability'
+    | '/terms'
     | '/tours'
     | '/_authenticated/admin'
     | '/destinations/$slug'
@@ -363,6 +399,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/chat'
     | '/_authenticated/admin/experiences'
     | '/_authenticated/admin/gallery'
+    | '/_authenticated/admin/quotations'
     | '/_authenticated/admin/tours'
     | '/_authenticated/dashboard/bookings'
     | '/_authenticated/dashboard/chat'
@@ -383,88 +420,20 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   JournalRoute: typeof JournalRoute
   PackagesRoute: typeof PackagesRoute
+  PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SustainabilityRoute: typeof SustainabilityRoute
+  TermsRoute: typeof TermsRoute
   ToursRoute: typeof ToursRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tours': {
-      id: '/tours'
-      path: '/tours'
-      fullPath: '/tours'
-      preLoaderRoute: typeof ToursRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sustainability': {
-      id: '/sustainability'
-      path: '/sustainability'
-      fullPath: '/sustainability'
-      preLoaderRoute: typeof SustainabilityRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/packages': {
-      id: '/packages'
-      path: '/packages'
-      fullPath: '/packages'
-      preLoaderRoute: typeof PackagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/journal': {
-      id: '/journal'
-      path: '/journal'
-      fullPath: '/journal'
-      preLoaderRoute: typeof JournalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/gallery': {
-      id: '/gallery'
-      path: '/gallery'
-      fullPath: '/gallery'
-      preLoaderRoute: typeof GalleryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/destinations': {
-      id: '/destinations'
-      path: '/destinations'
-      fullPath: '/destinations'
-      preLoaderRoute: typeof DestinationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -474,40 +443,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tours/': {
-      id: '/tours/'
-      path: '/'
-      fullPath: '/tours/'
-      preLoaderRoute: typeof ToursIndexRouteImport
-      parentRoute: typeof ToursRoute
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/destinations/': {
-      id: '/destinations/'
-      path: '/'
-      fullPath: '/destinations/'
-      preLoaderRoute: typeof DestinationsIndexRouteImport
-      parentRoute: typeof DestinationsRoute
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/tours/$slug': {
-      id: '/tours/$slug'
-      path: '/$slug'
-      fullPath: '/tours/$slug'
-      preLoaderRoute: typeof ToursSlugRouteImport
-      parentRoute: typeof ToursRoute
+    '/destinations': {
+      id: '/destinations'
+      path: '/destinations'
+      fullPath: '/destinations'
+      preLoaderRoute: typeof DestinationsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/destinations/$slug': {
-      id: '/destinations/$slug'
-      path: '/$slug'
-      fullPath: '/destinations/$slug'
-      preLoaderRoute: typeof DestinationsSlugRouteImport
-      parentRoute: typeof DestinationsRoute
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal': {
+      id: '/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof JournalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/packages': {
+      id: '/packages'
+      path: '/packages'
+      fullPath: '/packages'
+      preLoaderRoute: typeof PackagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sustainability': {
+      id: '/sustainability'
+      path: '/sustainability'
+      fullPath: '/sustainability'
+      preLoaderRoute: typeof SustainabilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tours': {
+      id: '/tours'
+      path: '/tours'
+      fullPath: '/tours'
+      preLoaderRoute: typeof ToursRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -516,74 +541,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/dashboard/': {
-      id: '/_authenticated/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/destinations/': {
+      id: '/destinations/'
+      path: '/'
+      fullPath: '/destinations/'
+      preLoaderRoute: typeof DestinationsIndexRouteImport
+      parentRoute: typeof DestinationsRoute
+    }
+    '/destinations/$slug': {
+      id: '/destinations/$slug'
+      path: '/$slug'
+      fullPath: '/destinations/$slug'
+      preLoaderRoute: typeof DestinationsSlugRouteImport
+      parentRoute: typeof DestinationsRoute
+    }
+    '/tours/': {
+      id: '/tours/'
+      path: '/'
+      fullPath: '/tours/'
+      preLoaderRoute: typeof ToursIndexRouteImport
+      parentRoute: typeof ToursRoute
+    }
+    '/tours/$slug': {
+      id: '/tours/$slug'
+      path: '/$slug'
+      fullPath: '/tours/$slug'
+      preLoaderRoute: typeof ToursSlugRouteImport
+      parentRoute: typeof ToursRoute
     }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
-    }
-    '/_authenticated/dashboard/profile': {
-      id: '/_authenticated/dashboard/profile'
-      path: '/dashboard/profile'
-      fullPath: '/dashboard/profile'
-      preLoaderRoute: typeof AuthenticatedDashboardProfileRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/dashboard/experiences': {
-      id: '/_authenticated/dashboard/experiences'
-      path: '/dashboard/experiences'
-      fullPath: '/dashboard/experiences'
-      preLoaderRoute: typeof AuthenticatedDashboardExperiencesRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/dashboard/chat': {
-      id: '/_authenticated/dashboard/chat'
-      path: '/dashboard/chat'
-      fullPath: '/dashboard/chat'
-      preLoaderRoute: typeof AuthenticatedDashboardChatRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/dashboard/bookings': {
-      id: '/_authenticated/dashboard/bookings'
-      path: '/dashboard/bookings'
-      fullPath: '/dashboard/bookings'
-      preLoaderRoute: typeof AuthenticatedDashboardBookingsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/admin/tours': {
-      id: '/_authenticated/admin/tours'
-      path: '/tours'
-      fullPath: '/admin/tours'
-      preLoaderRoute: typeof AuthenticatedAdminToursRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
-    }
-    '/_authenticated/admin/gallery': {
-      id: '/_authenticated/admin/gallery'
-      path: '/gallery'
-      fullPath: '/admin/gallery'
-      preLoaderRoute: typeof AuthenticatedAdminGalleryRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
-    }
-    '/_authenticated/admin/experiences': {
-      id: '/_authenticated/admin/experiences'
-      path: '/experiences'
-      fullPath: '/admin/experiences'
-      preLoaderRoute: typeof AuthenticatedAdminExperiencesRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
-    }
-    '/_authenticated/admin/chat': {
-      id: '/_authenticated/admin/chat'
-      path: '/chat'
-      fullPath: '/admin/chat'
-      preLoaderRoute: typeof AuthenticatedAdminChatRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/bookings': {
@@ -593,6 +583,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminBookingsRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/chat': {
+      id: '/_authenticated/admin/chat'
+      path: '/chat'
+      fullPath: '/admin/chat'
+      preLoaderRoute: typeof AuthenticatedAdminChatRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/experiences': {
+      id: '/_authenticated/admin/experiences'
+      path: '/experiences'
+      fullPath: '/admin/experiences'
+      preLoaderRoute: typeof AuthenticatedAdminExperiencesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/gallery': {
+      id: '/_authenticated/admin/gallery'
+      path: '/gallery'
+      fullPath: '/admin/gallery'
+      preLoaderRoute: typeof AuthenticatedAdminGalleryRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/quotations': {
+      id: '/_authenticated/admin/quotations'
+      path: '/quotations'
+      fullPath: '/admin/quotations'
+      preLoaderRoute: typeof AuthenticatedAdminQuotationsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/tours': {
+      id: '/_authenticated/admin/tours'
+      path: '/tours'
+      fullPath: '/admin/tours'
+      preLoaderRoute: typeof AuthenticatedAdminToursRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard/bookings': {
+      id: '/_authenticated/dashboard/bookings'
+      path: '/dashboard/bookings'
+      fullPath: '/dashboard/bookings'
+      preLoaderRoute: typeof AuthenticatedDashboardBookingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard/chat': {
+      id: '/_authenticated/dashboard/chat'
+      path: '/dashboard/chat'
+      fullPath: '/dashboard/chat'
+      preLoaderRoute: typeof AuthenticatedDashboardChatRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard/experiences': {
+      id: '/_authenticated/dashboard/experiences'
+      path: '/dashboard/experiences'
+      fullPath: '/dashboard/experiences'
+      preLoaderRoute: typeof AuthenticatedDashboardExperiencesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard/profile': {
+      id: '/_authenticated/dashboard/profile'
+      path: '/dashboard/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof AuthenticatedDashboardProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -601,6 +661,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminChatRoute: typeof AuthenticatedAdminChatRoute
   AuthenticatedAdminExperiencesRoute: typeof AuthenticatedAdminExperiencesRoute
   AuthenticatedAdminGalleryRoute: typeof AuthenticatedAdminGalleryRoute
+  AuthenticatedAdminQuotationsRoute: typeof AuthenticatedAdminQuotationsRoute
   AuthenticatedAdminToursRoute: typeof AuthenticatedAdminToursRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
@@ -611,6 +672,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminChatRoute: AuthenticatedAdminChatRoute,
     AuthenticatedAdminExperiencesRoute: AuthenticatedAdminExperiencesRoute,
     AuthenticatedAdminGalleryRoute: AuthenticatedAdminGalleryRoute,
+    AuthenticatedAdminQuotationsRoute: AuthenticatedAdminQuotationsRoute,
     AuthenticatedAdminToursRoute: AuthenticatedAdminToursRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   }
@@ -679,8 +741,10 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   JournalRoute: JournalRoute,
   PackagesRoute: PackagesRoute,
+  PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SustainabilityRoute: SustainabilityRoute,
+  TermsRoute: TermsRoute,
   ToursRoute: ToursRouteWithChildren,
 }
 export const routeTree = rootRouteImport

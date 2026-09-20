@@ -16,7 +16,7 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { ThemeProvider } from "@/lib/theme";
 import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
 import { LiveAlerts } from "@/components/live-alerts";
-import "@/lib/i18n";
+import i18n, { LANGUAGES } from "@/lib/i18n";
 
 function NotFoundComponent() {
   return (
@@ -51,6 +51,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong. Try again or head home.
         </p>
+        {import.meta.env.DEV && (
+          <pre className="mt-4 max-w-full overflow-auto rounded-md border border-destructive/20 bg-destructive/5 p-3 text-left text-xs text-destructive">
+            {error.message}
+          </pre>
+        )}
         <div className="mt-6 flex justify-center gap-2">
           <button
             onClick={() => {
@@ -131,6 +136,19 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    const applyLanguage = (language: string) => {
+      const meta = LANGUAGES.find((item) => item.code === language);
+      document.documentElement.dir = meta?.dir ?? "ltr";
+      document.documentElement.lang = language;
+    };
+
+    applyLanguage(i18n.language || "en");
+    i18n.on("languageChanged", applyLanguage);
+    return () => i18n.off("languageChanged", applyLanguage);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>

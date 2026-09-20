@@ -5,9 +5,10 @@ import { ArrowLeft, Check, Clock, MapPin, Mountain, Sun, Users, X } from "lucide
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { BookingDialog } from "@/components/booking-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useMediaUrls } from "@/lib/media";
+import { useTranslation } from "react-i18next";
+import { QuoteRequestDialog } from "@/components/quote-request-dialog";
 
 export const Route = createFileRoute("/tours/$slug")({
   head: () => ({
@@ -36,12 +37,31 @@ type FullTour = {
   max_group_size: number | null;
   price: string;
   featured_image_url: string;
+  gallery_image_urls: string[] | null;
+  translations: Record<string, TourTranslation> | null;
   description: string;
   itinerary: string;
   included_services: string | null;
   excluded_services: string | null;
   highlights: string[] | null;
 };
+
+type TourTranslation = Partial<{
+  name: string;
+  location: string;
+  region: string;
+  activity: string;
+  duration: string;
+  difficulty: string;
+  best_time: string;
+  price: string;
+  description: string;
+  itinerary: string;
+  included_services: string;
+  excluded_services: string;
+  price: string;
+  highlights: string[];
+}>;
 
 function lines(value?: string | null) {
   return (value ?? "")
@@ -52,7 +72,8 @@ function lines(value?: string | null) {
 
 function TourDetail() {
   const { slug } = Route.useParams();
-  const [booking, setBooking] = useState(false);
+  const { i18n } = useTranslation();
+  const [quoteOpen, setQuoteOpen] = useState(false);
 
   const { data: tour, isLoading } = useQuery({
     queryKey: ["tour", slug],
@@ -78,7 +99,10 @@ function TourDetail() {
     },
   });
 
-  const heroMedia = useMediaUrls("tours", [tour?.featured_image_url]);
+  const heroMedia = useMediaUrls("tours", [
+    tour?.featured_image_url,
+    ...(tour?.gallery_image_urls ?? []),
+  ]);
   const shotMedia = useMediaUrls("gallery", (shots ?? []).map((s) => s.image_url));
 
   if (isLoading) {
@@ -107,26 +131,29 @@ function TourDetail() {
     );
   }
 
-  const included = lines(tour.included_services);
-  const excluded = lines(tour.excluded_services);
-  const days = lines(tour.itinerary);
+  const languageCode = i18n.language.split("-")[0];
+  const localizedTour = { ...tour, ...(tour.translations?.[languageCode] ?? {}) };
+  const included = lines(localizedTour.included_services);
+  const excluded = lines(localizedTour.excluded_services);
+  const days = lines(localizedTour.itinerary);
   const heroUrl = heroMedia(tour.featured_image_url);
+  const tourImages = (tour.gallery_image_urls ?? []).filter((image) => image !== tour.featured_image_url);
 
   return (
     <AppShell>
       <section className="relative overflow-hidden bg-forest-deep text-primary-foreground">
-        {heroUrl && <img src={heroUrl} alt={tour.name} className="absolute inset-0 h-full w-full object-cover opacity-40" />}
+        {heroUrl && <img src={heroUrl} alt={localizedTour.name} className="absolute inset-0 h-full w-full object-cover opacity-40" />}
         <div className="relative mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-28">
           <Link to="/tours" className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-gold">
             <ArrowLeft className="h-3.5 w-3.5" /> All tours
           </Link>
-          <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold md:text-5xl">{tour.name}</h1>
+          <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold md:text-5xl">{localizedTour.name}</h1>
           <div className="mt-4 flex flex-wrap gap-4 text-sm text-primary-foreground/85">
-            <span className="inline-flex items-center gap-1.5"><MapPin className="h-4 w-4 text-gold" />{tour.region || tour.location}</span>
-            <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4 text-gold" />{tour.duration}</span>
-            {tour.difficulty && <span className="inline-flex items-center gap-1.5"><Mountain className="h-4 w-4 text-gold" />{tour.difficulty}</span>}
+            <span className="inline-flex items-center gap-1.5"><MapPin className="h-4 w-4 text-gold" />{localizedTour.region || localizedTour.location}</span>
+            <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4 text-gold" />{localizedTour.duration}</span>
+            {localizedTour.difficulty && <span className="inline-flex items-center gap-1.5"><Mountain className="h-4 w-4 text-gold" />{localizedTour.difficulty}</span>}
             {tour.max_group_size && <span className="inline-flex items-center gap-1.5"><Users className="h-4 w-4 text-gold" />Max {tour.max_group_size}</span>}
-            {tour.best_time && <span className="inline-flex items-center gap-1.5"><Sun className="h-4 w-4 text-gold" />{tour.best_time}</span>}
+            {localizedTour.best_time && <span className="inline-flex items-center gap-1.5"><Sun className="h-4 w-4 text-gold" />{localizedTour.best_time}</span>}
           </div>
         </div>
       </section>
@@ -135,14 +162,25 @@ function TourDetail() {
         <div className="space-y-10">
           <div>
             <h2 className="font-display text-2xl font-bold text-forest">Overview</h2>
-            <p className="mt-3 whitespace-pre-line leading-relaxed text-muted-foreground">{tour.description}</p>
+            <p className="mt-3 whitespace-pre-line leading-relaxed text-muted-foreground">{localizedTour.description}</p>
           </div>
 
-          {(tour.highlights?.length ?? 0) > 0 && (
+          {tourImages.length > 0 && (
+            <div>
+              <h2 className="font-display text-2xl font-bold text-forest">Journey gallery</h2>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {tourImages.map((image, index) => (
+                  <img key={image} src={heroMedia(image)} alt={`${tour.name} image ${index + 2}`} className="aspect-[4/3] w-full rounded-xl object-cover" />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {(localizedTour.highlights?.length ?? 0) > 0 && (
             <div>
               <h2 className="font-display text-2xl font-bold text-forest">Highlights</h2>
               <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-                {tour.highlights!.map((h) => (
+                {localizedTour.highlights!.map((h) => (
                   <li key={h} className="flex gap-2 rounded-lg border border-border bg-card p-3 text-sm">
                     <Check className="mt-0.5 h-4 w-4 shrink-0 text-gold" />{h}
                   </li>
@@ -202,11 +240,13 @@ function TourDetail() {
         </div>
 
         <aside className="h-fit rounded-2xl border border-border bg-card p-6 shadow-sm lg:sticky lg:top-24">
-          <div className="text-xs uppercase tracking-wider text-muted-foreground">From</div>
-          <div className="font-display text-3xl font-bold text-forest">${Number(tour.price).toLocaleString()}</div>
-          <p className="mt-1 text-xs text-muted-foreground">per person · {tour.duration}</p>
-          <Button onClick={() => setBooking(true)} size="lg" className="mt-5 w-full bg-gold text-gold-foreground hover:brightness-95">
-            Book this tour
+          <div className="text-xs uppercase tracking-wider text-muted-foreground">Custom planning</div>
+          <div className="font-display text-2xl font-bold text-forest">Ask for quote</div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Share your travel dates and preferences and our team will prepare a tailored quote for {tour.name}.
+          </p>
+          <Button onClick={() => setQuoteOpen(true)} size="lg" className="mt-5 w-full bg-gold text-gold-foreground hover:brightness-95">
+            Ask for quote
           </Button>
           <Button asChild variant="outline" className="mt-2 w-full">
             <Link to="/contact">Ask a question</Link>
@@ -214,12 +254,11 @@ function TourDetail() {
         </aside>
       </section>
 
-      <BookingDialog
-        open={booking}
-        onOpenChange={setBooking}
+      <QuoteRequestDialog
+        open={quoteOpen}
+        onOpenChange={setQuoteOpen}
         tourSlug={tour.slug ?? ""}
         tourName={tour.name}
-        price={Number(tour.price) || 0}
         duration={tour.duration}
       />
     </AppShell>
