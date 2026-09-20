@@ -112,7 +112,12 @@ function Journal() {
     },
   });
   const media = useMediaUrls("gallery", (managedPosts ?? []).map((post) => post.image_url));
-  const sourcePosts = isLoading ? [] : managedPosts?.length ? managedPosts : POSTS;
+  const sourcePosts = isLoading
+    ? []
+    : [
+        ...(managedPosts ?? []),
+        ...POSTS.filter((post) => !(managedPosts ?? []).some((managed) => managed.slug === post.slug)),
+      ];
   const displayPosts = sourcePosts.map((post) => ({ ...post, image: media(post.image) || post.image }));
   const posts = category === "All" ? displayPosts : displayPosts.filter((p) => p.category === category);
   const open = displayPosts.find((p) => p.slug === openSlug);
