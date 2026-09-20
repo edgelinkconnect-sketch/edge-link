@@ -6,6 +6,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { IMAGES } from "@/lib/site-data";
 import { supabase } from "@/integrations/supabase/client";
+import { useMediaUrls } from "@/lib/media";
 
 export const Route = createFileRoute("/journal")({
   head: () => ({
@@ -101,9 +102,11 @@ function Journal() {
       }));
     },
   });
+  const media = useMediaUrls("gallery", (managedPosts ?? []).map((post) => post.image_url));
   const sourcePosts = managedPosts?.length ? managedPosts : POSTS;
-  const posts = category === "All" ? sourcePosts : sourcePosts.filter((p) => p.category === category);
-  const open = sourcePosts.find((p) => p.slug === openSlug);
+  const displayPosts = sourcePosts.map((post) => ({ ...post, image: media(post.image) || post.image }));
+  const posts = category === "All" ? displayPosts : displayPosts.filter((p) => p.category === category);
+  const open = displayPosts.find((p) => p.slug === openSlug);
 
   return (
     <AppShell>

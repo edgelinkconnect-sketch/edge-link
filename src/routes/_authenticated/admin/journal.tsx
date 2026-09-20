@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { FileText, Loader2, Pencil, Plus, Save, Trash2 } from "lucide-react";
+import { FileImage, FileText, Loader2, Pencil, Plus, Save, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -99,6 +99,27 @@ function AdminJournal() {
 }
 
 function PostEditor({ post, saving, onChange, onCancel, onSave }: { post: Post | Omit<Post, "id">; saving: boolean; onChange: (post: Post | Omit<Post, "id">) => void; onCancel: () => void; onSave: () => void }) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [dragging, setDragging] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const set = (key: keyof typeof emptyPost, value: string | boolean) => onChange({ ...post, [key]: value });
-  return <Card className="mt-6 border-gold/40 p-5 shadow-sm"><div className="mb-5 flex items-center justify-between"><div><h2 className="font-display text-2xl font-bold text-forest">{"id" in post ? "Edit post" : "New post"}</h2><p className="text-sm text-muted-foreground">Draft the article and publish it when ready.</p></div><Button variant="ghost" onClick={onCancel}>Close</Button></div><div className="grid gap-4 md:grid-cols-2"><div className="space-y-1.5"><Label>Title</Label><Input value={post.title} onChange={(e) => set("title", e.target.value)} placeholder="A new story from Rwanda" /></div><div className="space-y-1.5"><Label>Slug</Label><Input value={post.slug} onChange={(e) => set("slug", e.target.value)} placeholder="new-story-from-rwanda" /></div><div className="space-y-1.5"><Label>Category</Label><Input value={post.category} onChange={(e) => set("category", e.target.value)} /></div><div className="space-y-1.5"><Label>Author</Label><Input value={post.author} onChange={(e) => set("author", e.target.value)} /></div><div className="space-y-1.5"><Label>Read time</Label><Input value={post.read_time} onChange={(e) => set("read_time", e.target.value)} placeholder="5 min" /></div><div className="space-y-1.5"><Label>Image URL or storage path</Label><Input value={post.image_url} onChange={(e) => set("image_url", e.target.value)} placeholder="https://..." /></div><div className="space-y-1.5 md:col-span-2"><Label>Excerpt</Label><Textarea rows={2} value={post.excerpt} onChange={(e) => set("excerpt", e.target.value)} /></div><div className="space-y-1.5 md:col-span-2"><Label>Article body</Label><Textarea rows={10} value={post.body} onChange={(e) => set("body", e.target.value)} /></div></div><label className="mt-4 flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={post.published} onChange={(e) => set("published", e.target.checked)} /> Publish this post</label><div className="mt-5 flex justify-end gap-2 border-t border-border pt-4"><Button variant="outline" onClick={onCancel}>Cancel</Button><Button onClick={onSave} disabled={saving || !post.title.trim() || !post.body.trim()} className="bg-forest text-cream hover:bg-forest-deep">{saving ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Save className="mr-1.5 h-4 w-4" />} Save post</Button></div></Card>;
+  const uploadImage = async (file?: File) => {
+    if (!file || !file.type.startsWith("image/")) {
+      toast.error("Please choose an image file.");
+      return;
+    }
+    setUploading(true);
+    const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
+    const path = `journal/${Date.now()}-${slugify(file.name.replace(/\.[^.]+$/, ""))}.${extension}`;
+    const { error } = await supabase.storage.from("gallery").upload(path, file, { contentType: file.type, upsert: false });
+    setUploading(false);
+    if (error) {
+      toast.error(`Could not upload image: ${error.message}`);
+      return;
+    }
+    set("image_url", path);
+    toast.success("Cover image uploaded");
+  };
+
+  return <Card className="mt-6 border-gold/40 p-5 shadow-sm"><div className="mb-5 flex items-center justify-between"><div><h2 className="font-display text-2xl font-bold text-forest">{"id" in post ? "Edit post" : "New post"}</h2><p className="text-sm text-muted-foreground">Draft the article and publish it when ready.</p></div><Button variant="ghost" onClick={onCancel}>Close</Button></div><div className="grid gap-4 md:grid-cols-2"><div className="space-y-1.5"><Label>Title</Label><Input value={post.title} onChange={(e) => set("title", e.target.value)} placeholder="A new story from Rwanda" /></div><div className="space-y-1.5"><Label>Slug</Label><Input value={post.slug} onChange={(e) => set("slug", e.target.value)} placeholder="new-story-from-rwanda" /></div><div className="space-y-1.5"><Label>Category</Label><Input value={post.category} onChange={(e) => set("category", e.target.value)} /></div><div className="space-y-1.5"><Label>Author</Label><Input value={post.author} onChange={(e) => set("author", e.target.value)} /></div><div className="space-y-1.5"><Label>Read time</Label><Input value={post.read_time} onChange={(e) => set("read_time", e.target.value)} placeholder="5 min" /></div><div className="space-y-1.5"><Label>Image URL or storage path</Label><Input value={post.image_url} onChange={(e) => set("image_url", e.target.value)} placeholder="https://..." /></div><div className="space-y-1.5 md:col-span-2"><input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => { void uploadImage(e.target.files?.[0]); e.target.value = ""; }} /><div onDragOver={(e) => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={(e) => { e.preventDefault(); setDragging(false); void uploadImage(e.dataTransfer.files[0]); }} className={`rounded-xl border-2 border-dashed p-6 text-center transition ${dragging ? "border-gold bg-gold/10" : "border-border bg-muted/30"}`}><FileImage className="mx-auto h-7 w-7 text-gold" /><p className="mt-2 text-sm font-semibold text-forest">Drop a cover image here</p><p className="mt-1 text-xs text-muted-foreground">PNG, JPG, or WebP. The uploaded path will be saved with this post.</p><Button type="button" variant="outline" size="sm" className="mt-3" disabled={uploading} onClick={() => fileRef.current?.click()}>{uploading ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Upload className="mr-1.5 h-4 w-4" />} Choose image</Button></div></div><div className="space-y-1.5 md:col-span-2"><Label>Excerpt</Label><Textarea rows={2} value={post.excerpt} onChange={(e) => set("excerpt", e.target.value)} /></div><div className="space-y-1.5 md:col-span-2"><Label>Article body</Label><Textarea rows={10} value={post.body} onChange={(e) => set("body", e.target.value)} /></div></div><label className="mt-4 flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={post.published} onChange={(e) => set("published", e.target.checked)} /> Publish this post</label><div className="mt-5 flex justify-end gap-2 border-t border-border pt-4"><Button variant="outline" onClick={onCancel}>Cancel</Button><Button onClick={onSave} disabled={saving || uploading || !post.title.trim() || !post.body.trim()} className="bg-forest text-cream hover:bg-forest-deep">{saving ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Save className="mr-1.5 h-4 w-4" />} Save post</Button></div></Card>;
 }
