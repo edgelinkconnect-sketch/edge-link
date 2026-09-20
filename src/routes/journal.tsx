@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Calendar, Clock, User, Facebook, Twitter, Link2, Heart, Send } from "lucide-react";
+import { Calendar, Clock, User, Facebook, Twitter, Link2, Heart, MessageCircle, Send } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -91,6 +91,8 @@ function Journal() {
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
   const [openSlug, setOpenSlug] = useState<string | null>(null);
   const [commentDraft, setCommentDraft] = useState("");
+  const [replyTo, setReplyTo] = useState<string | null>(null);
+  const [replyDraft, setReplyDraft] = useState("");
   const { data: managedPosts, isLoading } = useQuery({
     queryKey: ["public-journal"],
     queryFn: async () => {
@@ -128,7 +130,7 @@ function Journal() {
     queryKey: ["journal-comments", managedPostId],
     enabled: !!managedPostId,
     queryFn: async () => {
-      const { data, error } = await supabase.from("journal_comments").select("id, user_id, body, created_at").eq("post_id", managedPostId!).order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("journal_comments").select("id, user_id, parent_id, body, created_at").eq("post_id", managedPostId!).order("created_at", { ascending: true });
       if (error) throw error;
       return data ?? [];
     },
@@ -145,15 +147,18 @@ function Journal() {
     void qc.invalidateQueries({ queryKey: ["journal-likes", managedPostId] });
   };
 
-  const submitComment = async (event: React.FormEvent) => {
+  const submitComment = async (event: React.FormEvent, parentId: string | null = null) => {
     event.preventDefault();
     if (!managedPostId) return;
     if (!user) return toast.error("Sign in to leave a comment.");
-    const body = commentDraft.trim();
+    const body = (parentId ? replyDraft : commentDraft).trim();
     if (!body) return;
-    const { error } = await supabase.from("journal_comments").insert({ post_id: managedPostId, user_id: user.id, body });
+    const { error } = await supabase.from("journal_comments").insert({ post_id: managedPostId, user_id: user.id, body, parent_id: parentId });
     if (error) return toast.error(error.message);
-    setCommentDraft("");
+    if (parentId) {
+      setReplyDraft("");
+      setReplyTo(null);
+    } else setCommentDraft("");
     void qc.invalidateQueries({ queryKey: ["journal-comments", managedPostId] });
   };
 
@@ -200,19 +205,15 @@ function Journal() {
             <p className="mt-6 text-lg font-medium leading-relaxed text-foreground/90">{open.excerpt}</p>
             <div className="mt-4 whitespace-pre-line text-base leading-relaxed text-muted-foreground">{open.body}</div>
             {managedPostId && (
-              <div className="mt-8 border-t border-border pt-6">
-                <div className="flex items-center gap-3">
-                  <Button type="button" variant="outline" onClick={() => void toggleLike()} className={likes?.some((like) => like.user_id === user?.id) ? "border-gold bg-gold/10 text-forest" : ""}>
-                    <Heart className={`mr-1.5 h-4 w-4 ${likes?.some((like) => like.user_id === user?.id) ? "fill-current" : ""}`} /> {likes?.length ?? 0} likes
-                  </Button>
-                  <span className="text-sm text-muted-foreground">{comments?.length ?? 0} comments</span>
+              <div className="mt-10 rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-7">
+                <div className="flex flex-wrap items-end justify-between gap-3 border-b border-border pb-5">
+                  <div><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Join the conversation</p><h2 className="mt-1 font-display text-2xl font-bold text-forest">Thoughts from travellers</h2></div>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground"><MessageCircle className="h-4 w-4" /> {comments?.length ?? 0} comments</div>
                 </div>
-                <form onSubmit={submitComment} className="mt-4 flex gap-2">
-                  <Input value={commentDraft} onChange={(event) => setCommentDraft(event.target.value)} placeholder={user ? "Share your thoughts..." : "Sign in to comment"} disabled={!user} />
-                  <Button type="submit" size="icon" disabled={!user || !commentDraft.trim()} aria-label="Send comment"><Send className="h-4 w-4" /></Button>
-                </form>
-                <div className="mt-5 space-y-3">
-                  {(comments ?? []).map((comment) => <div key={comment.id} className="rounded-lg border border-border bg-muted/30 p-3"><div className="text-xs font-semibold text-forest">Traveller <span className="font-normal text-muted-foreground">· {new Date(comment.created_at).toLocaleDateString()}</span></div><p className="mt-1 text-sm text-foreground/80">{comment.body}</p></div>)}
+                <div className="mt-5 flex items-center justify-between rounded-xl bg-forest p-4 text-cream"><div><div className="text-2xl font-semibold">{likes?.length ?? 0}</div><div className="text-xs text-cream/65">people liked this story</div></div><Button type="button" onClick={() => void toggleLike()} variant="outline" className={likes?.some((like) => like.user_id === user?.id) ? "border-gold bg-gold text-gold-foreground" : "border-cream/30 bg-cream/10 text-cream hover:bg-cream/20"}><Heart className={`mr-1.5 h-4 w-4 ${likes?.some((like) => like.user_id === user?.id) ? "fill-current" : ""}`} /> {likes?.some((like) => like.user_id === user?.id) ? "Liked" : "Like story"}</Button></div>
+                <form onSubmit={(event) => void submitComment(event)} className="mt-5 flex gap-2"><Input value={commentDraft} onChange={(event) => setCommentDraft(event.target.value)} placeholder={user ? "Add a thoughtful comment..." : "Sign in to comment"} disabled={!user} className="h-11" /><Button type="submit" disabled={!user || !commentDraft.trim()} className="h-11 bg-gold text-gold-foreground hover:brightness-95"><Send className="mr-1.5 h-4 w-4" /> Post</Button></form>
+                <div className="mt-6 space-y-4">
+                  {(comments ?? []).filter((comment) => !comment.parent_id).map((comment) => <div key={comment.id} className="rounded-xl border border-border p-4"><div className="flex items-center justify-between gap-3"><div className="flex items-center gap-2"><div className="grid h-8 w-8 place-items-center rounded-full bg-gold/20 text-xs font-bold text-forest">T</div><div><div className="text-sm font-semibold text-forest">Traveller</div><div className="text-[11px] text-muted-foreground">{new Date(comment.created_at).toLocaleDateString()}</div></div></div><button type="button" onClick={() => { setReplyTo(replyTo === comment.id ? null : comment.id); setReplyDraft(""); }} className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-forest"><MessageCircle className="h-3.5 w-3.5" /> Reply</button></div><p className="mt-3 text-sm leading-relaxed text-foreground/80">{comment.body}</p>{(comments ?? []).filter((reply) => reply.parent_id === comment.id).length > 0 && <div className="mt-4 space-y-3 border-l-2 border-gold/30 pl-4">{(comments ?? []).filter((reply) => reply.parent_id === comment.id).map((reply) => <div key={reply.id}><div className="text-xs font-semibold text-forest">Traveller <span className="font-normal text-muted-foreground">· {new Date(reply.created_at).toLocaleDateString()}</span></div><p className="mt-1 text-sm text-foreground/75">{reply.body}</p></div>)}</div>}{replyTo === comment.id && <form onSubmit={(event) => void submitComment(event, comment.id)} className="mt-4 flex gap-2 border-t border-border pt-3"><Input autoFocus value={replyDraft} onChange={(event) => setReplyDraft(event.target.value)} placeholder={user ? "Write a reply..." : "Sign in to reply"} disabled={!user} /><Button type="submit" size="icon" disabled={!user || !replyDraft.trim()} aria-label="Send reply"><Send className="h-4 w-4" /></Button></form>}</div>)}
                 </div>
               </div>
             )}
