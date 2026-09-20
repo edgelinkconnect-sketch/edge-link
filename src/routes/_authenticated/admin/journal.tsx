@@ -82,11 +82,27 @@ function AdminJournal() {
     onError: (error: Error) => toast.error(error.message),
   });
 
+  const deleteAll = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("journal_posts").delete().not("id", "is", null);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("All journal posts removed");
+      void qc.invalidateQueries({ queryKey: ["admin-journal"] });
+      void qc.invalidateQueries({ queryKey: ["public-journal"] });
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+
   return (
     <div className="mx-auto max-w-6xl">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div><div className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Content desk</div><h1 className="font-display text-4xl font-bold text-forest">Journal</h1><p className="mt-1 text-sm text-muted-foreground">Create stories, guides, and field notes for the public journal.</p></div>
-        <Button onClick={() => setEditing({ ...emptyPost })} className="bg-forest text-cream hover:bg-forest-deep"><Plus className="mr-1.5 h-4 w-4" /> New post</Button>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" className="text-destructive" disabled={deleteAll.isPending || !posts?.length} onClick={() => void deleteAll.mutate()}><Trash2 className="mr-1.5 h-4 w-4" /> Delete all</Button>
+          <Button onClick={() => setEditing({ ...emptyPost })} className="bg-forest text-cream hover:bg-forest-deep"><Plus className="mr-1.5 h-4 w-4" /> New post</Button>
+        </div>
       </div>
 
       {editing && <PostEditor post={editing} saving={save.isPending} onChange={setEditing} onCancel={() => setEditing(null)} onSave={() => void save.mutate(editing)} />}

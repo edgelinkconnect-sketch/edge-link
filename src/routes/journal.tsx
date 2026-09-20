@@ -27,63 +27,17 @@ export const Route = createFileRoute("/journal")({
 
 const CATEGORIES = ["All", "Gorilla Trekking", "Rwanda Travel Tips", "Conservation News", "Lodge Reviews", "Culture & Food"] as const;
 
-const POSTS = [
-  {
-    slug: "gorilla-trekking-101",
-    title: "Gorilla Trekking 101: What to Expect",
-    excerpt: "From the pre-dawn briefing at park headquarters to your intimate hour with a silverback — a first-timer's step-by-step guide.",
-    category: "Gorilla Trekking",
-    author: "Jean-Pierre Niyonzima",
-    date: "March 12, 2026",
-    readTime: "8 min",
-    image: IMAGES.gorilla,
-    body: "Your gorilla trek begins the night before, with a light dinner and an early bed at your lodge. At 5:30am, you're driven to Kinigi park headquarters, where guides assess fitness levels and assign families. Trekking distances vary from 30 minutes to six hours — porters carry your pack for $20. When you reach the family, you'll spend exactly one transformative hour observing them at 7m distance. Photos without flash. Then the descent, a hot lunch at your lodge, and time to process what you've just experienced.",
-  },
-  {
-    slug: "best-time-to-visit",
-    title: "Best Time to Visit Rwanda's National Parks",
-    excerpt: "Two dry seasons, two green seasons — how to pick the perfect month for your Rwandan safari.",
-    category: "Rwanda Travel Tips",
-    author: "Grace Uwimana",
-    date: "February 28, 2026",
-    readTime: "6 min",
-    image: IMAGES.nyungwe,
-    body: "Rwanda's equatorial climate means year-round trekking is possible, but the two dry seasons — June to September and December to February — offer the driest trails and clearest views. March to May brings the long rains: fewer travellers, greener landscapes, and lower permit demand. October and November are transitional and lovely for photography.",
-  },
-  {
-    slug: "singita-kwitonda-review",
-    title: "Inside Singita Kwitonda: A Luxury Lodge Review",
-    excerpt: "Eight private suites, a spa carved from volcanic rock, and views of five volcanoes. Our head of guest relations spends 48 hours at Rwanda's newest icon.",
-    category: "Lodge Reviews",
-    author: "Claire Mukamana",
-    date: "February 10, 2026",
-    readTime: "10 min",
-    image: IMAGES.cruiser,
-    body: "Kwitonda sits at 2,300m on the border of Volcanoes National Park. Rammed-earth walls, brass finishes, and a fireplace in every suite. The food — foraged, seasonal, Rwandan-modern — rivals anything in East Africa. Rates from $3,300 per person per night. Worth every dollar for a lifetime memory.",
-  },
-  {
-    slug: "nyungwe-canopy-walk",
-    title: "Nyungwe Canopy Walk: A Bird's Eye View",
-    excerpt: "The 200-metre suspended bridge, 70m above the rainforest floor, is Africa's only canopy walkway. Here's what you'll see.",
-    category: "Rwanda Travel Tips",
-    author: "Emmanuel Habimana",
-    date: "January 22, 2026",
-    readTime: "5 min",
-    image: IMAGES.nyungwe,
-    body: "The walk takes 90 minutes, with an easy forest hike either side. From the platform, you'll spot Great Blue Turacos, L'Hoest's monkeys, and — if you're lucky — a chimpanzee troop moving below. Sunrise walks require pre-booking. Not recommended for anyone with severe acrophobia.",
-  },
-  {
-    slug: "gorilla-conservation-success",
-    title: "Conservation Success: Rwanda's Gorilla Population Growth",
-    excerpt: "From 254 individuals in 1981 to over 1,000 today. Inside the Rwandan model that turned poaching into protection.",
-    category: "Conservation News",
-    author: "Dr. James Wilson",
-    date: "January 5, 2026",
-    readTime: "12 min",
-    image: IMAGES.gorilla,
-    body: "The Virunga population's recovery is one of conservation's great modern successes. Ranger patrols, community revenue sharing (10% of park fees), veterinary interventions, and disciplined tourism have combined to double the population in three decades. Rwanda's gorillas are the only great apes whose numbers are still growing.",
-  },
-];
+const POSTS: Array<{
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  author: string;
+  date: string;
+  readTime: string;
+  image: string;
+  body: string;
+}> = [];
 
 function Journal() {
   const { user } = useAuth();
