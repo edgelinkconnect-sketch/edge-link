@@ -24,6 +24,7 @@ export function useMediaUrls(bucket: string, values: (string | null | undefined)
       const map: Record<string, string> = {};
       data?.forEach((d) => {
         if (d.path && d.signedUrl) map[d.path] = d.signedUrl;
+        else if (d.path && bucket === "gallery") map[d.path] = supabase.storage.from(bucket).getPublicUrl(d.path).data.publicUrl;
       });
       return map;
     },
@@ -32,7 +33,7 @@ export function useMediaUrls(bucket: string, values: (string | null | undefined)
   return (value?: string | null) => {
     if (!value) return "";
     if (isAbsolute(value)) return value;
-    return data?.[value] ?? "";
+    return data?.[value] ?? (bucket === "gallery" ? supabase.storage.from(bucket).getPublicUrl(value).data.publicUrl : "");
   };
 }
 
