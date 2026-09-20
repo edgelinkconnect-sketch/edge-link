@@ -85,7 +85,7 @@ const POSTS = [
 function Journal() {
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
   const [openSlug, setOpenSlug] = useState<string | null>(null);
-  const { data: managedPosts } = useQuery({
+  const { data: managedPosts, isLoading } = useQuery({
     queryKey: ["public-journal"],
     queryFn: async () => {
       const { data } = await supabase.from("journal_posts").select("*").eq("published", true).order("created_at", { ascending: false });
@@ -103,7 +103,7 @@ function Journal() {
     },
   });
   const media = useMediaUrls("gallery", (managedPosts ?? []).map((post) => post.image_url));
-  const sourcePosts = managedPosts?.length ? managedPosts : POSTS;
+  const sourcePosts = isLoading ? [] : managedPosts?.length ? managedPosts : POSTS;
   const displayPosts = sourcePosts.map((post) => ({ ...post, image: media(post.image) || post.image }));
   const posts = category === "All" ? displayPosts : displayPosts.filter((p) => p.category === category);
   const open = displayPosts.find((p) => p.slug === openSlug);
@@ -133,7 +133,11 @@ function Journal() {
           ))}
         </div>
 
-        {open ? (
+        {isLoading ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[0, 1, 2].map((item) => <div key={item} className="h-80 animate-pulse rounded-2xl bg-muted" />)}
+          </div>
+        ) : open ? (
           <article className="mx-auto max-w-3xl">
             <Button variant="ghost" size="sm" onClick={() => setOpenSlug(null)} className="mb-4">← Back to journal</Button>
             <div className="text-[10px] font-semibold uppercase tracking-[0.25em] text-gold">{open.category}</div>
