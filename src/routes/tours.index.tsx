@@ -67,7 +67,7 @@ export function useTours() {
 
 function ToursIndex() {
   const { t: tr, i18n } = useTranslation();
-  const { data: tours, isLoading } = useTours();
+  const { data: tours, isLoading, error } = useTours();
   const [region, setRegion] = useState("All");
   const [activity, setActivity] = useState("All");
   const [duration, setDuration] = useState("All");
@@ -111,6 +111,11 @@ function ToursIndex() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 md:px-6">
+        {error instanceof Error && (
+          <div className="mb-6 rounded-lg border border-destructive/20 bg-destructive/5 p-4 text-sm text-destructive">
+            Tours could not be loaded. Please refresh the page or try again shortly.
+          </div>
+        )}
         <div className="mb-8 space-y-3">
           <FilterRow
             label={tr("hub.region")}
