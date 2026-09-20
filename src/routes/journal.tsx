@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Calendar, Clock, User, Facebook, Twitter, Link2, Heart, Send } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { IMAGES } from "@/lib/site-data";
 import { supabase } from "@/integrations/supabase/client";
 import { useMediaUrls } from "@/lib/media";
