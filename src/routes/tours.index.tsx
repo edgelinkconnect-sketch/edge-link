@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { useMediaUrls } from "@/lib/media";
+import { TOURS } from "@/lib/tours-data";
 
 export const Route = createFileRoute("/tours/")({
   head: () => ({
@@ -59,8 +60,23 @@ export function useTours() {
         )
         .eq("status", "active")
         .order("created_at");
-      if (error) throw error;
-      return (data ?? []) as TourRow[];
+      if (!error && data?.length) return data as TourRow[];
+
+      return TOURS.map((tour) => ({
+        id: tour.id,
+        slug: tour.id,
+        name: tour.name,
+        location: tour.region,
+        region: tour.region,
+        activity: tour.activity,
+        duration: `${tour.duration} days`,
+        difficulty: tour.difficulty,
+        price: String(tour.price),
+        featured_image_url: tour.image,
+        description: tour.summary,
+        highlights: tour.highlights,
+        translations: null,
+      })) as TourRow[];
     },
   });
 }
