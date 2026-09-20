@@ -190,6 +190,7 @@ export type Database = {
           description: string | null
           id: string
           image_url: string
+          image_urls: string[]
           is_ai: boolean
           is_featured: boolean
           location: string
@@ -218,6 +219,7 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string
+          image_urls?: string[]
           is_ai?: boolean
           is_featured?: boolean
           location?: string
@@ -485,6 +487,7 @@ export type Database = {
           author?: string
           read_time?: string
           image_url?: string
+          image_urls?: string[]
           published?: boolean
           created_at?: string
           updated_at?: string

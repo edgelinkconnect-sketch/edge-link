@@ -107,18 +107,19 @@ function Journal() {
         date: new Date(post.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
         readTime: post.read_time,
         image: post.image_url || IMAGES.gorilla,
+        image_urls: post.image_urls ?? [],
         body: post.body,
       }));
     },
   });
-  const media = useMediaUrls("gallery", (managedPosts ?? []).map((post) => post.image_url));
+  const media = useMediaUrls("gallery", (managedPosts ?? []).flatMap((post) => [post.image_url, ...(post.image_urls ?? [])]));
   const sourcePosts = isLoading
     ? []
     : [
         ...(managedPosts ?? []),
         ...POSTS.filter((post) => !(managedPosts ?? []).some((managed) => managed.slug === post.slug)),
       ];
-  const displayPosts = sourcePosts.map((post) => ({ ...post, image: media(post.image) || post.image }));
+  const displayPosts = sourcePosts.map((post) => ({ ...post, image: media(post.image) || post.image, image_urls: "image_urls" in post ? post.image_urls.map((image) => media(image) || image) : [] }));
   const posts = category === "All" ? displayPosts : displayPosts.filter((p) => p.category === category);
   const open = displayPosts.find((p) => p.slug === openSlug);
   const managedPostId = open && "id" in open ? open.id : null;
@@ -208,7 +209,9 @@ function Journal() {
             </div>
             <img src={open.image} alt={open.title} className="mt-6 aspect-[16/9] w-full rounded-2xl object-cover" />
             <p className="mt-6 text-lg font-medium leading-relaxed text-foreground/90">{open.excerpt}</p>
-            <div className="mt-4 whitespace-pre-line text-base leading-relaxed text-muted-foreground">{open.body}</div>
+            <div className="mt-4 text-base leading-relaxed text-muted-foreground">
+              {open.body.split(/\n\s*\n/).map((paragraph, index) => <div key={`${open.slug}-paragraph-${index}`}><p className="whitespace-pre-line">{paragraph}</p>{open.image_urls?.[index] && <img src={open.image_urls[index]} alt={`${open.title} — image ${index + 2}`} loading="lazy" className="my-7 aspect-[16/9] w-full rounded-xl object-cover" />}</div>)}
+            </div>
             {managedPostId && (
               <div className="mt-10 rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-7">
                 <div className="flex flex-wrap items-end justify-between gap-3 border-b border-border pb-5">
