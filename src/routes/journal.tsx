@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Calendar, Clock, User, Facebook, Twitter, Link2 } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { IMAGES } from "@/lib/site-data";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/journal")({
   head: () => ({
@@ -82,8 +84,26 @@ const POSTS = [
 function Journal() {
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
   const [openSlug, setOpenSlug] = useState<string | null>(null);
-  const posts = category === "All" ? POSTS : POSTS.filter((p) => p.category === category);
-  const open = POSTS.find((p) => p.slug === openSlug);
+  const { data: managedPosts } = useQuery({
+    queryKey: ["public-journal"],
+    queryFn: async () => {
+      const { data } = await supabase.from("journal_posts").select("*").eq("published", true).order("created_at", { ascending: false });
+      return (data ?? []).map((post) => ({
+        slug: post.slug,
+        title: post.title,
+        excerpt: post.excerpt,
+        category: post.category,
+        author: post.author,
+        date: new Date(post.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+        readTime: post.read_time,
+        image: post.image_url || IMAGES.gorilla,
+        body: post.body,
+      }));
+    },
+  });
+  const sourcePosts = managedPosts?.length ? managedPosts : POSTS;
+  const posts = category === "All" ? sourcePosts : sourcePosts.filter((p) => p.category === category);
+  const open = sourcePosts.find((p) => p.slug === openSlug);
 
   return (
     <AppShell>

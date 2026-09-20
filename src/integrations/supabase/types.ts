@@ -460,6 +460,51 @@ export type Database = {
         Relationships: []
       }
     }
+      journal_posts: {
+        Row: {
+          id: string
+          slug: string
+          title: string
+          excerpt: string
+          body: string
+          category: string
+          author: string
+          read_time: string
+          image_url: string
+          published: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          slug: string
+          title: string
+          excerpt?: string
+          body?: string
+          category?: string
+          author?: string
+          read_time?: string
+          image_url?: string
+          published?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          slug?: string
+          title?: string
+          excerpt?: string
+          body?: string
+          category?: string
+          author?: string
+          read_time?: string
+          image_url?: string
+          published?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     Views: {
       [_ in never]: never
     }
